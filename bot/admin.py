@@ -7,7 +7,7 @@ class BotImageAdmin(admin.ModelAdmin):
 admin.site.register(BotImage, BotImageAdmin)
 
 class BotAdmin(admin.ModelAdmin):
-    list_display = ('name', 'level')
+    list_display = ('name', 'level',)
     ordering = ('name',)
     list_filter = ('level',)
     search_fields = ('name',)

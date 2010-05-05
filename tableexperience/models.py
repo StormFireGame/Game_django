@@ -6,7 +6,7 @@ class TableExperience(models.Model):
     number_of_abilities = models.IntegerField()
     number_of_skills = models.IntegerField()
     number_of_parameters = models.IntegerField()
-    money = models.IntegerField()
+    money = models.FloatField()
     
     class Meta:
         db_table = 'TableExperience'

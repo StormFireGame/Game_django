@@ -14,7 +14,7 @@ class HeroThingInline(admin.TabularInline):
     extra = 1
 
 class HeroAdminForm(forms.ModelForm):
-    login = forms.CharField(min_length=4)
+    login = forms.CharField(min_length=3)
     password = forms.CharField(min_length=5, widget=forms.TextInput(
                                                             attrs={'size':50}))
 
@@ -47,7 +47,9 @@ class HeroAdmin(admin.ModelAdmin):
                     'money_art', 'location', 'level', 'image',
                     'number_of_wins', 'number_of_losses', 'number_of_draws',
                     'hp', 'strength', 'dexterity', 'intuition', 'health',
-                    'swords', 'axes', 'knives', 'clubs', 'shields'], 
+                    'swords', 'axes', 'knives', 'clubs', 'shields', 
+                    'number_of_abilities', 'number_of_skills',
+                    'number_of_parameters'], 
                                                     'classes': ['collapse']}),
         ('About hero', {'fields': ['country', 'city', 'name', 'about'], 
                                                     'classes': ['collapse']}),

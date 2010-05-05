@@ -8,12 +8,12 @@ import hashlib
 #
 FEATURES = ((0, 'Strength'), (1, 'Dexterity'), (2, 'Intuition'), 
             (3, 'Health'), (4, 'Swords'), (5, 'Axes'),
-            (6, 'Knives'), (7, 'Knives'), (8, 'Shields'), 
+            (6, 'Knives'), (7, 'Clubs'), (8, 'Shields'), 
             (9, 'Protection head'), (10, 'Protection breast'), 
             (11, 'Protection zone'), (12, 'Protection leg'), (13, 'Damage min'), 
             (14, 'Damage max'), (15, 'Accuracy'), (16, 'Dodge'), 
             (17, 'Devastate'), (18, 'Durability'), (19, 'Block break'), 
-            (20, 'Armor break'), (21, 'Hp'),)
+            (20, 'Armor break'), (21, 'Hp'), (22, 'Capacity'))
 
 class HeroImage(models.Model):
     image = models.ImageField(upload_to='upload/heroimages')
@@ -51,18 +51,53 @@ class SkillFeature(models.Model):
         
     def __unicode__(self):
         return '%s %s' % (FEATURES[self.feature][1], self.plus)
-            
+
+class HeroFeature(models.Model):
+       
+    strength = models.CharField(max_length=32, null=True)
+    dexterity = models.CharField(max_length=32, null=True)
+    intuition = models.CharField(max_length=32, null=True)
+    health = models.CharField(max_length=32, null=True)
+    
+    swords = models.CharField(max_length=32, null=True)
+    axes = models.CharField(max_length=32, null=True)
+    knives = models.CharField(max_length=32, null=True)
+    clubs = models.CharField(max_length=32, null=True)
+    shields = models.CharField(max_length=32, null=True)
+    
+    protection_head = models.CharField(max_length=32, null=True, default=0)
+    protection_breast = models.CharField(max_length=32, null=True, default=0)
+    protection_zone = models.CharField(max_length=32, null=True, default=0)
+    protection_leg = models.CharField(max_length=32, null=True, default=0)
+    
+    damage_min = models.CharField(max_length=32, null=True)
+    damage_max = models.CharField(max_length=32, null=True)
+    
+    accuracy = models.CharField(max_length=32, null=True)
+    dodge = models.CharField(max_length=32, null=True)
+    devastate = models.CharField(max_length=32, null=True)
+    durability = models.CharField(max_length=32, null=True)
+    block_break = models.CharField(max_length=32, null=True, default=0)
+    armor_break = models.CharField(max_length=32, null=True, default=0)
+    
+    hp = models.CharField(max_length=32, null=True)
+    
+    capacity = models.CharField(max_length=32, null=True)
+
+    class Meta:
+        db_table = 'HeroFeature'
+                   
 class Hero(models.Model):
     login = models.CharField(max_length=32, unique=True)
     password = models.CharField(max_length=64)
     email = models.EmailField(max_length=64, unique=True)
     experience = models.IntegerField(default=0)
-    money = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    money_art = models.DecimalField(max_digits=10, decimal_places=2, 
-                                    default=0.0)
+    money = models.FloatField(default=0.00)
+    money_art = models.FloatField(default=0.00)
     location = models.CharField(max_length=32, blank=True)
     level = models.IntegerField(default=0)
     image = models.ForeignKey(HeroImage, null=True, blank=True)
+    feature = models.ForeignKey(HeroFeature)
     
     number_of_wins = models.IntegerField(default=0)
     number_of_losses = models.IntegerField(default=0)
@@ -89,9 +124,13 @@ class Hero(models.Model):
     name = models.CharField(max_length=64, blank=True)
     about = models.TextField(blank=True)
     
+    number_of_abilities = models.PositiveIntegerField(default=0)
+    number_of_skills = models.PositiveIntegerField(default=0)
+    number_of_parameters = models.PositiveIntegerField(default=0)
+    
     skills = models.ManyToManyField(HeroSkill, through='HeroHeroSkill')
     things = models.ManyToManyField(Thing, through='HeroThing')
-    
+        
     class Meta:
         db_table = 'Hero'
         verbose_name_plural = 'Heroes'
@@ -102,45 +141,16 @@ class Hero(models.Model):
     def save(self):
         if not self.id:
             self.password = hashlib.sha1(self.password).hexdigest()
+            herofeature = HeroFeature()
+            herofeature.save()
+            self.feature = herofeature
+            from hero import heromanipulation
+            heromanipulation.hero_feature(self)
+            heromanipulation.hero_level_up(self)
         else:
             if self.password != Hero.objects.get(id=self.id).password:
                 self.password = hashlib.sha1(self.password).hexdigest()
         super(Hero, self).save()
-
-class HeroFeature(models.Model):
-
-    hero = models.ForeignKey(Hero)
-       
-    strength = models.CharField(max_length=32, null=True)
-    dexterity = models.CharField(max_length=32, null=True)
-    intuition = models.CharField(max_length=32, null=True)
-    health = models.CharField(max_length=32, null=True)
-    
-    swords = models.CharField(max_length=32, null=True)
-    axes = models.CharField(max_length=32, null=True)
-    knives = models.CharField(max_length=32, null=True)
-    clubs = models.CharField(max_length=32, null=True)
-    shields = models.CharField(max_length=32, null=True)
-    
-    protection_head = models.CharField(max_length=32, null=True)
-    protection_breast = models.CharField(max_length=32, null=True)
-    protection_zone = models.CharField(max_length=32, null=True)
-    protection_leg = models.CharField(max_length=32, null=True)
-    
-    damage_min = models.CharField(max_length=32, null=True)
-    damage_max = models.CharField(max_length=32, null=True)
-    
-    accuracy = models.CharField(max_length=32, null=True)
-    dodge = models.CharField(max_length=32, null=True)
-    devastate = models.CharField(max_length=32, null=True)
-    durability = models.CharField(max_length=32, null=True)
-    block_break = models.CharField(max_length=32, null=True)
-    armor_break = models.CharField(max_length=32, null=True)
-    
-    hp = models.CharField(max_length=32, null=True)
-
-    class Meta:
-        db_table = 'HeroFeature'
         
 class HeroHeroSkill(models.Model):
     hero = models.ForeignKey(Hero)

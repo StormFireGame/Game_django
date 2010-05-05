@@ -1,0 +1,68 @@
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+{% block content %}
+{% load hero_tags %}
+<div class="span-15">
+	<div class="span-9">
+		<p>
+			<img src="{{ MEDIA_URL }}images/slot.png" alt="" />
+		</p>
+	</div>
+	<div class="span-5 last">
+		<p>
+			<b>Parametrs</b><br />
+			Strength: {{ hero.feature.strength }} {% get_hero_feature hero.strength hero.feature.strength %} {% if hero.number_of_parameters %} <a href="{% url hero_increase 'parameters' 'strength' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+			Dexterity: {{ hero.feature.dexterity }} {% get_hero_feature hero.dexterity hero.feature.dexterity %} {% if hero.number_of_parameters %} <a href="{% url hero_increase 'parameters' 'dexterity' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+			Intuition: {{ hero.feature.intuition }} {% get_hero_feature hero.intuition hero.feature.intuition %} {% if hero.number_of_parameters %} <a href="{% url hero_increase 'parameters' 'intuition' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+			Health: {{ hero.feature.health }} {% get_hero_feature hero.health hero.feature.health %} {% if hero.number_of_parameters %} <a href="{% url hero_increase 'parameters' 'health' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+			{% if hero.number_of_parameters %} <b>Number of increases: {{ hero.number_of_parameters }}</b><br />  {% endif %}
+			<br />
+			<b>Information</b><br />
+			Number of wins: {{ hero.number_of_wins }}<br />
+			Number of losses: {{ hero.number_of_losses }}<br />
+			Number of draws: {{ hero.number_of_draws }}<br />
+    		Experience: {{ hero.experience }}<br />
+		</p>
+	</div>
+</div>
+<div class="span-5">
+	<p>
+		<b>Modifiers</b><br />
+		Accuracy: {{ hero.feature.accuracy }}%<br />
+		Dodge: {{ hero.feature.dodge }}%<br />
+		Devastate: {{ hero.feature.devastate }}%<br />
+		Durability: {{ hero.feature.durability }}%<br />
+		Block break: {{ hero.feature.block_break }}%<br />
+		Armor break: {{ hero.feature.armor_break }}%<br /><br />
+		
+		Min damage: {{ hero.feature.damage_min }}<br />
+		Max damage: {{ hero.feature.damage_max }}<br />
+		<br />
+		<b>Protection</b><br />
+		Protection head: {{ hero.feature.protection_head }}%<br />
+		Protection breast: {{ hero.feature.protection_breast }}%<br />
+		Protection zone: {{ hero.feature.protection_zone }}%<br />
+		Protection leg: {{ hero.feature.protection_leg }}%<br />
+	</p>
+</div>
+
+<div class="span-4 last">
+	<p>
+		<b>Skills</b><br />
+		{% for heroskill in heroskills %}
+			{{ heroskill.name }}: {% get_hero_skill hero heroskill %} {% if hero.number_of_skills %} {% if hero.number_of_skills %} <a href="{% url hero_increase 'skills' heroskill.id %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}{% endif %}
+ 			<br />
+		{% endfor %}
+		{% if hero.number_of_skills %} <b>Number of increases: {{ hero.number_of_skills }}</b><br />  {% endif %}
+		<br />
+		<b>Abilities</b><br />
+		Swords: {{ hero.feature.swords }} {% get_hero_feature hero.swords hero.feature.swords %} {% if hero.number_of_abilities %} <a href="{% url hero_increase 'abilities' 'swords' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+		Axes: {{ hero.feature.axes }} {% get_hero_feature hero.axes hero.feature.axes %} {% if hero.number_of_abilities %} <a href="{% url hero_increase 'abilities' 'axes' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+		Knives: {{ hero.feature.knives }} {% get_hero_feature hero.knives hero.feature.knives %} {% if hero.number_of_abilities %} <a href="{% url hero_increase 'abilities' 'knives' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+		Clubs: {{ hero.feature.clubs }} {% get_hero_feature hero.clubs hero.feature.clubs %} {% if hero.number_of_abilities %} <a href="{% url hero_increase 'abilities' 'clubs' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+		Shields: {{ hero.feature.shields }} {% get_hero_feature hero.shields hero.feature.shields %} {% if hero.number_of_abilities %} <a href="{% url hero_increase 'abilities' 'shields' %}"><img src="{{ MEDIA_URL }}images/plus.png" alt=""></a> {% endif %}<br />
+		{% if hero.number_of_abilities %} <b>Number of increases: {{ hero.number_of_abilities }}</b><br />  {% endif %}
+	</p>
+</div>
+
+{% endblock %}

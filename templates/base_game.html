@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="game">
+    <meta name="description" content="game">
+    <meta http-equiv="content-language" content="en">
+
+    <meta name="author" content="ButuzGOL">
+    <link rel="shortcut icon" type="image/x-icon" href=""/>
+	<title>Game | {% block title %}{% endblock %}</title>
+	{% block js %}
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jgrowl.js"></script>
+	{% endblock %}
+	{% block css %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/print.css" type="text/css" media="print">
+    <!--[if lt IE 8]>
+		<link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection">
+	<![endif]-->
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+	
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/sexybuttons/sexybuttons.css" type="text/css" />
+	
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery.jgrowl.css" type="text/css" />
+	
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/style.css" type="text/css" />
+	{% endblock %}
+  </head>
+  <body>
+{% if messages %}
+<script type="text/javascript">
+/* <![CDATA[ */
+	  {% for message in messages %}
+		$.jGrowl("{{ message }}");
+	  {% endfor %}
+/* ]]> */
+</script>
+{% endif %}
+  	<div class="container">
+	  <div class="span-8 prepend-top">
+		<h3>{{ hero }} <img src="{{ MEDIA_URL }}/images/info.gif" alt="" /></h3>
+	  </div>
+		<div class="span-8 prepend-top">
+			<p>
+				<a href="/game/">Hero</a>
+				<a href="/game/inventory/">Inventory</a>
+				<a href="/game/fights/">Fights</a>
+				<a href="/game/information/">Information</a>
+				<a href="/game/settings/">Settings</a>
+				<a href="/game/back/">Back</a>
+			</p>
+		</div>
+		
+		<div class="span-8 last prepend-top">
+			<p>
+				Money: {{ hero.money }}
+				Art money: {{ hero.money_art }}
+				Capacity: {{ hero.feature.capacity }}
+			</p>
+		</div>
+      <hr>
+	  	{% block content %}{% endblock %}
+	  <hr>
+	  <p>
+        Copyright by ButuzGOL
+      </p>
+    </div>
+  </body>
+  </html>

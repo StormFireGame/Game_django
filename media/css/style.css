@@ -1,0 +1,7 @@
+input[type=text], input[type=password] {width:200px;padding:5px;}
+input[type=submit] {margin-bottom:10px;}
+
+.error_field {color:#8a1f11;}
+ol, ul {list-style:none; margin: 0 !important; }
+table {margin:0px; padding:0px; width:30%}
+tr, td {margin:0px; padding:0px;}

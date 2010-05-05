@@ -35,14 +35,18 @@ CREATE TABLE Hero
     name VARCHAR(64),
     about TEXT,
 
-    CONSTRAINT FK_hero_image FOREIGN KEY (image_id)
-        REFERENCES Image (id) ON DELETE CASCADE ON UPDATE RESTRICT
+    feature_id INT NOT NULL,
+
+    CONSTRAINT FK_hero_heroimage FOREIGN KEY (image_id)
+        REFERENCES HeroImage (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+
+    CONSTRAINT FK_hero_herofeauture FOREIGN KEY (heature_id)
+        REFERENCES HearoFeature (id) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 
 CREATE TABLE HeroFeature
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    hero_id INT NOT NULL,
 
     strength VARCHAR(32),
     dexterity VARCHAR(32),
@@ -71,6 +75,8 @@ CREATE TABLE HeroFeature
     armor_break VARCHAR(32),
 
     hp VARCHAR(32),
+
+    capacity VARCHAR(32),
 
     CONSTRAINT FK_herofeature_hero FOREIGN KEY (hero_id)
         REFERENCES Hero (id) ON DELETE CASCADE ON UPDATE RESTRICT
@@ -131,7 +137,7 @@ CREATE TABLE Thing
     image VARCHAR(32) NOT NULL,
 
     level_need INT(3) NOT NULL,
-    
+
     strength_need INT(6) DEFAULT 0,
     dexterity_need INT(6) DEFAULT 0,
     intuition_need INT(6) DEFAULT 0,
@@ -184,7 +190,7 @@ CREATE TABLE HeroThing
     stability_all INT(6) NOT NULL,
     stability_left INT(6) NOT NULL,
     dressed INT(1) NOT NULL,
-    
+
     CONSTRAINT FK_hero FOREIGN KEY (hero_id)
         REFERENCES Hero (id) ON DELETE CASCADE ON UPDATE RESTRICT,
     CONSTRAINT FK_thing FOREIGN KEY (thing_id)
@@ -275,7 +281,7 @@ CREATE TABLE Bot
     knives INT(6) NOT NULL,
     clubs INT(6) NOT NULL,
     shields INT(6) NOT NULL,
-    
+
     coordinate_x1 INT(6) NOT NULL,
     coordinate_y1 INT(6) NOT NULL,
     coordinate_x2 INT(6) NOT NULL,
@@ -342,7 +348,7 @@ CREATE TABLE Building
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     parent_id INT,
     name VARCHAR(32) NOT NULL,
-    module VARCHAR(32),
+    plugin VARCHAR(32),
     coordinate_x1 INT(6),
     coordinate_y1 INT(6),
     coordinate_x2 INT(6),
