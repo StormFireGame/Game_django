@@ -1,0 +1,54 @@
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+{% block content %}
+{% load island_filters %}
+<div class="span-6">
+	{% if hero_time_left %}
+		<b id="time_left_on">Moving on sector {{ hero_position_x }}:{{ hero_position_y}}: <span id="countdown"></span> min.</b>
+	{% endif %}
+	<b id="time_left_off">Current sector: {{ hero_position_x }}:{{ hero_position_y }}</b><br />
+	<a href="">Search location</a><br />
+</div>
+<div class="span-13">
+		<div style="background:url({{ MEDIA_URL }}{{ island.image }}); width:510px; height:270px; background-position: {{ hero_position_x|map_position }}px {{ hero_position_y|map_position }}px;">	
+			<img src="{{ MEDIA_URL }}images/island_move.png" alt="" style="position:relative; top:90px; left:165px;" usemap="#islandmap" />
+			<map name="islandmap">
+				<area title="North [{{ hero_position_x }}:{{hero_position_y|hero_position_down}}]" shape="poly" coords="90,0,60,15,90,30,120,15" href="{% url island_move island.id hero_position_x hero_position_y|hero_position_down %}" alt="" />
+				<area title="North-West [{{ hero_position_x|hero_position_down }}:{{ hero_position_y|hero_position_down }}]" shape="poly" coords="60,15,90,30,60,45,30,30" href="{% url island_move island.id hero_position_x|hero_position_down hero_position_y|hero_position_down %}" alt="" />
+				<area title="West [{{ hero_position_x|hero_position_down }}:{{ hero_position_y }}]" shape="poly" coords="0,45,30,30,60,45,30,60" href="{% url island_move island.id hero_position_x|hero_position_down hero_position_y %}" alt="" />
+				<area title="South-West [{{ hero_position_x|hero_position_down }}:{{ hero_position_y|hero_position_up }}]" shape="poly" coords="60,45,90,60,60,75,30,60" href="{% url island_move island.id hero_position_x|hero_position_down hero_position_y|hero_position_up %}" alt="" />
+				<area title="South [{{ hero_position_x }}:{{ hero_position_y|hero_position_up }}]" shape="poly" coords="90,90,60,75,90,60,120,75" href="{% url island_move island.id hero_position_x hero_position_y|hero_position_up %}" alt="" />
+				<area title="South-East [{{ hero_position_x|hero_position_up }}:{{ hero_position_y|hero_position_up }}]" shape="poly" coords="120,45,150,60,120,75,90,60" href="{% url island_move island.id hero_position_x|hero_position_up hero_position_y|hero_position_up %}" alt="" />
+				<area title="East [{{ hero_position_x|hero_position_up }}:{{ hero_position_y }}]" shape="poly" coords="180,45,150,60,120,45,150,30" href="{% url island_move island.id hero_position_x|hero_position_up hero_position_y %}" alt="" />
+				<area title="North-East [{{ hero_position_x|hero_position_up }}:{{ hero_position_y|hero_position_down }}]" shape="poly" coords="120,15,90,30,120,45,150,30" href="{% url island_move island.id hero_position_x|hero_position_up hero_position_y|hero_position_down %}" alt="" />
+			</map>
+		</div>
+</div>
+<div class="span-4 last">
+	<b>What is on location</b>
+</div>
+<div style="clear:both;"><br /></div>
+{% endblock %}
+
+{% block js %}
+{% if hero_time_left %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jCountr.1.2.js"></script>
+{% endif %}
+{% endblock %}
+
+{% block jsfunction %}
+{% if hero_time_left %}
+<script type="text/javascript">
+/* <![CDATA[ */
+$(document).ready(function(){
+	$("#time_left_off").hide();
+	$("#countdown").counter({sec:"{{ hero_time_left }}", finish_function: "checkActive()"});
+});
+function checkActive() {
+	$("#time_left_on").hide();
+	$("#time_left_off").show();
+	}
+/* ]]> */
+</script>
+{% endif %}
+{% endblock %}

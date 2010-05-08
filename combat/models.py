@@ -8,26 +8,31 @@ class Combat(models.Model):
     TYPES = ((0, 'Duel'), (1, 'Group'), (2, 'Chaotic'), (3, 'Territorial'))
     type = models.SmallIntegerField(default=0, choices=TYPES)
 #
-    IS_ACTIVES = ((0, 'Wait'), (1, 'Fight'), (2, 'Closed'),)
+    IS_ACTIVES = ((0, 'Wait'), (1, 'Fight'), (2, 'Past'),)
     is_active = models.SmallIntegerField(default=0, choices=IS_ACTIVES)
     time_out = models.IntegerField(default=60)
 #
     INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
     injury = models.SmallIntegerField(default=0, choices=INJURIES)
     with_things = models.BooleanField(default=True, blank=True)
-    time_wait = models.IntegerField(default=180, null=True, blank=True)
-    one_team_count = models.IntegerField(null=True, blank=True)
-    two_team_count = models.IntegerField(null=True, blank=True)
-    one_team_lvl_min = models.IntegerField(null=True, blank=True)
-    one_team_lvl_max = models.IntegerField(null=True, blank=True)
-    two_team_lvl_min = models.IntegerField(null=True, blank=True)
-    two_team_lvl_max = models.IntegerField(null=True, blank=True)
-    location = models.CharField(max_length=32, blank=True)
+    time_wait = models.IntegerField(default=360, null=True, blank=True)
+    time_wait_left = models.IntegerField(default=360, null=True, blank=True)
+    one_team_count = models.IntegerField(null=True, blank=True, default=99)
+    two_team_count = models.IntegerField(null=True, blank=True, default=99)
+    one_team_lvl_min = models.IntegerField(null=True, blank=True, default=0)
+    one_team_lvl_max = models.IntegerField(null=True, blank=True, default=99)
+    two_team_lvl_min = models.IntegerField(null=True, blank=True,default=0)
+    two_team_lvl_max = models.IntegerField(null=True, blank=True, default=99)
+    location = models.CharField(max_length=32)
     start_date_time = models.DateTimeField(auto_now_add=True)
     end_date_time = models.DateTimeField(null=True, blank=True)
         
     class Meta:
         db_table = 'Combat'
+    
+    def __unicode__(self):
+        return '%s %s' % (self.TYPES[self.type][1], 
+                          self.IS_ACTIVES[self.is_active][1])
 
 class CombatHero(models.Model):
     combat = models.ForeignKey(Combat)

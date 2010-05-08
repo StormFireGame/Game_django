@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from hero.forms import LoginForm, RegistrationForm
-from hero.models import Hero, HeroSkill, HeroHeroSkill
+from hero.forms import LoginForm, RegistrationForm, SettingsForm
+from hero.models import Hero, HeroSkill, HeroHeroSkill, HeroImage
 
 from hero import heromanipulation
 
@@ -100,4 +100,27 @@ def increase(request, type, what):
     hero.save()
     
     return HttpResponseRedirect(reverse('hero'))
+
+def settings(request, template_name='hero/settings.html'):
+    _is_login(request)
     
+    hero = Hero.objects.get(id=request.session['hero_id'])
+    heroimages = HeroImage.objects.filter(is_art=False, sex=hero.sex)
+    
+    if request.method == 'POST':
+        form = SettingsForm(request.session['hero_id'], request.POST, 
+                            instance=hero)
+        if form.is_valid():
+            if form.cleaned_data['password0'] \
+                                            and form.cleaned_data['password2']:
+                hero.password = form.cleaned_data['password2']
+            form.save()       
+            return HttpResponseRedirect(reverse('settings'))
+    else:
+        form = SettingsForm(request.session['hero_id'], instance=hero)
+    
+    variables = RequestContext(request, {'hero': hero, 
+                                         'heroimages': heroimages,
+                                         'form': form})
+    
+    return render_to_response(template_name, variables)    

@@ -86,7 +86,8 @@ CREATE TABLE HeroImage
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     image VARCHAR(32) NOT NULL,
-    is_art BOOL NOT NULL
+    is_art BOOL NOT NULL,
+    sex INT(1) NOT NULL,
 );
 
 CREATE TABLE HeroSkill
@@ -342,6 +343,24 @@ CREATE TABLE BotImage
     image VARCHAR(32) NOT NULL
 );
 
+CREATE TABLE Island
+(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(32) NOT NULL,
+    image VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE IslandPart
+(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    island_id INT NOT NULL,
+    is_move INT(1) NOT NULL,
+    coordinate_x INT(6) NOT NULL,
+    coordinate_y INT(6) NOT NULL,
+    
+    CONSTRAINT FK_islandpart_island FOREIGN KEY (island_id)
+        REFERENCES Island (id) ON DELETE CASCADE ON UPDATE RESTRICT
+);
 
 CREATE TABLE Building
 (

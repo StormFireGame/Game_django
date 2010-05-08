@@ -1,0 +1,26 @@
+{% load combat_tags %}
+{% load combat_filters %}
+<div align="center">
+<a href="{% url combat 4 %}">Update</a>
+</div>
+
+{% for combat in combats %}
+	<div>
+	{% get_team_accept combat hero 0 as one_team_accept %}
+	{% get_team_accept combat hero 1 as two_team_accept %}
+	
+	Type: {{ combat.type|get_string_type }} 
+	{{ combat.start_date_time|date:"H:i:s" }}
+	[ {{combat.one_team_count }} ({{ combat.one_team_lvl_min }}-{{ combat.one_team_lvl_max }}) to {{combat.two_team_count }} ({{ combat.two_team_lvl_min }}-{{ combat.two_team_lvl_max }}) ]
+	{% get_team combat.combathero_set 0 as one_team %}
+	{% get_team combat.combathero_set 1 as two_team %}
+	{% for team_hero in one_team %}
+		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+	{% endfor %}
+	vs		
+	{% for team_hero in two_team %}
+		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+	{% endfor %}
+	(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
+	</div>
+{% endfor %}

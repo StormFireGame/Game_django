@@ -58,8 +58,8 @@ class HeroAdmin(admin.ModelAdmin):
 admin.site.register(Hero, HeroAdmin)
 
 class HeroImageAdmin(admin.ModelAdmin):
-    list_display = ('thumbnail', 'is_art')
-    list_filter = ('is_art',)
+    list_display = ('thumbnail', 'is_art', 'sex')
+    list_filter = ('is_art', 'sex')
 
 admin.site.register(HeroImage, HeroImageAdmin)
 

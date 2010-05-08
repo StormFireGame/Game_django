@@ -1,0 +1,49 @@
+{% load combat_tags %}
+{% load combat_filters %}
+<div align="center">
+{% if not in_combat %}
+<form action="" method="post">
+	{{ form.with_things.label_tag }} {{ form.with_things }}&nbsp;&nbsp;
+	{{ form.time_out.label_tag }} {{ form.time_out }}&nbsp;&nbsp;
+	{{ form.injury.label_tag }} {{ form.injury }}&nbsp;&nbsp;
+	{{ form.time_wait.label_tag }} {{ form.time_wait }}
+	<br />
+	{{ form.one_team_count.label_tag }} {{ form.one_team_count }}&nbsp;&nbsp;
+	{{ form.one_team_lvl_min }} -
+	{{ form.one_team_lvl_max }}&nbsp;&nbsp;
+	{{ form.two_team_count.label_tag }} {{ form.two_team_count }}&nbsp;&nbsp;
+	{{ form.two_team_lvl_min }} -
+	{{ form.two_team_lvl_max }}&nbsp;&nbsp;
+<input type="submit" class="sexybutton sexysimple" value="Apply" />
+</form>
+{% endif %}
+
+{% if is_cancel %}
+<a href="{% url combat_cancel %}">Cancel</a>
+{% endif %}
+<a href="{% url combat 1 %}">Update</a>
+</div>
+
+{% for combat in combats %}
+	<div>
+	{% get_team_accept combat hero 0 as one_team_accept %}
+	{% get_team_accept combat hero 1 as two_team_accept %}
+	
+	{% if not in_combat and one_team_accept %}<a href="{% url combat_accept combat.id 0 %}">Accept</a>{% endif %}
+	
+	{{ combat.start_date_time|date:"H:i:s" }}
+	[ {{combat.one_team_count }} ({{ combat.one_team_lvl_min }}-{{ combat.one_team_lvl_max }}) to {{combat.two_team_count }} ({{ combat.two_team_lvl_min }}-{{ combat.two_team_lvl_max }}) ]
+	{% get_team combat.combathero_set 0 as one_team %}
+	{% get_team combat.combathero_set 1 as two_team %}
+	{% for team_hero in one_team %}
+		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+	{% endfor %}
+	vs
+	{% if not in_combat and two_team_accept %}<a href="{% url combat_accept combat.id 1 %}">Accept</a>{% endif %}		
+	{% for team_hero in two_team %}
+		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+	{% endfor %}
+	(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
+	Time wait: {{ combat.time_wait_left }} sec.
+	</div>
+{% endfor %}

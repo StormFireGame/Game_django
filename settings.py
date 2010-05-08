@@ -85,6 +85,7 @@ INSTALLED_APPS = (
     'game.bot',
     'game.combat',
     'game.building',
+    'game.island',
     ##
 )
 

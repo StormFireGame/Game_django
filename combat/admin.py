@@ -19,10 +19,11 @@ class CombatAdmin(admin.ModelAdmin):
     #    
     fieldsets = [
         ('General',               {'fields': ['type', 'is_active', 'time_out', 
-                                              'injury', 'with_things']}),
+                                              'injury', 'with_things', 
+                                              'location']}),
         ('Other',               {'fields': ['time_wait', 'one_team_count', 
                     'two_team_count', 'one_team_lvl_min', 'one_team_lvl_max', 
-                    'two_team_lvl_min', 'two_team_lvl_max', 'location', ], 
+                    'two_team_lvl_min', 'two_team_lvl_max'], 
                                                     'classes': ['collapse']}),
     ]
 

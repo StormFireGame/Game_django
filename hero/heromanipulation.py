@@ -1,4 +1,4 @@
-from hero.models import HeroFeature, FEATURES
+from hero.models import FEATURES
 from tableexperience.models import TableExperience
     
 def _feature_help(hero, feature):

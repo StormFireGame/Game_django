@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 
 from thing.models import Thing
+from island.models import Island
 
 import hashlib
 
@@ -18,6 +19,9 @@ FEATURES = ((0, 'Strength'), (1, 'Dexterity'), (2, 'Intuition'),
 class HeroImage(models.Model):
     image = models.ImageField(upload_to='upload/heroimages')
     is_art = models.BooleanField(default=False)
+#    
+    SEXS = ((0, 'Male'), (1, 'Female'))
+    sex = models.SmallIntegerField(default=0, choices=SEXS)
     
     class Meta:
         db_table = 'HeroImage'
@@ -136,17 +140,24 @@ class Hero(models.Model):
         verbose_name_plural = 'Heroes'
     
     def __unicode__(self):
-        return u'%s [%s]' % (self.login, self.level)
+        return '%s [%s]' % (self.login, self.level)
     
     def save(self):
         if not self.id:
             self.password = hashlib.sha1(self.password).hexdigest()
+            
             herofeature = HeroFeature()
             herofeature.save()
             self.feature = herofeature
             from hero import heromanipulation
             heromanipulation.hero_feature(self)
             heromanipulation.hero_level_up(self)
+            
+            heroimage = HeroImage.objects.filter(sex=self.sex)[0]
+            self.image = heroimage
+            
+            island = Island.objects.all()[0]
+            self.location = '%s_20|20:0' % (island.id)
         else:
             if self.password != Hero.objects.get(id=self.id).password:
                 self.password = hashlib.sha1(self.password).hexdigest()

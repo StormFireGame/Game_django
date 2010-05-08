@@ -1,0 +1,28 @@
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+{% block content %}
+<div align="center">
+	<a href="{% url combat 0 %}">Duel</a>
+	<a href="{% url combat 1 %}">Group</a>
+	<a href="{% url combat 2 %}">Chaotic</a>
+	<a href="{% url combat 3 %}">Territorial</a>
+	<a href="{% url combat 4 %}">Current</a>
+	<a href="{% url combat 5 %}">Past</a>
+</div>
+{% ifequal type 0 %}
+	{% include "combat/duel.html" %}
+{% endifequal %}
+{% ifequal type 1 %}
+	{% include "combat/group.html" %}
+{% endifequal %}
+{% ifequal type 2 %}
+	{% include "combat/chaotic.html" %}
+{% endifequal %}
+{% ifequal type 3 %}
+	{% include "combat/territorial.html" %}
+{% endifequal %}
+{% ifequal type 4 %}
+	{% include "combat/current.html" %}
+{% endifequal %}
+<br />
+{% endblock %}
