@@ -1,33 +1,69 @@
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+
 from hero.models import FEATURES
 from tableexperience.models import TableExperience
+from hero.models import Hero
+
+import time 
+
+def hero_init(request):
+    if 'hero_id' not in request.session:
+        messages.add_message(request, messages.ERROR, 'You have to log in.')
+        return HttpResponseRedirect('/')
     
+    hero = Hero.objects.get(id=request.session['hero_id'])
+    hp(hero)
+    return hero
+
+def hp(hero):
+    hp = hero.feature.hp.split('|')
+    current_time = float(hp[2])
+    max_hp = int(hp[1])
+    if max_hp == int(float(hp[0])):
+        return
+    one_hp_sec = 1500 / max_hp
+    current_hp = float(hp[0]) + (time.time() - current_time) / one_hp_sec
+    if current_hp > max_hp:
+        current_hp = max_hp
+    hero.feature.hp = '%s|%s|%s' % (current_hp, max_hp, time.time())
+    hero.feature.save()
+
 def _feature_help(hero, feature):
     if feature == 'damage_min':
-        result = int(hero.feature.damage_min) + \
-                                    int(hero.feature.strength) * 2
+        result = int(round(int(hero.feature.damage_min) + \
+                                    int(hero.feature.strength) * 2))
     elif feature == 'damage_max':
-        result = int(hero.feature.damage_max) + \
-                            int(hero.feature.strength) * 3
+        result = int(round(int(hero.feature.damage_max) + \
+                            int(hero.feature.strength) * 3))
     elif feature == 'accuracy':
-        result = int(hero.feature.accuracy) + \
-                            int(hero.feature.dexterity) * 2
+        result = int(round(int(hero.feature.accuracy) + \
+                            int(hero.feature.dexterity) * 2))
     elif feature == 'dodge':
-        result = int(hero.feature.dodge) + \
-                            int(hero.feature.dexterity) * 2.5
+        result = int(round(int(hero.feature.dodge) + \
+                            int(hero.feature.dexterity) * 2.5))
     elif feature == 'devastate':
-        result = int(hero.feature.devastate) + \
-                            int(hero.feature.intuition) * 2.5
+        result = int(round(int(hero.feature.devastate) + \
+                            int(hero.feature.intuition) * 2.5))
     elif feature == 'durability':
-        result = int(hero.feature.durability) + \
-                            int(hero.feature.intuition) * 2   
+        result = int(round(int(hero.feature.durability) + \
+                            int(hero.feature.intuition) * 2))
     elif feature == 'hp':
-        result = int(hero.feature.hp) + \
-                            int(hero.feature.health) * 10
+        if hero.id:
+            current_hp = hero.feature.hp.split('|')[0]
+            max_hp = int(hero.feature.hp.split('|')[1]) + \
+                                                int(hero.feature.health) * 10
+            current_time = hero.feature.hp.split('|')[2]
+        else:
+            current_hp = max_hp = int(hero.feature.health) * 10
+            current_time = time.time()
+        
+        result = '%s|%s|%s' % (current_hp, max_hp, current_time)
     elif feature == 'capacity':
-        result = int(hero.feature.capacity) + \
-                            int(hero.feature.strength) * 10
+        result = int(round(int(hero.feature.capacity) + \
+                            int(hero.feature.strength) * 10))
     
-    return int(round(result))
+    return result
 
 def _featureskill_help(hero, skill, feature, plus):
     if feature == 'Strength':
@@ -100,8 +136,11 @@ def _featureskill_help(hero, skill, feature, plus):
                                 hero.heroheroskill_set.get(skill=skill).level)
                                 
     elif feature == 'Hp':
-        hero.feature.hp = str(plus * \
-                                hero.heroheroskill_set.get(skill=skill).level)
+        current_hp = hero.feature.hp.split('|')[0]
+        current_time = hero.feature.hp.split('|')[2]
+        hero.feature.hp = '%s|%s|%s' % (current_hp, plus * \
+                            hero.heroheroskill_set.get(skill=skill).level, 
+                            current_time)
     elif feature == 'Capacity':
         hero.feature.capacity = str(plus * \
                                 hero.heroheroskill_set.get(skill=skill).level)
@@ -120,7 +159,14 @@ def hero_feature(hero):
         
         hero.feature.damage_min = hero.feature.damage_max = \
         hero.feature.accuracy = hero.feature.dodge = hero.feature.devastate = \
-        hero.feature.durability = hero.feature.hp = hero.feature.capacity = 0
+        hero.feature.durability = hero.feature.capacity = 0
+        
+        if hero.id:
+            hero.feature.hp = '%s|%s|%s' % (hero.feature.hp.split('|')[0], 0, 
+                                        time.time())
+        
+        hero.feature.strike_count = '1'
+        hero.feature.block_count = '2'
         
         if hero.id:
             for skill in hero.skills.all():
@@ -150,4 +196,4 @@ def hero_level_up(hero):
         hero.number_of_skills += tableexperience.number_of_skills
         hero.number_of_parameters += tableexperience.number_of_parameters
         hero.money += tableexperience.money
-    return hero
+    return hero    

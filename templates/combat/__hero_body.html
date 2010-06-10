@@ -1,0 +1,28 @@
+{% load hero_filters %}
+<h3>{{ hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a></h3>
+	<b>[<span id="current_hp">{{ hero.feature.hp|current_hp }}</span>/{{ hero.feature.hp|max_hp }}]</b> <img src="{{ MEDIA_URL }}images/hp.gif" id="hp" alt="" width="{{ hero.feature.hp|line_hp:'250' }}" height="6" title="" />
+<div style="background:url({{ MEDIA_URL }}images/slot.png); width:331px; height:423px;">
+	<img src="{{ MEDIA_URL }}{{ hero.image.image }}" alt="" style="position:relative; left:108px; top:96px;" />		
+</div>
+	<b>Parametrs</b><br />
+	Strength: {{ hero.feature.strength }}<br />
+	Dexterity: {{ hero.feature.dexterity }}<br />
+	Intuition: {{ hero.feature.intuition }} <br />
+	Health: {{ hero.feature.health }}<br /><br />
+	
+	<b>Modifiers</b><br />
+	Accuracy: {{ hero.feature.accuracy }}%<br />
+	Dodge: {{ hero.feature.dodge }}%<br />
+	Devastate: {{ hero.feature.devastate }}%<br />
+	Durability: {{ hero.feature.durability }}%<br />
+	Block break: {{ hero.feature.block_break }}%<br />
+	Armor break: {{ hero.feature.armor_break }}%<br /><br />
+	
+	Min damage: {{ hero.feature.damage_min }}<br />
+	Max damage: {{ hero.feature.damage_max }}<br /><br />
+	
+	<b>Protection</b><br />
+	Protection head: {{ hero.feature.protection_head }}%<br />
+	Protection breast: {{ hero.feature.protection_breast }}%<br />
+	Protection zone: {{ hero.feature.protection_zone }}%<br />
+	Protection leg: {{ hero.feature.protection_leg }}%<br />

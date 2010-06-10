@@ -1,3 +1,7 @@
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+{% block content %}
+{% include "combat/__menu.html" %}
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
@@ -11,7 +15,7 @@
 {% endif %}
 
 {% if is_fight %}
-<a href="#">Fight</a>
+<a href="{% url combat_fight %}">Fight</a>
 {% endif %}
 {% if is_refuse %}
 <a href="{% url combat_refuse %}">Refuse</a>
@@ -19,7 +23,7 @@
 {% if is_cancel %}
 <a href="{% url combat_cancel %}">Cancel</a>
 {% endif %}
-<a href="{% url combat 0 %}">Update</a>
+<a href="{% url combat_duel %}">Update</a>
 </div>
 {% for combat in combats %}
 	<div>
@@ -38,3 +42,5 @@
 	(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 	</div>
 {% endfor %}
+<br />
+{% endblock %}

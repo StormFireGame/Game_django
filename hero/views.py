@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 
 from hero.forms import LoginForm, RegistrationForm, SettingsForm
 from hero.models import Hero, HeroSkill, HeroHeroSkill, HeroImage
@@ -23,8 +24,8 @@ def main(request, template_name='main/main.html'):
                 return HttpResponseRedirect(reverse('hero'))
             except Hero.DoesNotExist:
 #
-                request.user.message_set.create(
-                                message='Hero doesn\'t exist')
+                messages.add_message(request, messages.ERROR, 
+                                     'Hero doesn\'t exist.')
     else:
         form = LoginForm()
         
@@ -51,15 +52,11 @@ def registration(request, template_name='main/registration.html'):
     
     return render_to_response(template_name, variables)
 
-def _is_login(request):
-    if 'hero_id' not in request.session:
-        request.user.message_set.create(message='You have to log in')
-        return HttpResponseRedirect('/')
+
 
 def hero(request, template_name='hero/hero.html'):
-    _is_login(request)
-    
-    hero = Hero.objects.get(id=request.session['hero_id'])
+   
+    hero = heromanipulation.hero_init(request)
     heroskills = HeroSkill.objects.all()
     
     variables = RequestContext(request, {'hero': hero, 
@@ -68,9 +65,8 @@ def hero(request, template_name='hero/hero.html'):
     return render_to_response(template_name, variables)
 
 def increase(request, type, what):
-    _is_login(request)
     
-    hero = Hero.objects.get(id=request.session['hero_id'])
+    hero = heromanipulation.hero_init(request)
     if type == 'abilities' and hero.number_of_abilities > 0:
         hero.number_of_abilities -= 1
         if what == 'swords': hero.swords += 1
@@ -102,9 +98,8 @@ def increase(request, type, what):
     return HttpResponseRedirect(reverse('hero'))
 
 def settings(request, template_name='hero/settings.html'):
-    _is_login(request)
     
-    hero = Hero.objects.get(id=request.session['hero_id'])
+    hero = heromanipulation.hero_init(request)
     heroimages = HeroImage.objects.filter(is_art=False, sex=hero.sex)
     
     if request.method == 'POST':

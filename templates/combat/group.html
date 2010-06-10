@@ -1,3 +1,5 @@
+{% extends "combat/combat.html" %}
+{% block combat %}
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
@@ -21,7 +23,7 @@
 {% if is_cancel %}
 <a href="{% url combat_cancel %}">Cancel</a>
 {% endif %}
-<a href="{% url combat 1 %}">Update</a>
+<a href="{% url combat_group %}">Update</a>
 </div>
 
 {% for combat in combats %}
@@ -47,3 +49,4 @@
 	Time wait: {{ combat.time_wait_left }} sec.
 	</div>
 {% endfor %}
+{% endblock %}

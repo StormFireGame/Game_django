@@ -26,13 +26,23 @@ urlpatterns = patterns('',
     url(r'^game/island/(?P<id>\d+)$', 'island.views.island', name='island'),
     url(r'^game/island/(?P<id>\d+)/move/(?P<coordinate_x>\d+)/'
         '(?P<coordinate_y>\d+)$', 'island.views.move', name='island_move'),
-        
-    url(r'^game/combat/(?P<type>0|1|2|3|4|5)$', 'combat.views.combat', 
-        name='combat'),
+    
+    url(r'^game/combat/duel$', 'combat.views.combat_duel', name='combat_duel'),
+    url(r'^game/combat/group$', 'combat.views.combat_group', 
+        name='combat_group'),
+    url(r'^game/combat/chaotic$', 'combat.views.combat_chaotic', 
+        name='combat_chaotic'),
+    url(r'^game/combat/territorial$', 'combat.views.combat_territorial', 
+        name='combat_territorial'),
+    url(r'^game/combat/current$', 'combat.views.combat_current', 
+        name='combat_current'),
+    
     url(r'^game/combat/cancel$', 'combat.views.cancel', name='combat_cancel'),
     url(r'^game/combat/(?P<id>\d+)/accept/(?P<team>0|1)$', 
         'combat.views.accept', name='combat_accept'),
     url(r'^game/combat/refuse$', 'combat.views.refuse', name='combat_refuse'),
+    url(r'^game/combat/fight$', 'combat.views.fight', name='combat_fight'),
+    url(r'^game/combat$', 'combat.views.combat', name='combat'),
     
     (r'^admin/', include(admin.site.urls)),
     

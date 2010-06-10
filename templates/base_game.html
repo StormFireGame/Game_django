@@ -13,6 +13,7 @@
 	
 	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jgrowl.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.timers-1.2.js"></script>
 	{% block js %}{% endblock %}
 	
     <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
@@ -30,27 +31,25 @@
 	{% block css %}{% endblock %}
   </head>
   <body>
+{% load hero_filters %}
   	<div class="container">
 	  <div class="span-8 prepend-top">
 		<h3>{{ hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a></h3>
-	  </div>
+		<b>[<span id="current_hp">{{ hero.feature.hp|current_hp }}</span>/{{ hero.feature.hp|max_hp }}]</b> <img src="{{ MEDIA_URL }}images/hp.gif" id="hp" alt="" width="{{ hero.feature.hp|line_hp:'250' }}" height="6" title="" />
+	  </div>		
 		<div class="span-8 prepend-top">
-			<p>
-				<a href="{% url hero %}">Hero</a>
-				<a href="/game/inventory/">Inventory</a>
-				<a href="{% url combat 0 %}">Combats</a>
-				<a href="/game/information/">Information</a>
-				<a href="{% url settings %}">Settings</a>
-				<a href="{% url island 1 %}">Back</a>
-			</p>
+			<a href="{% url hero %}">Hero</a>
+			<a href="/game/inventory/">Inventory</a>
+			<a href="{% url combat_duel %}">Combats</a>
+			<a href="/game/information/">Information</a>
+			<a href="{% url settings %}">Settings</a>
+			<a href="{% url island 1 %}">Back</a>
 		</div>
 		
 		<div class="span-8 last prepend-top">
-			<p>
-				Money: {{ hero.money }}
-				Art money: {{ hero.money_art }}
-				Capacity: {{ hero.feature.capacity }}
-			</p>
+			Money: {{ hero.money }}
+			Art money: {{ hero.money_art }}
+			Capacity: {{ hero.feature.capacity }}
 		</div>
       <hr>
 	  	{% block content %}
@@ -64,11 +63,34 @@
 {% if messages %}
 <script type="text/javascript">
 /* <![CDATA[ */
-	  {% for message in messages %}
+	{% for message in messages %}
 		$.jGrowl("{{ message }}");
-	  {% endfor %}
+	{% endfor %}
 /* ]]> */
 </script>
 {% endif %}
+<script type="text/javascript">
+/* <![CDATA[ */
+$(document).ready(function() {
+	var max_line_width = 250;
+	var max_hp = {{ hero.feature.hp|max_hp }};
+	var current_time_hp = {{ hero.feature.hp|current_time_hp }};
+	var delay = 1500;
+	var current_hp = {{ hero.feature.hp|current_hp_float }};
+	$('#hp').everyTime(100, function() {
+		time = new Date().getTime() / 1000.0;
+		if (current_hp == max_hp) return;
+		current_hp += (time - current_time_hp) / (delay / max_hp);
+		if (current_hp > max_hp) current_hp = max_hp;
+		current_time_hp = time;
+		$('#current_hp').text(parseInt(current_hp));
+		
+		hp_line_width = Math.round(max_line_width * current_hp / max_hp);
+		if (hp_line_width > max_line_width) hp_line_width = max_line_width;
+		$(this).attr({ width: hp_line_width }); 
+	});
+});
+/* ]]> */
+</script>
 {% block jsfunction %}{% endblock %}
 </html>

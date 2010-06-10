@@ -1,7 +1,9 @@
+{% extends "combat/combat.html" %}
+{% block combat %}
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
-<a href="{% url combat 3 %}">Update</a>
+<a href="{% url combat_territorial %}">Update</a>
 </div>
 
 {% for combat in combats %}
@@ -25,3 +27,4 @@
 	(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 	</div>
 {% endfor %}
+{% endblock %}

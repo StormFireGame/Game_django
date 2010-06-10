@@ -11,7 +11,7 @@ FEATURES = ((0, 'Strength'), (1, 'Dexterity'), (2, 'Intuition'),
             (3, 'Health'), (4, 'Swords'), (5, 'Axes'),
             (6, 'Knives'), (7, 'Clubs'), (8, 'Shields'), 
             (9, 'Protection head'), (10, 'Protection breast'), 
-            (11, 'Protection zone'), (12, 'Protection leg'), (13, 'Damage min'), 
+            (11, 'Protection zone'), (12, 'Protection legs'), (13, 'Damage min'), 
             (14, 'Damage max'), (15, 'Accuracy'), (16, 'Dodge'), 
             (17, 'Devastate'), (18, 'Durability'), (19, 'Block break'), 
             (20, 'Armor break'), (21, 'Hp'), (22, 'Capacity'))
@@ -57,7 +57,6 @@ class SkillFeature(models.Model):
         return '%s %s' % (FEATURES[self.feature][1], self.plus)
 
 class HeroFeature(models.Model):
-       
     strength = models.CharField(max_length=32, null=True)
     dexterity = models.CharField(max_length=32, null=True)
     intuition = models.CharField(max_length=32, null=True)
@@ -84,9 +83,12 @@ class HeroFeature(models.Model):
     block_break = models.CharField(max_length=32, null=True, default=0)
     armor_break = models.CharField(max_length=32, null=True, default=0)
     
-    hp = models.CharField(max_length=32, null=True)
+    hp = models.CharField(max_length=128, null=True)
     
     capacity = models.CharField(max_length=32, null=True)
+    
+    strike_count = models.CharField(max_length=32, null=True)
+    block_count = models.CharField(max_length=32, null=True)
 
     class Meta:
         db_table = 'HeroFeature'
@@ -107,7 +109,7 @@ class Hero(models.Model):
     number_of_losses = models.IntegerField(default=0)
     number_of_draws = models.IntegerField(default=0)
     
-    hp = models.IntegerField(default=20)
+    hp = models.IntegerField(default=30)
     
     strength = models.IntegerField(default=3)
     dexterity = models.IntegerField(default=3)

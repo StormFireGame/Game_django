@@ -3,16 +3,17 @@ from django.db import models
 from hero.models import Hero
 from bot.models import Bot
 
+#
+TYPES = ((0, 'Duel'), (1, 'Group'), (2, 'Chaotic'), (3, 'Territorial'))
+INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
+
 class Combat(models.Model):
 #
-    TYPES = ((0, 'Duel'), (1, 'Group'), (2, 'Chaotic'), (3, 'Territorial'))
     type = models.SmallIntegerField(default=0, choices=TYPES)
 #
     IS_ACTIVES = ((0, 'Wait'), (1, 'Fight'), (2, 'Past'),)
     is_active = models.SmallIntegerField(default=0, choices=IS_ACTIVES)
-    time_out = models.IntegerField(default=60)
-#
-    INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
+    time_out = models.IntegerField(default=60)   
     injury = models.SmallIntegerField(default=0, choices=INJURIES)
     with_things = models.BooleanField(default=True, blank=True)
     time_wait = models.IntegerField(default=360, null=True, blank=True)
@@ -31,7 +32,7 @@ class Combat(models.Model):
         db_table = 'Combat'
     
     def __unicode__(self):
-        return '%s %s' % (self.TYPES[self.type][1], 
+        return '%s %s' % (TYPES[self.type][1], 
                           self.IS_ACTIVES[self.is_active][1])
 
 class CombatHero(models.Model):
@@ -76,6 +77,8 @@ class CombatLog(models.Model):
     hp_plus = models.IntegerField(null=True, blank=True)
     text = models.TextField(null=True, blank=True)
     time = models.TimeField(auto_now=True)
+    
+    is_past = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'CombatLog'

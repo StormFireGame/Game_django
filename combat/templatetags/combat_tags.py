@@ -68,3 +68,58 @@ class GetTeamAcceptNode(template.Node):
         return ''
             
 register.tag('get_team_accept', do_get_team_accept)
+
+def get_hero_strike(parser, token):
+    try:
+        tag_name, form, strike, where = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError('%s tag takes exactly three'
+                                    ' arguments' % (token.contents.split()[0]))
+    return HeroStrikeNode(form, strike, where)
+
+class HeroStrikeNode(template.Node):
+    def __init__(self, form, strike, where):
+        self.form = template.Variable(form)
+        self.strike = template.Variable(strike)
+        self.where = template.Variable(where)
+        
+    def render(self, context):
+        form = self.form.resolve(context)
+        strike = str(self.strike.resolve(context))
+        where = self.where.resolve(context)
+        
+        try:
+            form.clean
+            if form.data['strike'+strike] == where:
+                return 'checked="checked"'
+        except:
+            pass 
+        return ''
+        
+register.tag('get_hero_strike', get_hero_strike)
+
+def do_get_team_in_combat(parser, token):
+    try:
+        tag_name, combatheroes, team, sa, context_var = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError('%s tag takes exactly fourth'
+                                    ' arguments' % (token.contents.split()[0]))
+    if sa != 'as':
+        raise template.TemplateSyntaxError('Third argument must be as')
+    return GetTeamInCombatNode(combatheroes, team, context_var)
+
+class GetTeamInCombatNode(template.Node):
+    def __init__(self, combatheroes, team, context_var):
+        self.combatheroes = template.Variable(combatheroes)
+        self.team = template.Variable(team)
+        self.context_var = context_var
+
+    def render(self, context):
+        combatheroes = self.combatheroes.resolve(context)
+        team = int(self.team.resolve(context))
+        
+        context[self.context_var] = combatheroes.filter(team=team, 
+                                                        is_dead=False)
+        return ''
+            
+register.tag('get_team_in_combat', do_get_team_in_combat)
