@@ -8,7 +8,7 @@ from django.contrib import messages
 from hero.forms import LoginForm, RegistrationForm, SettingsForm
 from hero.models import Hero, HeroSkill, HeroHeroSkill, HeroImage
 
-from hero import heromanipulation
+from hero.heromanipulation import hero_init, hero_feature
 
 import hashlib
 
@@ -52,21 +52,21 @@ def registration(request, template_name='main/registration.html'):
     
     return render_to_response(template_name, variables)
 
-
-
+#Inside game
+@hero_init
 def hero(request, template_name='hero/hero.html'):
-   
-    hero = heromanipulation.hero_init(request)
+    
     heroskills = HeroSkill.objects.all()
     
-    variables = RequestContext(request, {'hero': hero, 
+    variables = RequestContext(request, {'hero': request.hero, 
                                          'heroskills': heroskills})
-    
+
     return render_to_response(template_name, variables)
 
+@hero_init
 def increase(request, type, what):
     
-    hero = heromanipulation.hero_init(request)
+    hero = request.hero
     if type == 'abilities' and hero.number_of_abilities > 0:
         hero.number_of_abilities -= 1
         if what == 'swords': hero.swords += 1
@@ -92,14 +92,15 @@ def increase(request, type, what):
         except HeroHeroSkill.DoesNotExist:
             HeroHeroSkill.objects.create(hero=hero, skill=heroskill, level=1)
             
-    heromanipulation.hero_feature(hero)
+    hero_feature(hero)
     hero.save()
     
     return HttpResponseRedirect(reverse('hero'))
 
+@hero_init
 def settings(request, template_name='hero/settings.html'):
     
-    hero = heromanipulation.hero_init(request)
+    hero = request.hero
     heroimages = HeroImage.objects.filter(is_art=False, sex=hero.sex)
     
     if request.method == 'POST':
@@ -119,3 +120,4 @@ def settings(request, template_name='hero/settings.html'):
                                          'form': form})
     
     return render_to_response(template_name, variables)    
+#End

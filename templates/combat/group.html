@@ -1,10 +1,14 @@
-{% extends "combat/combat.html" %}
-{% block combat %}
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+{% block content %}
+{% include "combat/__menu.html" %}
+
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
 {% if not in_combat %}
 <form action="" method="post">
+{% csrf_token %}
 	{{ form.with_things.label_tag }} {{ form.with_things }}&nbsp;&nbsp;
 	{{ form.time_out.label_tag }} {{ form.time_out }}&nbsp;&nbsp;
 	{{ form.injury.label_tag }} {{ form.injury }}&nbsp;&nbsp;

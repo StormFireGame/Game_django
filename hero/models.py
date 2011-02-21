@@ -92,7 +92,8 @@ class HeroFeature(models.Model):
 
     class Meta:
         db_table = 'HeroFeature'
-                   
+
+##                   
 class Hero(models.Model):
     login = models.CharField(max_length=32, unique=True)
     password = models.CharField(max_length=64)

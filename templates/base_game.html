@@ -43,7 +43,7 @@
 			<a href="{% url combat_duel %}">Combats</a>
 			<a href="/game/information/">Information</a>
 			<a href="{% url settings %}">Settings</a>
-			<a href="{% url island 1 %}">Back</a>
+			<a href="{% url island 1 %}">To Location</a>
 		</div>
 		
 		<div class="span-8 last prepend-top">
@@ -85,7 +85,7 @@ $(document).ready(function() {
 		current_time_hp = time;
 		$('#current_hp').text(parseInt(current_hp));
 		
-		hp_line_width = Math.round(max_line_width * current_hp / max_hp);
+		hp_line_width = Math.round(max_line_width * (current_hp / max_hp));
 		if (hp_line_width > max_line_width) hp_line_width = max_line_width;
 		$(this).attr({ width: hp_line_width }); 
 	});

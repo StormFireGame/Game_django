@@ -1,0 +1,7 @@
+TODO
+====
+ - introduce some form of i18n
+ - add some end-to-end tests using either ``windmill`` or ``selenium``
+ - build and distribute docs with Sphinx
+
+.. vim:filetype=rst

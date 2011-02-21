@@ -14,14 +14,14 @@ class BotAdmin(admin.ModelAdmin):
 
 #    
     fieldsets = [
-        ('General',               {'fields': ['name', 'level', 'image',]}),
-        ('Parameters',               {'fields': ['hp', 'strength', 'dexterity', 
-                    'intuition', 'health', 'swords', 'axes', 'knives', 'clubs', 
-                    'shields', 'coordinate_x1', 'coordinate_y1', 
-                    'coordinate_x2', 'coordinate_y2'], 
-                                                    'classes': ['collapse']}),
-        ('Things',               {'fields': ['things'], 
-                                                    'classes': ['collapse']}),
+        ('General', {'fields': ['name', 'level', 'image',]}),
+        ('Parameters', {'fields': ['hp', 'strength', 'dexterity', 
+                                   'intuition', 'health', 'swords', 'axes', 
+                                   'knives', 'clubs', 'shields', 
+                                   'coordinate_x1', 'coordinate_y1', 
+                                   'coordinate_x2', 'coordinate_y2'], 
+                        'classes': ['collapse']}),
+        ('Things', {'fields': ['things'], 'classes': ['collapse']}),
     ]
 
 admin.site.register(Bot, BotAdmin)

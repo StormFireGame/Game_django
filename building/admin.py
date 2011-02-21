@@ -8,12 +8,10 @@ class BuildingAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 # 
     fieldsets = [
-        ('General',               {'fields': ['name', 'parent', 'plugin',]}),
-        ('Coordinates',               {'fields': ['coordinate_x1', 
-                                                  'coordinate_y1', 
-                                                  'coordinate_x2',
-                                                  'coordinate_y2'], 
-                                                    'classes': ['collapse']}),
+        ('General', {'fields': ['name', 'parent', 'plugin',]}),
+        ('Coordinates', {'fields': ['coordinate_x1', 'coordinate_y1', 
+                                    'coordinate_x2', 'coordinate_y2'], 
+                         'classes': ['collapse']}),
     ]
     
 admin.site.register(Building, BuildingAdmin)

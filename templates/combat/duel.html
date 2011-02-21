@@ -2,11 +2,13 @@
 {% block title %}{{ hero }}{% endblock %}
 {% block content %}
 {% include "combat/__menu.html" %}
+
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
 {% if not in_combat %}
 <form action="" method="post">
+{% csrf_token %}
 	{{ form.with_things.label_tag }} {{ form.with_things }}&nbsp;&nbsp;
 	{{ form.time_out.label_tag }} {{ form.time_out }}&nbsp;&nbsp;
 	{{ form.injury.label_tag }} {{ form.injury }}&nbsp;&nbsp;
@@ -42,5 +44,4 @@
 	(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 	</div>
 {% endfor %}
-<br />
 {% endblock %}

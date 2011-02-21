@@ -1,0 +1,7 @@
+[paste.filter_factory]
+main = firepython.middleware:paste_filter_factory
+
+[console_scripts]
+firepython-graphviz = firepython.mini_graphviz:main
+firepython-demo-app = firepython.demo:main
+

@@ -15,3 +15,8 @@ def get_string_type(value):
 @register.filter
 def get_strike_list(value):
     return range(int(value))
+
+@register.filter
+def is_win(value, arg):
+#
+    return 'Win' if value == arg else ''

@@ -1,8 +1,14 @@
-{% extends "combat/combat.html" %}
-{% block combat %}
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+{% block content %}
+{% include "combat/__menu.html" %}
+
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
+{% if is_cancel %}
+<a href="{% url combat_cancel %}">Cancel</a>
+{% endif %}
 <a href="{% url combat_territorial %}">Update</a>
 </div>
 

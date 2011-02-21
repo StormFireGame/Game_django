@@ -2,8 +2,6 @@ from django import template
 
 register = template.Library()
 
-import time
-
 @register.filter
 def current_hp(value):
     return int(float(value.split('|')[0]))

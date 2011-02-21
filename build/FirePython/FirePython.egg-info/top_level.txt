@@ -1,0 +1,3 @@
+firepython
+tests
+gprof2dot

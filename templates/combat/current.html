@@ -1,16 +1,19 @@
-{% extends "combat/combat.html" %}
-{% block combat %}
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+{% block content %}
+{% include "combat/__menu.html" %}
+
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
+{% if is_cancel %}
+<a href="{% url combat_cancel %}">Cancel</a>
+{% endif %}
 <a href="{% url combat_current %}">Update</a>
 </div>
 
 {% for combat in combats %}
 	<div>
-	{% get_team_accept combat hero 0 as one_team_accept %}
-	{% get_team_accept combat hero 1 as two_team_accept %}
-	
 	Type: {{ combat.type|get_string_type }} 
 	{{ combat.start_date_time|date:"H:i:s" }}
 	[ {{combat.one_team_count }} ({{ combat.one_team_lvl_min }}-{{ combat.one_team_lvl_max }}) to {{combat.two_team_count }} ({{ combat.two_team_lvl_min }}-{{ combat.two_team_lvl_max }}) ]

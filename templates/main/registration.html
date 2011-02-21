@@ -1,8 +1,9 @@
 {% extends "base_main.html" %}
-{% block title %}Main{% endblock %}
+{% block title %}Registration{% endblock %}
 {% block content %}
 <h3>Registration</h3>
 <form action="" method="post">
+{% csrf_token %}
 <p>
 	{{ form.login.label_tag }} <br />
 	{{ form.login }}

@@ -4,7 +4,7 @@
 {% load island_filters %}
 <div class="span-6">
 	{% if hero_time_left %}
-		<b id="time_left_on">Moving on sector {{ hero_position_x }}:{{ hero_position_y}}: <span id="countdown"></span> min.</b>
+		<b id="time_left_on">Moving on sector {{ hero_position_x }}:{{ hero_position_y}} - <span id="countdown"></span> min.</b>
 	{% endif %}
 	<b id="time_left_off">Current sector: {{ hero_position_x }}:{{ hero_position_y }}</b><br />
 	<a href="">Search location</a><br />

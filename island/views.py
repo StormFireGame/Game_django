@@ -5,16 +5,16 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 
-from hero.models import Hero
 from island.models import Island, IslandPart
 
 from island import islandmanipulation
-from combat import combatmanipulation
-from hero import heromanipulation
+from combat.combatmanipulation import in_combat
+from hero.heromanipulation import hero_init
 
+@hero_init
 def island(request, id, template_name='island/island.html'):
     
-    hero = heromanipulation.hero_init(request)
+    hero = request.hero
     island = get_object_or_404(Island, id=id)
     
     hero_position = islandmanipulation.get_hero_location(hero.location)
@@ -30,24 +30,25 @@ def island(request, id, template_name='island/island.html'):
     
     return render_to_response(template_name, variables)
 
+@hero_init
 def move(request, id, coordinate_x, coordinate_y):
     
-    hero = heromanipulation.hero_init(request)
+    hero = request.hero
     island = get_object_or_404(Island, id=id)
-        
-    if not islandmanipulation.get_time_left(hero.location) and \
-                                        not combatmanipulation.in_combat(hero):
-        try:
-            island.islandpart_set.get(coordinate_x=coordinate_x, 
-                                      coordinate_y=coordinate_y, 
-                                      is_move=False)
-        except IslandPart.DoesNotExist:
-            hero.location = islandmanipulation.join_hero_location(hero.location, 
-                                                                  coordinate_x, 
-                                                                  coordinate_y)
-            hero.save()
     
-    if combatmanipulation.in_combat(hero):
+    if not in_combat(hero):
+        if not islandmanipulation.get_time_left(hero.location):
+            try:
+                island.islandpart_set.get(coordinate_x=coordinate_x, 
+                                          coordinate_y=coordinate_y, 
+                                          is_move=False)
+            except IslandPart.DoesNotExist:
+                hero.location = islandmanipulation.join_hero_location(
+                                                                hero.location, 
+                                                                coordinate_x, 
+                                                                coordinate_y)
+                hero.save()
+    else:
 #
         messages.add_message(request, messages.ERROR, 'Take away your demand.')
     

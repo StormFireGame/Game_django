@@ -1,6 +1,11 @@
 from django import forms
 
+from combat.models import STRIKES
+from hero.models import Hero
+
 from django.forms.extras.widgets import SelectDateWidget
+
+import datetime
 
 class DuelForm(forms.Form):
     with_things = forms.BooleanField(required=False)
@@ -87,9 +92,34 @@ class ChaoticForm(forms.Form):
         raise forms.ValidationError('Max level must be large than min level.')
     
 class PastForm(forms.Form):
-    login = forms.CharField(max_length=32)
-    date_begin = forms.DateField(widget=SelectDateWidget())
-    date_end = forms.DateField(widget=SelectDateWidget())
+#
+    login = forms.CharField(max_length=32, label='Login')
+##
+    date_begin = forms.DateField(initial=datetime.date.today,
+                            widget=SelectDateWidget(years=range(2000, 2012)), 
+                            label='Start date')
+    date_end = forms.DateField(initial=datetime.date.today,
+                            widget=SelectDateWidget(years=range(2000, 2012)), 
+                            label='End date')
+    
+    def clean_date_end(self):
+        date_begin = self.cleaned_data['date_begin']
+        date_end = self.cleaned_data['date_end']   
+        if date_begin > date_end:
+#
+            raise forms.ValidationError('Date begin must be smaller or same ' 
+                                        'than date end.')
+        return date_end
+    
+    def clean_login(self):
+        login = self.cleaned_data['login']
+        try:
+            Hero.objects.get(login=login)
+        except Hero.DoesNotExist:
+#
+            raise forms.ValidationError('Login does not exists.')
+        
+        return login
     
 class CombatForm(forms.Form):
     def __init__(self, strike_count, block_count, hero_two_id, *args, **kwargs):
@@ -97,10 +127,10 @@ class CombatForm(forms.Form):
         self.block_count = int(block_count)  
         self.hero_two_id = hero_two_id
         super(CombatForm, self).__init__(*args, **kwargs)
-        STRIKES = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
         for strike in range(self.strike_count):
-            self.fields['strike'+str(strike)] = forms.IntegerField(
-                                    widget=forms.RadioSelect(choices=STRIKES))
+            self.fields['strike'+str(strike)] = forms.IntegerField(widget= \
+                                        forms.RadioSelect(choices=STRIKES), \
+                                                                required=False)
         self.fields['hero_two_id'] = forms.IntegerField(widget= \
                         forms.HiddenInput(attrs={'value' : self.hero_two_id}))
         
@@ -112,6 +142,12 @@ class CombatForm(forms.Form):
         
     def clean(self):
         cleaned_data = self.cleaned_data
+        
+        if 'next' in self.data:
+            cleaned_data['next'] = True
+            return cleaned_data
+        cleaned_data['next'] = False
+        
         for strike in range(self.strike_count):
             if 'strike'+str(strike) not in cleaned_data:
 #

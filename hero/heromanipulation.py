@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from hero.models import FEATURES
 from tableexperience.models import TableExperience
@@ -7,16 +8,32 @@ from hero.models import Hero
 
 import time 
 
-def hero_init(request):
-    if 'hero_id' not in request.session:
-        messages.add_message(request, messages.ERROR, 'You have to log in.')
-        return HttpResponseRedirect('/')
-    
-    hero = Hero.objects.get(id=request.session['hero_id'])
-    hp(hero)
-    return hero
+def hero_init(origin_func):
+    def inner_decorator(request, *args, **kwargs):
+        if 'hero_id' not in request.session:
+            messages.add_message(request, messages.ERROR, \
+                                 'You have to log in.')
+            return HttpResponseRedirect('/')
+        try:
+            hero = Hero.objects.get(id=request.session['hero_id'])
+        except Hero.DoesNotExist:
+            return HttpResponseRedirect('/')
+        
+        from combat.combatmanipulation import is_combat
+       
+        request.hero = hero
+        if not is_combat(hero):
+            _hp(hero)
+        else:
+            if request.path != reverse('combat') and \
+               request.path != reverse('combat_quit') and \
+               request.path != reverse('combat_victory'):
+                return HttpResponseRedirect(reverse('combat'))
 
-def hp(hero):
+        return origin_func(request, *args, **kwargs)
+    return inner_decorator
+
+def _hp(hero):
     hp = hero.feature.hp.split('|')
     current_time = float(hp[2])
     max_hp = int(hp[1])
@@ -26,9 +43,11 @@ def hp(hero):
     current_hp = float(hp[0]) + (time.time() - current_time) / one_hp_sec
     if current_hp > max_hp:
         current_hp = max_hp
+    
     hero.feature.hp = '%s|%s|%s' % (current_hp, max_hp, time.time())
     hero.feature.save()
 
+##
 def _feature_help(hero, feature):
     if feature == 'damage_min':
         result = int(round(int(hero.feature.damage_min) + \
@@ -188,12 +207,28 @@ def hero_feature(hero):
 
 def hero_level_up(hero):
     if hero.id:
-            pass
+        try:
+            tableexperience = TableExperience.objects.exclude(experience__gte=hero.experience)[0]
+        except IndexError:
+            return
+            
+        if hero.level < tableexperience.level:
+            hero.number_of_abilities += tableexperience.number_of_abilities
+            hero.number_of_skills += tableexperience.number_of_skills
+            hero.number_of_parameters += tableexperience.number_of_parameters
+            hero.money += tableexperience.money
+            hero.level += 1
     else:
         tableexperience = TableExperience.objects.get(experience=0)
         
         hero.number_of_abilities += tableexperience.number_of_abilities
         hero.number_of_skills += tableexperience.number_of_skills
         hero.number_of_parameters += tableexperience.number_of_parameters
-        hero.money += tableexperience.money
-    return hero    
+        hero.money += tableexperience.money   
+
+def set_hp(hero, hp=-1):
+    if hp == -1:
+        hp = hero.feature.hp.split('|')[0]
+    hero.feature.hp = '%s|%s|%s' % (hp, hero.feature.hp.split('|')[1], \
+                                                                    time.time())
+    hero.feature.save()

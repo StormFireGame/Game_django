@@ -7,6 +7,10 @@ from bot.models import Bot
 TYPES = ((0, 'Duel'), (1, 'Group'), (2, 'Chaotic'), (3, 'Territorial'))
 INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
 
+#
+STRIKES = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
+BLOCKS = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
+
 class Combat(models.Model):
 #
     type = models.SmallIntegerField(default=0, choices=TYPES)
@@ -27,9 +31,11 @@ class Combat(models.Model):
     location = models.CharField(max_length=32)
     start_date_time = models.DateTimeField(auto_now_add=True)
     end_date_time = models.DateTimeField(null=True, blank=True)
-        
+    win_team = models.SmallIntegerField(null=True, blank=True, default=-1)
+    
     class Meta:
         db_table = 'Combat'
+        ordering = ['-start_date_time']
     
     def __unicode__(self):
         return '%s %s' % (TYPES[self.type][1], 
@@ -45,6 +51,7 @@ class CombatHero(models.Model):
     is_dead = models.BooleanField(default=False)
     is_join = models.BooleanField(default=False)
     is_out = models.BooleanField(default=False)
+    is_quit = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'CombatHero'
@@ -72,33 +79,25 @@ class CombatLog(models.Model):
     hero_one_wblock = models.CharField(max_length=32, null=True, blank=True)
     hero_two_wblock = models.CharField(max_length=32, null=True, blank=True)
     
+    hero_one_damage = models.IntegerField(null=True, blank=True)
+    hero_two_damage = models.IntegerField(null=True, blank=True)
+    hero_one_experience = models.IntegerField(null=True, blank=True)
+    hero_two_experience = models.IntegerField(null=True, blank=True)
+    
     hero_join = models.BooleanField(default=False)
     hero_out = models.BooleanField(default=False)
+    is_start = models.BooleanField(default=False)
+    is_finish = models.BooleanField(default=False)
+    is_dead = models.BooleanField(default=False)
     hp_plus = models.IntegerField(null=True, blank=True)
     text = models.TextField(null=True, blank=True)
-    time = models.TimeField(auto_now=True)
+    time = models.DateTimeField(auto_now=True)
     
     is_past = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'CombatLog'
+        ordering = ['-time']
     
     def __unicode__(self):
-        if self.hero_one:
-            h = self.hero_one
-        elif self.hero_two:
-            h = self.hero_two
-        elif self.bot_one:
-            h = self.bot_one
-        else:
-            h = self.bot_two
-        
-        h1 = ''   
-        if self.bot_two:
-            h1 = self.bot_two
-        elif self.bot_one:
-            h1 = self.bot_one
-        elif self.hero_two:
-            h1 = self.hero_two
-
-        return '%s vs %s' % (h, h1)
+        return self.text if self.text else ''

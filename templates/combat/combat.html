@@ -4,12 +4,28 @@
 {% load combat_filters %}
 {% load combat_tags %}
 <div class="span-8 pull-1">
-	{% include "combat/__hero_body.html" %}
+	{% include "combat/__hero_body.html" with hero=hero %}
 </div>
 
 <div class="span-9">
+{% if is_win or is_lose or is_draw %}
+<a href="{% url combat_quit %}">Exit</a><br />
+{% endif %}
+{% if is_timeout %}
+<a href="{% url combat_victory %}">Victory</a><br />
+{% endif %}
+{% if is_win %}
+You win. Number of damage {{ all_damage }} Number of experience {{ all_experiance }}
+{% endif %}
+{% if is_lose %}
+You lose. Number of damage {{ all_damage }}
+{% endif %}
+{% if is_draw %}
+Draw. Number of damage {{ all_damage }}
+{% endif %}
 {% if hero_two %}
 <form action="" method="post">
+{% csrf_token %}
 {{ form.hero_two_id }}
 
 <table style="width:340px;">
@@ -58,10 +74,22 @@
 	<tr>
 		<td colspan="2" style="text-align:center;">
 <br />
-<input type="submit" class="sexybutton sexysimple" value="Apply" /><br />
+{% if is_next %}
+<input type="submit" class="sexybutton sexysimple" name="next" value="Next" />
+{% endif %}
+<input type="submit" class="sexybutton sexysimple" value="Apply" />
+<br />
+		</td>
+	</tr>
+</table>
 </form>
 {% endif %}
-Time out: {{combat.time_out }} sec. Injury: {{ combat.injury|get_string_injury }} <br />
+<div align="center">
+	Time out: {{combat.time_out }} sec. Injury: {{ combat.injury|get_string_injury }} <br />
+</div>
+
+{% if not is_win and not is_lose and not is_draw %}
+<div>
 	{% get_team_in_combat combat.combathero_set 0 as one_team %}
 	{% get_team_in_combat combat.combathero_set 1 as two_team %}
 	
@@ -72,14 +100,21 @@ Time out: {{combat.time_out }} sec. Injury: {{ combat.injury|get_string_injury }
 	{% for team_hero in two_team %}
 		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 	{% endfor %}
-		</td>
-	</tr>
-</table>
-
+</div>
+{% endif %}
+<div>
+	{% for combatlog in combatlogs %}
+		{% if combatlog.text %}
+			{% get_friendly_log combatlog %}
+			<hr />
+		{% endif %}
+	{% endfor %}
+	All damage: {{ all_damage }}
+</div>
 </div>
 <div class="span-8 last">
 	{% if hero_two %}
-		{% include "combat/__hero_two_body.html" %}
+		{% include "combat/__hero_body.html" with hero=hero_two %}
 	{% else %}
 		<img src="{{ MEDIA_URL }}images/combat.png" alt="" />	
 	{% endif %}

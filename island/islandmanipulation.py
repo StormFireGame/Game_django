@@ -19,7 +19,8 @@ def join_hero_location(location, coordinate_x, coordinate_y):
     
     return '%s_%s|%s:%s' % (location.split('_')[0], coordinate_x, coordinate_y, 
                             int(time.time()))
-    
+
+##
 def get_time_left(location, time_delay=15):
     hero_time = location.split('_')[1].split(':')[1]
     
