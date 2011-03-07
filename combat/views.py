@@ -8,7 +8,8 @@ from django.db.models import Sum
 from hero.models import Hero
 from combat.models import Combat, TYPES
 
-from combat.forms import DuelForm, GroupForm, ChaoticForm, PastForm, CombatForm
+from combat.forms import DuelForm, GroupForm, ChaoticForm, PastForm, \
+                         CombatForm
 
 from hero.heromanipulation import hero_init, hero_level_up, set_hp
 from combat import combatmanipulation
@@ -37,7 +38,7 @@ def combat_duel(request, template_name='combat/duel.html'):
                             injury=form.cleaned_data['injury'],
                             with_things=form.cleaned_data['with_things'],
                             location=combatmanipulation.get_location(
-                                                            hero.location),
+                                                             hero.location),
                             one_team_count = 1, two_team_count = 1)
             combat.save()
             combat.combathero_set.create(hero=hero)
@@ -277,8 +278,8 @@ def accept(request, id, team):
         
         team_count_now = combat.combathero_set.filter(team=team).count()
         
-        if hero.level >= team_lvl_min and hero.level <= team_lvl_max \
-           and team_count_now < team_count:
+        if hero.level >= team_lvl_min and hero.level <= team_lvl_max and \
+           team_count_now < team_count:
             combat.combathero_set.create(hero=hero, team=team)
 #
             messages.add_message(request, messages.SUCCESS, 'Demand accept.')
@@ -286,8 +287,8 @@ def accept(request, id, team):
 #
             messages.add_message(request, messages.ERROR, 
                                  'Demand accept until you.')
-        return HttpResponseRedirect(reverse('combat_' + TYPES[combat.type][1] \
-                                                                    .lower()))
+        return HttpResponseRedirect(reverse('combat_' + \
+                                            TYPES[combat.type][1].lower()))
     
     return HttpResponseRedirect(reverse('combat_duel'))
 
@@ -343,10 +344,10 @@ def combat(request, template_name='combat/combat.html'):
     enemy = form = all_experience = None
     is_timeout = is_next = False
     if is_dead == False and is_win == False and is_lose == False and \
-                                                            is_draw == False:
+       is_draw == False:
         cur_enemy_id_fn = None
         if request.method == 'POST':
-            form = CombatForm(hero.feature.strike_count, \
+            form = CombatForm(hero.feature.strike_count,
                               hero.feature.block_count, 0, request.POST)
 
             if form.is_valid():
@@ -354,27 +355,28 @@ def combat(request, template_name='combat/combat.html'):
                 if form.cleaned_data['next']:
                     cur_enemy_id_fn=form.cleaned_data['hero_two_id']
                 else:
-                    hero_two = Hero.objects \
-                                    .get(id=form.cleaned_data['hero_two_id'])
+                    hero_two = Hero.objects. \
+                                    get(id=form.cleaned_data['hero_two_id'])
                     if not combatmanipulation.is_dead(combat, hero_two):
                         strikes = \
-                                [ str(form.cleaned_data['strike'+str(strike)]) \
+                            [ str(form.cleaned_data['strike'+str(strike)]) \
                         for strike in range(int(hero.feature.strike_count)) ]
                         
                         blocks = []
                         if form.cleaned_data['block_head']: blocks.append('0')
-                        if form.cleaned_data['block_breast']: blocks.append('1')
+                        if form.cleaned_data['block_breast']: 
+                            blocks.append('1')
                         if form.cleaned_data['block_zone']: blocks.append('2')
                         if form.cleaned_data['block_legs']: blocks.append('3')
                         
-                        combatlog = combatmanipulation.get_combat_log(combat, \
-                                                                      hero, \
-                                                                    hero_two, \
+                        combatlog = combatmanipulation.get_combat_log(combat,
+                                                                      hero,
+                                                                      hero_two,
                                                                       team)
-                        combatmanipulation.write_log_strikes(combat, \
-                                                             combatlog, \
-                                                             team, hero, \
-                                                             hero_two, \
+                        combatmanipulation.write_log_strikes(combat,
+                                                             combatlog,
+                                                             team, hero,
+                                                             hero_two,
                                                              strikes, blocks)
                         
                         return HttpResponseRedirect(reverse('combat'))
@@ -384,8 +386,7 @@ def combat(request, template_name='combat/combat.html'):
         if len(enemies) > 1:
             is_next = True
         
-        form = CombatForm(hero.feature.strike_count, \
-                          hero.feature.block_count, \
+        form = CombatForm(hero.feature.strike_count, hero.feature.block_count,
                           enemy.id if enemy else None)
         if enemy == None:
             is_timeout = combatmanipulation.is_timeout(combat, team)
@@ -396,28 +397,28 @@ def combat(request, template_name='combat/combat.html'):
                 win_team = team
             elif is_lose:
                 win_team = int(not team)
-            combatmanipulation.write_log_messages(combat, is_finish=True, \
+            combatmanipulation.write_log_messages(combat, is_finish=True,
                                                   win_team=win_team)
             
             if is_win:
                 if team == 0:
-                    all_experience = combat.combatlog_set \
-                                                        .filter(hero_one=hero) \
+                    all_experience = combat.combatlog_set. \
+                                                        filter(hero_one=hero) \
             .aggregate(Sum('hero_one_experience'))['hero_one_experience__sum']
                 else:
-                    all_experience = combat.combatlog_set \
-                                                        .filter(hero_two=hero) \
+                    all_experience = combat.combatlog_set. \
+                                                        filter(hero_two=hero) \
             .aggregate(Sum('hero_two_experience'))['hero_two_experience__sum']
                 
                 if all_experience == None:
                     all_experience = 0
 
     if team == 0:
-        all_damage = combat.combatlog_set.filter(hero_one=hero) \
-                    .aggregate(Sum('hero_one_damage'))['hero_one_damage__sum']
+        all_damage = combat.combatlog_set.filter(hero_one=hero). \
+                    aggregate(Sum('hero_one_damage'))['hero_one_damage__sum']
     else:
-        all_damage = combat.combatlog_set.filter(hero_two=hero) \
-                    .aggregate(Sum('hero_two_damage'))['hero_two_damage__sum']
+        all_damage = combat.combatlog_set.filter(hero_two=hero). \
+                    aggregate(Sum('hero_two_damage'))['hero_two_damage__sum']
     
     if all_damage == None:
         all_damage = 0
@@ -426,8 +427,8 @@ def combat(request, template_name='combat/combat.html'):
                                          'hero_two': enemy,
                                          'form': form,
                                          'combat': combat,
-                                         'combatlogs': combat.combatlog_set\
-                                                                        .all(),
+                                         'combatlogs': combat.combatlog_set. \
+                                                                        all(),
                                          'is_draw': is_draw,
                                          'is_win': is_win,
                                          'is_lose': is_lose,
@@ -459,11 +460,11 @@ def quit(request):
         hero.number_of_draws += 1
     elif is_win:
         if team == 0:
-            all_experience = combat.combatlog_set.filter(hero_one=hero) \
-            .aggregate(Sum('hero_one_experience'))['hero_one_experience__sum']
+            all_experience = combat.combatlog_set.filter(hero_one=hero). \
+            aggregate(Sum('hero_one_experience'))['hero_one_experience__sum']
         else:
-            all_experience = combat.combatlog_set.filter(hero_two=hero) \
-            .aggregate(Sum('hero_two_experience'))['hero_two_experience__sum']
+            all_experience = combat.combatlog_set.filter(hero_two=hero). \
+            aggregate(Sum('hero_two_experience'))['hero_two_experience__sum']
         
         if all_experience == None:
             all_experience = 0
@@ -502,8 +503,8 @@ def victory(request):
         return HttpResponseRedirect(reverse('combat'))
     
     dead_heroes = []
-    for combathero in combat.combathero_set.filter(is_dead=False) \
-                                                            .exclude(team=team):
+    for combathero in combat.combathero_set.filter(is_dead=False). \
+                                                            exclude(team=team):
         set_hp(combathero.hero, 0)
         combathero.is_dead = True
         combathero.save()

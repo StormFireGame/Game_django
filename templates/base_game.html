@@ -1,65 +1,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="keywords" content="game">
-    <meta name="description" content="game">
-    <meta http-equiv="content-language" content="en">
-
-    <meta name="author" content="ButuzGOL">
-    <link rel="shortcut icon" type="image/x-icon" href=""/>
-	<title>Game | {% block title %}{% endblock %}</title>
+  	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	    <meta name="keywords" content="game">
+	    <meta name="description" content="game">
+	    <meta http-equiv="content-language" content="en">
 	
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jgrowl.js"></script>
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.timers-1.2.js"></script>
-	{% block js %}{% endblock %}
-	
-    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/print.css" type="text/css" media="print">
-    <!--[if lt IE 8]>
-		<link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection">
-	<![endif]-->
-    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
-	
-	<link rel="stylesheet" href="{{ MEDIA_URL }}css/sexybuttons/sexybuttons.css" type="text/css" />
-	
-	<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery.jgrowl.css" type="text/css" />
-	
-	<link rel="stylesheet" href="{{ MEDIA_URL }}css/style.css" type="text/css" />
-	{% block css %}{% endblock %}
-  </head>
-  <body>
-{% load hero_filters %}
-  	<div class="container">
-	  <div class="span-8 prepend-top">
-		<h3>{{ hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a></h3>
-		<b>[<span id="current_hp">{{ hero.feature.hp|current_hp }}</span>/{{ hero.feature.hp|max_hp }}]</b> <img src="{{ MEDIA_URL }}images/hp.gif" id="hp" alt="" width="{{ hero.feature.hp|line_hp:'250' }}" height="6" title="" />
-	  </div>		
-		<div class="span-8 prepend-top">
-			<a href="{% url hero %}">Hero</a>
-			<a href="/game/inventory/">Inventory</a>
-			<a href="{% url combat_duel %}">Combats</a>
-			<a href="/game/information/">Information</a>
-			<a href="{% url settings %}">Settings</a>
-			<a href="{% url island 1 %}">To Location</a>
-		</div>
+	    <meta name="author" content="ButuzGOL">
+	    <link rel="shortcut icon" type="image/x-icon" href=""/>
+		<title>Game | {% block title %}{% endblock %}</title>
 		
-		<div class="span-8 last prepend-top">
-			Money: {{ hero.money }}
-			Art money: {{ hero.money_art }}
-			Capacity: {{ hero.feature.capacity }}
-		</div>
-      <hr>
-	  	{% block content %}
-		{% endblock %}
-	  <hr>
-	  <p>
-        Copyright by ButuzGOL
-      </p>
-    </div>
-  </body>
+		<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jgrowl.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.timers-1.2.js"></script>
+		{% block js %}{% endblock %}
+		
+	    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection">
+	    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/print.css" type="text/css" media="print">
+	    <!--[if lt IE 8]>
+			<link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/ie.css" type="text/css" media="screen, projection">
+		<![endif]-->
+	    <link rel="stylesheet" href="{{ MEDIA_URL }}css/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+		
+		<link rel="stylesheet" href="{{ MEDIA_URL }}css/sexybuttons/sexybuttons.css" type="text/css" />
+		
+		<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery.jgrowl.css" type="text/css" />
+		
+		<link rel="stylesheet" href="{{ MEDIA_URL }}css/style.css" type="text/css" />
+		{% block css %}{% endblock %}
+  	</head>
+  	<body>
+		{% load hero_filters %}
+		{% load hero_tags %}
+	  	<div class="container">
+			<div class="span-8 prepend-top">
+				<h3>{{ hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a></h3>
+				<b>[<span id="current_hp">{{ hero.feature.hp|current_hp }}</span>/{{ hero.feature.hp|max_hp }}]</b> <img src="{{ MEDIA_URL }}images/hp.gif" id="hp" alt="" width="{{ hero.feature.hp|line_hp:'250' }}" height="6" title="" />
+  			</div>		
+			<div class="span-8 prepend-top">
+				<a href="{% url hero %}">Hero</a>
+				<a href="/game/inventory/">Inventory</a>
+				<a href="{% url combat_duel %}">Combats</a>
+				<a href="/game/information/">Information</a>
+				<a href="{% url settings %}">Settings</a>
+				<a href="{% get_back_url hero.location request %}">Back</a>
+			</div>
+			
+			<div class="span-8 last prepend-top">
+				Money: {{ hero.money }}
+				Art money: {{ hero.money_art }}
+				Capacity: {{ hero.feature.capacity }}
+			</div>
+	      	<hr>
+		  		{% block content %}{% endblock %}
+		  	<hr>
+		  	<p>
+	        	Copyright by ButuzGOL
+	      	</p>
+	    </div>
+	</body>
 {% if messages %}
 <script type="text/javascript">
 /* <![CDATA[ */
@@ -92,5 +92,5 @@ $(document).ready(function() {
 });
 /* ]]> */
 </script>
-{% block jsfunction %}{% endblock %}
+	{% block jsfunction %}{% endblock %}
 </html>

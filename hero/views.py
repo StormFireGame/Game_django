@@ -107,8 +107,8 @@ def settings(request, template_name='hero/settings.html'):
         form = SettingsForm(request.session['hero_id'], request.POST, 
                             instance=hero)
         if form.is_valid():
-            if form.cleaned_data['password0'] \
-                                            and form.cleaned_data['password2']:
+            if form.cleaned_data['password0'] and \
+                                                form.cleaned_data['password2']:
                 hero.password = form.cleaned_data['password2']
             form.save()       
             return HttpResponseRedirect(reverse('settings'))

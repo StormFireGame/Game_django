@@ -97,6 +97,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware'
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+)
+
 ROOT_URLCONF = 'game.urls'
 
 TEMPLATE_DIRS = (
@@ -120,6 +126,12 @@ INSTALLED_APPS = (
     'game.building',
     'game.island',
     ##
+    
+    ###
+    'game.building.module.castle',
+    'game.building.module.street',
+    'game.building.module.shop',
+    ###
 )
 
 # A sample logging configuration. The only tangible logging

@@ -1,115 +1,116 @@
 {% extends "base_game.html" %}
 {% block title %}{{ hero }} | Settings{% endblock %}
+
 {% block content %}
 <a href="#" id="general">General</a>
 <a href="#" id="security">Security</a> 
 <a href="#" id="images">Images</a>
 <br /><br />
 <form action="" method="post">
-{% csrf_token %}
-<div id="general_show">
-<p>
-
-	{{ form.name.label_tag }} <br />
-	{{ form.name }}
-	
-	{% if form.name.errors %}
-    	{% for error in form.name.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-
-</p>
-<p>
-	{{ form.country.label_tag }} <br />
-	{{ form.country }}
-	
-	{% if form.country.errors %}
-    	{% for error in form.country.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-
-</p>
-<p>
-	{{ form.city.label_tag }} <br />
-	{{ form.city }}
-	
-	{% if form.city.errors %}
-    	{% for error in form.city.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-
-</p>
-<p>
-	{{ form.about.label_tag }} <br />
-	{{ form.about }}
-	
-	{% if form.about.errors %}
-    	{% for error in form.about.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-
-</p>
-</div>
-<div id="security_show">
-<p>
-	{{ form.email.label_tag }} <br />
-	{{ form.email }}
-	
-	{% if form.email.errors %}
-    	{% for error in form.email.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-
-</p>
-<p>
-	{{ form.password0.label_tag }} <br />
-	{{ form.password0 }}
-	
-	{% if form.password0.errors %}
-    	{% for error in form.password0.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p>
-<p>
-	{{ form.password1.label_tag }} <br />
-	{{ form.password1 }}
-	
-	{% if form.password1.errors %}
-    	{% for error in form.password1.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p>
-<p>
-	{{ form.password2.label_tag }} <br />
-	{{ form.password2 }}
-	
-	{% if form.password2.errors %}
-    	{% for error in form.password2.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p>
-<p>
-	<label>Date of birthday</label><br />
-	<input type="text" name="date_of_birthday" disabled="disabled" value="{{ hero.date_of_birthday|date:"d M Y" }}" /></p>
-</p>
-</div>
-<div id="images_show">
-	{% if heroimages %}
-		{% for heroimage in heroimages %}
-			<img src="{{ MEDIA_URL }}{{ heroimage.image }}" />
-			<input type="radio" name="image" value="{{ heroimage.id }}" {% ifequal heroimage hero.image %} checked="checked" {% endifequal %} />
-		{% endfor %}
-	{% endif %}
-</div>
-<input type="submit" class="sexybutton sexysimple" value="Save" />
+	{% csrf_token %}
+	<div id="general_show">
+		<p>
+		
+			{{ form.name.label_tag }} <br />
+			{{ form.name }}
+			
+			{% if form.name.errors %}
+		    	{% for error in form.name.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		
+		</p>
+		<p>
+			{{ form.country.label_tag }} <br />
+			{{ form.country }}
+			
+			{% if form.country.errors %}
+		    	{% for error in form.country.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		
+		</p>
+		<p>
+			{{ form.city.label_tag }} <br />
+			{{ form.city }}
+			
+			{% if form.city.errors %}
+		    	{% for error in form.city.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		
+		</p>
+		<p>
+			{{ form.about.label_tag }} <br />
+			{{ form.about }}
+			
+			{% if form.about.errors %}
+		    	{% for error in form.about.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		
+		</p>
+	</div>
+	<div id="security_show">
+		<p>
+			{{ form.email.label_tag }} <br />
+			{{ form.email }}
+			
+			{% if form.email.errors %}
+		    	{% for error in form.email.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		
+		</p>
+		<p>
+			{{ form.password0.label_tag }} <br />
+			{{ form.password0 }}
+			
+			{% if form.password0.errors %}
+		    	{% for error in form.password0.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		</p>
+		<p>
+			{{ form.password1.label_tag }} <br />
+			{{ form.password1 }}
+			
+			{% if form.password1.errors %}
+		    	{% for error in form.password1.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		</p>
+		<p>
+			{{ form.password2.label_tag }} <br />
+			{{ form.password2 }}
+			
+			{% if form.password2.errors %}
+		    	{% for error in form.password2.errors %}
+		        	<span class="error_field">{{ error|escape }}</span>
+		    	{% endfor %}
+		    {% endif %}
+		</p>
+		<p>
+			<label>Date of birthday</label><br />
+			<input type="text" name="date_of_birthday" disabled="disabled" value="{{ hero.date_of_birthday|date:"d M Y" }}" /></p>
+		</p>
+	</div>
+	<div id="images_show">
+		{% if heroimages %}
+			{% for heroimage in heroimages %}
+				<img src="{{ MEDIA_URL }}{{ heroimage.image }}" />
+				<input type="radio" name="image" value="{{ heroimage.id }}" {% ifequal heroimage hero.image %} checked="checked" {% endifequal %} />
+			{% endfor %}
+		{% endif %}
+	</div>
+	<input type="submit" class="sexybutton sexysimple" value="Save" />
 </form>
 {% endblock %}
 

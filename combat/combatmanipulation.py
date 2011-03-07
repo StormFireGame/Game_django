@@ -74,7 +74,7 @@ def update_combats(type):
                 combat.delete()
         else:
             combat.time_wait_left = combat.time_wait - (int(time.time()) -
-                                                        time_start)   
+                                                                    time_start)   
             combat.save()
 
 def _start_combat(combat, type):
@@ -113,27 +113,27 @@ def is_draw(combat):
                             combat.combathero_set.filter(is_dead=True).count()
     
 def is_win(combat, team, is_draw):
-    return not combat.combathero_set.filter(is_dead=False) \
-                                .exclude(team=team).exists() and not is_draw
+    return not combat.combathero_set.filter(is_dead=False). \
+                                exclude(team=team).exists() and not is_draw
 
 def is_lose(combat, team, is_draw):
-    return not combat.combathero_set.filter(is_dead=False, team=team) \
-                                                    .exists() and not is_draw
+    return not combat.combathero_set.filter(is_dead=False, team=team). \
+                                                    exists() and not is_draw
                                                     
 def get_enemies(combat, hero, team):
     if team == 0:
-        enemies = [ i.hero for i in combat.combathero_set \
-                                    .filter(is_dead=False).exclude(team=team) \
-                    if not combat.combatlog_set.filter(hero_one=hero, \
-                                                       hero_two=i.hero, \
-                                                       is_past=False, \
+        enemies = [ i.hero for i in combat.combathero_set.
+                                    filter(is_dead=False).exclude(team=team) 
+                    if not combat.combatlog_set.filter(hero_one=hero, 
+                                                       hero_two=i.hero, 
+                                                       is_past=False, 
                                                        hero_two_wstrike=None) ]  
     else:
-        enemies = [ i.hero for i in combat.combathero_set \
-                                    .filter(is_dead=False).exclude(team=team) \
-                    if not combat.combatlog_set.filter(hero_two=hero, \
-                                                       hero_one=i.hero, \
-                                                       is_past=False, \
+        enemies = [ i.hero for i in combat.combathero_set. \
+                                    filter(is_dead=False).exclude(team=team) 
+                    if not combat.combatlog_set.filter(hero_two=hero, 
+                                                       hero_one=i.hero, 
+                                                       is_past=False, 
                                                        hero_one_wstrike=None) ]
         
     return enemies
@@ -155,29 +155,29 @@ def get_enemy(enemies, cur_enemy_id_fn):
 def get_combat_log(combat, hero, hero_two, team):
     try:
         if team == 0:
-            return combat.combatlog_set.filter(hero_one=hero, \
-                                               hero_two=hero_two, \
+            return combat.combatlog_set.filter(hero_one=hero, 
+                                               hero_two=hero_two,
                                                is_past=False).get()
         else:
-            return combat.combatlog_set.filter(hero_two=hero, \
-                                               hero_one=hero_two, \
+            return combat.combatlog_set.filter(hero_two=hero,
+                                               hero_one=hero_two,
                                                is_past=False).get()
     except CombatLog.DoesNotExist:
         return None
                                                         
-def write_log_messages(combat, is_start=False, is_finish=False, \
-                       win_team=None, is_dead=False, hero=None):
+def write_log_messages(combat, is_start=False, is_finish=False, win_team=None, 
+                       is_dead=False, hero=None):
     if is_start:
         if combat.combatlog_set.filter(is_start=True).exists():
             return
         
-        heroes_one = [ str(i.hero) for i in combat.combathero_set \
-                                                            .filter(team=0) ]
-        heroes_two = [ str(i.hero) for i in combat.combathero_set \
-                                                            .filter(team=1) ]
+        heroes_one = [ str(i.hero) for i in combat.combathero_set. \
+                                                            filter(team=0) ]
+        heroes_two = [ str(i.hero) for i in combat.combathero_set. \
+                                                            filter(team=1) ]
         
         combat.combatlog_set.create(is_start=True, \
-                text='[heroes_one]' + ','.join(heroes_one) + '[/heroes_one]' \
+                text='[heroes_one]' + ','.join(heroes_one) + '[/heroes_one]'
                      + '[heroes_two]' + ','.join(heroes_two) + '[/heroes_two]')
     
     if is_finish:
@@ -185,38 +185,39 @@ def write_log_messages(combat, is_start=False, is_finish=False, \
             return
     
         if win_team == None:
-            heroes_one = [ str(i.hero) for i in combat.combathero_set \
-                                                            .filter(team=0) ]
-            heroes_two = [ str(i.hero) for i in combat.combathero_set \
-                                                            .filter(team=1) ]
+            heroes_one = [ str(i.hero) for i in combat.combathero_set. \
+                                                            filter(team=0) ]
+            heroes_two = [ str(i.hero) for i in combat.combathero_set. \
+                                                            filter(team=1) ]
             combat.combatlog_set.create(is_finish=True, 
-                text='[heroes_one]' + ','.join(heroes_one) + '[/heroes_one]' \
-                     + '[heroes_two]' + ','.join(heroes_two) + '[/heroes_two]')
+                text='[heroes_one]' + ','.join(heroes_one) + '[/heroes_one]' + 
+                     '[heroes_two]' + ','.join(heroes_two) + '[/heroes_two]')
         else:
-            heroes = [ str(i.hero) for i in combat.combathero_set \
-                                                        .filter(team=win_team) ]
-            combat.combatlog_set.create(is_finish=True, \
+            heroes = [ str(i.hero) for i in combat.combathero_set.
+                                                        filter(team=win_team) ]
+            combat.combatlog_set.create(is_finish=True,
                     text='[heroes_one]' + ','.join(heroes) + '[/heroes_one]')
     
     if is_dead:
-        combat.combatlog_set.create(is_dead=True, hero_one=hero, \
-                                        text='[hero]' + str(hero) + '[/hero]')
+        combat.combatlog_set.create(is_dead=True, hero_one=hero,
+                                    text='[hero]' + str(hero) + '[/hero]')
 
 ##
-def write_log_strikes(combat, combatlog, team, hero, hero_two, strikes, blocks):
+def write_log_strikes(combat, combatlog, team, hero, hero_two, 
+                      strikes, blocks):
     if combatlog is None:
         strikes_s = '|'.join(strikes)
         blocks_s = '|'.join(blocks)
      
         if team == 0:
-            combatlog = combat.combatlog_set.create(hero_one=hero, \
-                                                    hero_two=hero_two, \
-                                                hero_one_wstrike=strikes_s, \
+            combatlog = combat.combatlog_set.create(hero_one=hero,
+                                                    hero_two=hero_two,
+                                                    hero_one_wstrike=strikes_s,
                                                     hero_one_wblock=blocks_s)
         else:
-            combatlog = combat.combatlog_set.create(hero_one=hero_two, \
-                                                    hero_two=hero, \
-                                                hero_two_wstrike=strikes_s, \
+            combatlog = combat.combatlog_set.create(hero_one=hero_two,
+                                                    hero_two=hero,
+                                                    hero_two_wstrike=strikes_s,
                                                     hero_two_wblock=blocks_s)
     else:
         from hero.heromanipulation import set_hp
@@ -246,8 +247,8 @@ def write_log_strikes(combat, combatlog, team, hero, hero_two, strikes, blocks):
                 combatlog.text = combatlog.text[0:-1] + ':'
                 thero, thero_two = thero_two, thero
             
-            coefficient = TableExperience.objects.get(level=thero.level) \
-                                                                    .coefficient
+            coefficient = TableExperience.objects.get(level=thero.level). \
+                                                                    coefficient
             damage_bamp = 0
             i = 0
             for strike in strikes:
@@ -255,12 +256,12 @@ def write_log_strikes(combat, combatlog, team, hero, hero_two, strikes, blocks):
                                                                 isblock = False
                                 
                 if random.randint(0, accuracy_p) not in \
-                                        range(int(thero.feature.accuracy) - \
+                                        range(int(thero.feature.accuracy) -
                                               int(thero_two.feature.dodge)):
                     accuracy = True
                     
                 if random.randint(0, devastate_p) in \
-                                    range(int(thero.feature.devastate) - \
+                                    range(int(thero.feature.devastate) -
                                           int(thero_two.feature.durability)):
                     devastate = True
                 
@@ -276,8 +277,8 @@ def write_log_strikes(combat, combatlog, team, hero, hero_two, strikes, blocks):
                                         range(int(thero.feature.armor_break)):
                     armor_break = True
                      
-                damage = random.randint(int(thero.feature.damage_min), \
-                                                int(thero.feature.damage_max))
+                damage = random.randint(int(thero.feature.damage_min),
+                                        int(thero.feature.damage_max))
                                         
                 if strike == 1: 
                     protection = int(thero.feature.protection_breast)
@@ -288,8 +289,8 @@ def write_log_strikes(combat, combatlog, team, hero, hero_two, strikes, blocks):
                 else: protection = int(thero.feature.protection_head)
                 
                 if not armor_break:
-                    strike_damage = int(damage - damage * \
-                                                (protection / damage_p / 100.0))
+                    strike_damage = int(damage - damage * 
+                                        (protection / damage_p / 100.0))
                 else:
                     strike_damage = damage
                     
@@ -307,7 +308,7 @@ def write_log_strikes(combat, combatlog, team, hero, hero_two, strikes, blocks):
                         combathero = combat.combathero_set.get(hero=thero_two)
                         combathero.is_dead = True
                         combathero.save()
-                        dead_heroes.append({'hero': thero_two, \
+                        dead_heroes.append({'hero': thero_two,
                                             'team': combathero.team})
                     
                     set_hp(thero_two, current_hp)    
@@ -349,36 +350,34 @@ def write_log_strikes(combat, combatlog, team, hero, hero_two, strikes, blocks):
         
 def is_timeout(combat, team):
 
-    count_in_team = combat.combathero_set.filter(team=team, is_dead=False) \
-                                                                        .count()
-    count_in_not_answer_team = combat.combathero_set.filter(is_dead=False) \
-                                                    .exclude(team=team).count()
-    datetime_limit = datetime.datetime.fromtimestamp(time.time() \
-                                                     - combat.time_out)
+    count_in_team = combat.combathero_set.filter(team=team, is_dead=False). \
+                                                                        count()
+    count_in_not_answer_team = combat.combathero_set.filter(is_dead=False). \
+                                                    exclude(team=team).count()
+    datetime_limit = datetime.datetime.fromtimestamp(time.time() - \
+                                                     combat.time_out)
     
     if team == 0:
-        count_not_answer = combat.combatlog_set.filter(hero_two_wstrike=None, \
-                                                       is_past=False, \
-                                                       is_dead=False, \
-                                                       is_start=False, \
-                                                    time__lte=datetime_limit) \
-                                                                        .count()
+        count_not_answer = combat.combatlog_set.filter(hero_two_wstrike=None,
+                                                       is_past=False,
+                                                       is_dead=False,
+                                                       is_start=False,
+                                            time__lte=datetime_limit).count()
     else:
-        count_not_answer = combat.combatlog_set.filter(hero_one_wstrike=None, \
-                                                       is_past=False, \
-                                                       is_dead=False, \
-                                                       is_start=False, \
-                                                    time__lte=datetime_limit) \
-                                                                        .count()
+        count_not_answer = combat.combatlog_set.filter(hero_one_wstrike=None,
+                                                       is_past=False,
+                                                       is_dead=False,
+                                                       is_start=False,
+                                            time__lte=datetime_limit).count()
     return ((count_in_team * count_in_not_answer_team) - count_not_answer) == 0
 
 def after_death(combat, dead_heroes):
     for dead_hero in dead_heroes:
         if dead_hero['team'] == 0:
-            combat.combatlog_set.filter(is_past=False, \
+            combat.combatlog_set.filter(is_past=False,
                                         hero_one=dead_hero['hero']).delete()
         else:
-            combat.combatlog_set.filter(is_past=False, \
+            combat.combatlog_set.filter(is_past=False,
                                         hero_two=dead_hero['hero']).delete()
         write_log_messages(combat, is_dead=True, hero=dead_hero['hero'])
 #End

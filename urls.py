@@ -27,8 +27,8 @@ urlpatterns = patterns('',
     url(r'^game/settings$', 'hero.views.settings', name='settings'),
     
     #island
-    url(r'^game/island/(?P<id>\d+)$', 'island.views.island', name='island'),
-    url(r'^game/island/(?P<id>\d+)/move/(?P<coordinate_x>\d+)/'
+    url(r'^game/island$', 'island.views.island', name='island'),
+    url(r'^game/island/move/(?P<coordinate_x>\d+)/'
         '(?P<coordinate_y>\d+)$', 'island.views.move', name='island_move'),
     
     #combat
@@ -56,6 +56,11 @@ urlpatterns = patterns('',
     url(r'^game/combat/quit$', 'combat.views.quit', name='combat_quit'),
     url(r'^game/combat/victory$', 'combat.views.victory', 
         name='combat_victory'),
+    
+    #building modules
+    (r'^game/building/castle/', include('building.module.castle.urls')),
+    (r'^game/building/street/', include('building.module.street.urls')),
+    (r'^game/building/shop/', include('building.module.shop.urls')),
     
     (r'^admin/', include(admin.site.urls)),
     

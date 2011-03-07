@@ -1,0 +1,85 @@
+{% load thing_filters %}
+
+{% if thing.strength_give %}
+	Strength: {{ thing.strength_give|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.dexterity_give %}
+	Dexterity: {{ thing.dexterity_give|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.intuition_give %}
+	Intuition: {{ thing.intuition_give|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.health_give %}
+	Health: {{ thing.health_give|minus_or_plus_give }}<br />
+{% endif %}
+
+{% if thing.swords_give %}
+	Swords: {{ thing.swords_give|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.axes_give %}
+	Axes: {{ thing.axes_give|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.knives_give %}
+	Knives: {{ thing.knives_give|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.clubs_give %}
+	Clubs: {{ thing.clubs_give|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.shields_give %}
+	Shields: {{ thing.shields_give|minus_or_plus_give }}<br />
+{% endif %}
+
+{% if thing.damage_min %}
+	Damage Min: {{ thing.damage_min|minus_or_plus_give }}<br />
+{% endif %}
+{% if thing.damage_max %}
+	Damage Max: {{ thing.damage_max|minus_or_plus_give }}<br />
+{% endif %}
+
+{% if thing.protection_head %}
+	Protection head: {{ thing.protection_head|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.protection_breast %}
+	Protection breast: {{ thing.protection_breast|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.protection_zone %}
+	Protection zone: {{ thing.protection_zone|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.protection_leg %}
+	Protection leg: {{ thing.protection_leg|minus_or_plus_give }}%<br />
+{% endif %}
+
+{% if thing.accuracy %}
+	Accuracy: {{ thing.accuracy|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.dodge %}
+	Dodge: {{ thing.dodge|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.devastate %}
+	Devastate: {{ thing.devastate|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.durability %}
+	Durability: {{ thing.durability|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.block_break %}
+	Block break: {{ thing.block_break|minus_or_plus_give }}%<br />
+{% endif %}
+{% if thing.armor_break %}
+	Armor break: {{ thing.armor_break|minus_or_plus_give }}%<br />
+{% endif %}
+
+{% if thing.hp %}
+	Hp: {{ thing.hp|minus_or_plus_give }}%<br />
+{% endif %}
+
+{% if thing.time_duration %}
+	Time duration: {{ thing.time_duration }}<br />
+{% endif %}
+
+{% if thing.strike_count %}
+	Strike count: {{ thing.strike_count|minus_or_plus_give }}<br />
+{% endif %}
+        
+{% if thing.take_two_hands %}
+	Take two hands
+{% endif %}

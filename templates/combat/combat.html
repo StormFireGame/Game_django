@@ -1,5 +1,6 @@
 {% extends "base_combat.html" %}
 {% block title %}{{ hero }}{% endblock %}
+
 {% block content %}
 {% load combat_filters %}
 {% load combat_tags %}
@@ -8,109 +9,111 @@
 </div>
 
 <div class="span-9">
-{% if is_win or is_lose or is_draw %}
-<a href="{% url combat_quit %}">Exit</a><br />
-{% endif %}
-{% if is_timeout %}
-<a href="{% url combat_victory %}">Victory</a><br />
-{% endif %}
-{% if is_win %}
-You win. Number of damage {{ all_damage }} Number of experience {{ all_experiance }}
-{% endif %}
-{% if is_lose %}
-You lose. Number of damage {{ all_damage }}
-{% endif %}
-{% if is_draw %}
-Draw. Number of damage {{ all_damage }}
-{% endif %}
-{% if hero_two %}
-<form action="" method="post">
-{% csrf_token %}
-{{ form.hero_two_id }}
-
-<table style="width:340px;">
-	<tr>
-		<td style="width:170px; vertical-align:top;">
-<b>Strike:</b><br />
-
-{% for strike in hero.feature.strike_count|get_strike_list %}
-	<input type="radio" value="0" name="strike{{ strike }}" {% get_hero_strike form strike '0' %} />
-{% endfor %}
-<label>Head</label> <br />
-{% for strike in hero.feature.strike_count|get_strike_list %}
-	<input type="radio" value="1" name="strike{{ strike }}" {% get_hero_strike form strike '1' %} />
-{% endfor %}
-<label>Breast</label> <br />
-{% for strike in hero.feature.strike_count|get_strike_list %}
-	<input type="radio" value="2" name="strike{{ strike }}" {% get_hero_strike form strike '2' %} />
-{% endfor %}
-<label>Zone</label> <br />
-{% for strike in hero.feature.strike_count|get_strike_list %}
-	<input type="radio" value="3" name="strike{{ strike }}" {% get_hero_strike form strike '3' %} />
-{% endfor %}
-<label>Legs</label> <br />
-
-
-{% if form.strike0.errors %}
-	{% for error in form.strike0.errors %}
-    	<span class="error_field">{{ error|escape }}</span>
-	{% endfor %}
-{% endif %}
-		</td>
-		<td style="vertical-align:top;">
-<b>Block:</b><br />	
-{{ form.block_head }} {{ form.block_head.label_tag }}<br />
-{{ form.block_breast }} {{ form.block_breast.label_tag }}<br />
-{{ form.block_zone }} {{ form.block_zone.label_tag }} <br />
-{{ form.block_legs }} {{ form.block_legs.label_tag }} <br />
-
-{% if form.block_head.errors %}
-	{% for error in form.block_head.errors %}
-    	<span class="error_field">{{ error|escape }}</span>
-	{% endfor %}
-{% endif %}
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" style="text-align:center;">
-<br />
-{% if is_next %}
-<input type="submit" class="sexybutton sexysimple" name="next" value="Next" />
-{% endif %}
-<input type="submit" class="sexybutton sexysimple" value="Apply" />
-<br />
-		</td>
-	</tr>
-</table>
-</form>
-{% endif %}
-<div align="center">
-	Time out: {{combat.time_out }} sec. Injury: {{ combat.injury|get_string_injury }} <br />
-</div>
-
-{% if not is_win and not is_lose and not is_draw %}
-<div>
-	{% get_team_in_combat combat.combathero_set 0 as one_team %}
-	{% get_team_in_combat combat.combathero_set 1 as two_team %}
+	{% if is_win or is_lose or is_draw %}
+		<a href="{% url combat_quit %}">Exit</a><br />
+	{% endif %}
+	{% if is_timeout %}
+		<a href="{% url combat_victory %}">Victory</a><br />
+	{% endif %}
+	{% if is_win %}
+		You win. Number of damage {{ all_damage }} Number of experience {{ all_experiance }}
+	{% endif %}
+	{% if is_lose %}
+		You lose. Number of damage {{ all_damage }}
+	{% endif %}
+	{% if is_draw %}
+		Draw. Number of damage {{ all_damage }}
+	{% endif %}
+	{% if hero_two %}
+		<form action="" method="post">
+			{% csrf_token %}
+			{{ form.hero_two_id }}
 	
-	{% for team_hero in one_team %}
-		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
-	{% endfor %}
-	{% if two_team %} vs {% endif %}
-	{% for team_hero in two_team %}
-		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
-	{% endfor %}
-</div>
-{% endif %}
-<div>
-	{% for combatlog in combatlogs %}
-		{% if combatlog.text %}
-			{% get_friendly_log combatlog %}
-			<hr />
-		{% endif %}
-	{% endfor %}
-	All damage: {{ all_damage }}
-</div>
+			<table style="width:340px;">
+				<tr>
+					<td style="width:170px; vertical-align:top;">
+						<b>Strike:</b><br />
+						
+						{% for strike in hero.feature.strike_count|get_strike_list %}
+							<input type="radio" value="0" name="strike{{ strike }}" {% get_hero_strike form strike '0' %} />
+						{% endfor %}
+						<label>Head</label> <br />
+						
+						{% for strike in hero.feature.strike_count|get_strike_list %}
+							<input type="radio" value="1" name="strike{{ strike }}" {% get_hero_strike form strike '1' %} />
+						{% endfor %}
+						<label>Breast</label> <br />
+						
+						{% for strike in hero.feature.strike_count|get_strike_list %}
+							<input type="radio" value="2" name="strike{{ strike }}" {% get_hero_strike form strike '2' %} />
+						{% endfor %}
+						<label>Zone</label> <br />
+						
+						{% for strike in hero.feature.strike_count|get_strike_list %}
+							<input type="radio" value="3" name="strike{{ strike }}" {% get_hero_strike form strike '3' %} />
+						{% endfor %}
+						<label>Legs</label> <br />
+	
+						{% if form.strike0.errors %}
+							{% for error in form.strike0.errors %}
+						    	<span class="error_field">{{ error|escape }}</span>
+							{% endfor %}
+						{% endif %}
+					</td>
+					<td style="vertical-align:top;">
+						<b>Block:</b><br />	
+						{{ form.block_head }} {{ form.block_head.label_tag }}<br />
+						{{ form.block_breast }} {{ form.block_breast.label_tag }}<br />
+						{{ form.block_zone }} {{ form.block_zone.label_tag }} <br />
+						{{ form.block_legs }} {{ form.block_legs.label_tag }} <br />
+						
+						{% if form.block_head.errors %}
+							{% for error in form.block_head.errors %}
+						    	<span class="error_field">{{ error|escape }}</span>
+							{% endfor %}
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center;">
+						<br />
+						{% if is_next %}
+							<input type="submit" class="sexybutton sexysimple" name="next" value="Next" />
+						{% endif %}
+						<input type="submit" class="sexybutton sexysimple" value="Apply" />
+						<br />
+					</td>
+				</tr>
+			</table>
+		</form>
+	{% endif %}
+	<div align="center">
+		Time out: {{combat.time_out }} sec. Injury: {{ combat.injury|get_string_injury }} <br />
+	</div>
+	
+	{% if not is_win and not is_lose and not is_draw %}
+		<div>
+			{% get_team_in_combat combat.combathero_set 0 as one_team %}
+			{% get_team_in_combat combat.combathero_set 1 as two_team %}
+			
+			{% for team_hero in one_team %}
+				{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{% endfor %}
+			{% if two_team %} vs {% endif %}
+			{% for team_hero in two_team %}
+				{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{% endfor %}
+		</div>
+	{% endif %}
+	<div>
+		{% for combatlog in combatlogs %}
+			{% if combatlog.text %}
+				{% get_friendly_log combatlog %}
+				<hr />
+			{% endif %}
+		{% endfor %}
+		All damage: {{ all_damage }}
+	</div>
 </div>
 <div class="span-8 last">
 	{% if hero_two %}

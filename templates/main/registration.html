@@ -1,70 +1,72 @@
 {% extends "base_main.html" %}
 {% block title %}Registration{% endblock %}
+
 {% block content %}
 <h3>Registration</h3>
 <form action="" method="post">
-{% csrf_token %}
-<p>
-	{{ form.login.label_tag }} <br />
-	{{ form.login }}
+	{% csrf_token %}
+	<p>
+		{{ form.login.label_tag }} <br />
+		{{ form.login }}
+		
+		{% if form.login.errors %}
+	    	{% for error in form.login.errors %}
+	        	<span class="error_field">{{ error|escape }}</span>
+	    	{% endfor %}
+	    {% endif %}
 	
-	{% if form.login.errors %}
-    	{% for error in form.login.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-
-</p>
-<p>
-	{{ form.password1.label_tag }} <br />
-	{{ form.password1 }}
-	
-	{% if form.password1.errors %}
-    	{% for error in form.password1.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p>
-<p>
-	{{ form.password2.label_tag }} <br />
-	{{ form.password2 }}
-	
-	{% if form.password2.errors %}
-    	{% for error in form.password2.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p>
-<p>
-	{{ form.email.label_tag }} <br />
-	{{ form.email }}
-	
-	{% if form.email.errors %}
-    	{% for error in form.email.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p>
-<p>
-	{{ form.date_of_birthday.label_tag }} <br />
-	{{ form.date_of_birthday }}
-	
-	{% if form.date_of_birthday.errors %}
-    	{% for error in form.date_of_birthday.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p>
-<p>
-	{{ form.sex.label_tag }}
-	{{ form.sex }}
-	
-	{% if form.sex.errors %}
-    	{% for error in form.sex.errors %}
-        	<span class="error_field">{{ error|escape }}</span>
-    	{% endfor %}
-    {% endif %}
-</p><br />
-<input type="submit" class="sexybutton sexysimple" value="Registr" />
+	</p>
+	<p>
+		{{ form.password1.label_tag }} <br />
+		{{ form.password1 }}
+		
+		{% if form.password1.errors %}
+	    	{% for error in form.password1.errors %}
+	        	<span class="error_field">{{ error|escape }}</span>
+	    	{% endfor %}
+	    {% endif %}
+	</p>
+	<p>
+		{{ form.password2.label_tag }} <br />
+		{{ form.password2 }}
+		
+		{% if form.password2.errors %}
+	    	{% for error in form.password2.errors %}
+	        	<span class="error_field">{{ error|escape }}</span>
+	    	{% endfor %}
+	    {% endif %}
+	</p>
+	<p>
+		{{ form.email.label_tag }} <br />
+		{{ form.email }}
+		
+		{% if form.email.errors %}
+	    	{% for error in form.email.errors %}
+	        	<span class="error_field">{{ error|escape }}</span>
+	    	{% endfor %}
+	    {% endif %}
+	</p>
+	<p>
+		{{ form.date_of_birthday.label_tag }} <br />
+		{{ form.date_of_birthday }}
+		
+		{% if form.date_of_birthday.errors %}
+	    	{% for error in form.date_of_birthday.errors %}
+	        	<span class="error_field">{{ error|escape }}</span>
+	    	{% endfor %}
+	    {% endif %}
+	</p>
+	<p>
+		{{ form.sex.label_tag }}
+		{{ form.sex }}
+		
+		{% if form.sex.errors %}
+	    	{% for error in form.sex.errors %}
+	        	<span class="error_field">{{ error|escape }}</span>
+	    	{% endfor %}
+	    {% endif %}
+	</p>
+	<br />
+	<input type="submit" class="sexybutton sexysimple" value="Registr" />
 </form>
 {% endblock %}

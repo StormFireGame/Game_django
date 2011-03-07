@@ -149,23 +149,23 @@ class GetFriendlyLogNode(template.Node):
         if combatlog.is_start:
             # Fight between ButuzGOL [0] vs Fog [0] start
             log += 'Fight between ' + \
-    re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1) \
-                                                                   + ' vs ' + \
-       re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text).group(1) \
-                                                                    + ' start'
+    re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1) + \
+                                                                    ' vs ' + \
+    re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text).group(1) + \
+                                                                    ' start'
         elif combatlog.is_dead:
             # ButuzGOL[0] is dead
-            log += re.search('\[hero](.*)\[\/hero]', combatlog.text).group(1) \
-                                                                + ' is dead'
+            log += re.search('\[hero](.*)\[\/hero]', 
+                             combatlog.text).group(1) + 'is dead'
         elif combatlog.is_finish:
             # Fight between ButuzGOL [0] vs Fog [0] ended in a draw
             # Victory for ButuzGOL [0]
             if re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text):
                 log += 'Fight between ' + \
-    re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1) \
-                                                                   + ' vs ' + \
-    re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text).group(1) \
-                                                           + ' ended in a draw'
+    re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1) + \
+                                                                    ' vs ' + \
+    re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text).group(1) + \
+                                                            ' ended in a draw'
             else:
                 log += 'Victory for ' + \
         re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1)                                                           
@@ -177,7 +177,8 @@ class GetFriendlyLogNode(template.Node):
             ## ButuzGOL[0] break armor struck critical hit Fog[0] on -10
             ## ButuzGOL[0] struck critical but blocked Fog[0] on -10
             # ButuzGOL[0] break block critical hit struck Fog[0] on -10
-            # ButuzGOL[0] break block break armor critical hit struck Fog[0] on -10
+            # ButuzGOL[0] break block break armor critical hit struck Fog[0] 
+            # on -10
             # ButuzGOL[0] make strike but dodged Fog[0]
             # ButuzGOL[0] make strike but blocked Fog[0]           
             
@@ -189,45 +190,46 @@ class GetFriendlyLogNode(template.Node):
                     re.search('\[hero_one](.*)\[\/hero_one]', bump).group(1)
                     hero_two = \
                     re.search('\[hero_two](.*)\[\/hero_two]', bump).group(1)
-                    strikes = re.search('\[strikes](.*)\[\/strikes]', bump) \
-                                                          .group(1).split('|')
-                    blocks = re.search('\[blocks](.*)\[\/blocks]', bump) \
-                                                          .group(1).split('|')
+                    strikes = re.search('\[strikes](.*)\[\/strikes]', bump). \
+                                                            group(1).split('|')
+                    blocks = re.search('\[blocks](.*)\[\/blocks]', bump). \
+                                                            group(1).split('|')
                     strike_w = []
                     for strike in strikes:
                         strike_p = [ int(i) for i in strike.split('_') ]
                         if strike_p[2] and strike_p[3] == False and \
-                            strike_p[5] == False:
-                            log += hero_one + ' make strike but blocked ' \
-                                                                    + hero_two
+                           strike_p[5] == False:
+                            log += hero_one + ' make strike but blocked ' + \
+                                                                    hero_two
                         elif strike_p[4]:
-                            log += hero_one + ' make strike but dodged ' \
-                                                                    + hero_two 
-                        elif strike_p[3] and strike_p[2] and strike_p[6] \
-                            and strike_p[5]:
+                            log += hero_one + ' make strike but dodged ' + \
+                                                                    hero_two 
+                        elif strike_p[3] and strike_p[2] and strike_p[6] and \
+                             strike_p[5]:
                             log += hero_one + ' break block break armor ' + \
                                    'critical hit struck ' + hero_two + \
                                    ' on -' + str(strike_p[1])
                         elif strike_p[3] and strike_p[2] and strike_p[5]:
                             log += hero_one + \
-                                   ' break block critical hit struck ' \
-                                   + hero_two + ' on -' + str(strike_p[1])
+                                   ' break block critical hit struck ' + \
+                                   hero_two + ' on -' + str(strike_p[1])
                         elif strike_p[5] and strike_p[2]:
-                            log += hero_one + ' struck critical but blocked ' \
-                                   + hero_two + ' on -' + str(strike_p[1])
+                            log += hero_one + \
+                                   ' struck critical but blocked ' + \
+                                   hero_two + ' on -' + str(strike_p[1])
                         elif strike_p[6] and strike_p[5]:
                             log += hero_one + \
-                                   ' break armor struck critical hit ' \
-                                   + hero_two + ' on -' + str(strike_p[1])
+                                   ' break armor struck critical hit ' + \
+                                   hero_two + ' on -' + str(strike_p[1])
                         elif strike_p[5]:
-                            log += hero_one + ' struck critical hit ' \
-                                   + hero_two + ' on -' + str(strike_p[1])
+                            log += hero_one + ' struck critical hit ' + \
+                                   hero_two + ' on -' + str(strike_p[1])
                         elif strike_p[6]:
-                            log += hero_one + ' break armor struck ' \
-                                   + hero_two + ' on -' + str(strike_p[1])
+                            log += hero_one + ' break armor struck ' + \
+                                   hero_two + ' on -' + str(strike_p[1])
                         else:
-                            log += hero_one + ' struck ' + hero_two \
-                                   + ' on -' + str(strike_p[1])
+                            log += hero_one + ' struck ' + hero_two + \
+                                   ' on -' + str(strike_p[1])
                         strike_w.append(strike_p[0])
                         
                     

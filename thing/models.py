@@ -1,18 +1,20 @@
 from django.db import models
 from django.conf import settings
 
+#
+TYPES = ((0, 'Sword'), (1, 'Axe'), (2, 'Knive'), (3, 'Clubs'), (4, 'Shield'), 
+         (5, 'Helmet'), (6, 'Kolchuga'), (7, 'Armor'), (8, 'Belt'), 
+         (9, 'Pants'), (10, 'Treetop'), (11, 'Glove'), (12, 'Boot'), 
+         (13, 'Ring'), (14, 'Amulet'), (15, 'Potion'), (16, 'Elixir'),)
+
 class Thing(models.Model):
     name = models.CharField(max_length=32, unique=True)
-#
-    TYPES = ((0, 'Sword'), (1, 'Axe'), (2, 'Knive'), (3, 'Clubs'), 
-            (4, 'Shield'), (5, 'Helmet'), (6, 'Kolchuga'),
-            (7, 'Armor'), (8, 'Belt'), (9, 'Pant'), (10, 'Treetop'),
-            (11, 'Glove'), (12, 'Boot'), (13, 'Ring'), (14, 'Amulet'),  
-            (15, 'Potion'), (16, 'Elixir'),)
+
     type = models.IntegerField(default=0, choices=TYPES)
     is_art = models.BooleanField(default=False)
     is_bot = models.BooleanField(default=False)
     stability = models.IntegerField()
+    weight = models.IntegerField()
     image = models.ImageField(upload_to='upload/things')
     
     level_need = models.IntegerField()
@@ -57,6 +59,7 @@ class Thing(models.Model):
     time_duration = models.IntegerField(default=0)
     
     strike_count = models.IntegerField(default=0)
+    take_two_hands = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'Thing'

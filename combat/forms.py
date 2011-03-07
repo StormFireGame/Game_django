@@ -97,10 +97,10 @@ class PastForm(forms.Form):
 ##
     date_begin = forms.DateField(initial=datetime.date.today,
                             widget=SelectDateWidget(years=range(2000, 2012)), 
-                            label='Start date')
+                                 label='Start date')
     date_end = forms.DateField(initial=datetime.date.today,
                             widget=SelectDateWidget(years=range(2000, 2012)), 
-                            label='End date')
+                               label='End date')
     
     def clean_date_end(self):
         date_begin = self.cleaned_data['date_begin']
@@ -122,16 +122,17 @@ class PastForm(forms.Form):
         return login
     
 class CombatForm(forms.Form):
-    def __init__(self, strike_count, block_count, hero_two_id, *args, **kwargs):
+    def __init__(self, strike_count, block_count, hero_two_id, *args, 
+                 **kwargs):
         self.strike_count = int(strike_count)
         self.block_count = int(block_count)  
         self.hero_two_id = hero_two_id
         super(CombatForm, self).__init__(*args, **kwargs)
         for strike in range(self.strike_count):
-            self.fields['strike'+str(strike)] = forms.IntegerField(widget= \
-                                        forms.RadioSelect(choices=STRIKES), \
+            self.fields['strike'+str(strike)] = forms.IntegerField(widget=
+                                        forms.RadioSelect(choices=STRIKES),
                                                                 required=False)
-        self.fields['hero_two_id'] = forms.IntegerField(widget= \
+        self.fields['hero_two_id'] = forms.IntegerField(widget=
                         forms.HiddenInput(attrs={'value' : self.hero_two_id}))
         
         
@@ -152,7 +153,7 @@ class CombatForm(forms.Form):
             if 'strike'+str(strike) not in cleaned_data:
 #
                 self._errors['strike0'] = self.error_class(
-                                                    ['This field is required.'])
+                                                ['This field is required.'])
                 break
                 
         k = 0
@@ -172,6 +173,6 @@ class CombatForm(forms.Form):
         elif self.block_count > k:
 #
             self._errors['block_head'] = self.error_class(
-                                                    ['This field is required.'])        
+                                                ['This field is required.'])        
         
         return cleaned_data

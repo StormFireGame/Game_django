@@ -6,4 +6,5 @@ syntax: glob
 *.png
 *.jpg
 *~
+build/**
 

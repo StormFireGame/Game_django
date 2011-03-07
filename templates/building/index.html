@@ -1,0 +1,19 @@
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+
+{% block content %}
+{% load building_tags %}
+<div class="span-3">
+	&nbsp;
+</div>
+<div class="span-17">
+	<img src="{{ MEDIA_URL }}{% get_building_image building.image default_child_building %}" alt="" />
+</div>
+<div class="span-4 last">
+	{{ parent.name }} {{ building.name }} {{ default_child_building.name }}
+	<br />
+	{% if children %}
+		{% include "building/__children.html" %}
+	{% endif %}
+</div>
+{% endblock %}

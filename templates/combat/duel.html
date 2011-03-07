@@ -1,47 +1,47 @@
 {% extends "base_game.html" %}
 {% block title %}{{ hero }}{% endblock %}
+
 {% block content %}
 {% include "combat/__menu.html" %}
-
 {% load combat_tags %}
 {% load combat_filters %}
 <div align="center">
-{% if not in_combat %}
-<form action="" method="post">
-{% csrf_token %}
-	{{ form.with_things.label_tag }} {{ form.with_things }}&nbsp;&nbsp;
-	{{ form.time_out.label_tag }} {{ form.time_out }}&nbsp;&nbsp;
-	{{ form.injury.label_tag }} {{ form.injury }}&nbsp;&nbsp;
-<input type="submit" class="sexybutton sexysimple" value="Apply" />
-</form>
-{% endif %}
-
-{% if is_fight %}
-<a href="{% url combat_fight %}">Fight</a>
-{% endif %}
-{% if is_refuse %}
-<a href="{% url combat_refuse %}">Refuse</a>
-{% endif %}
-{% if is_cancel %}
-<a href="{% url combat_cancel %}">Cancel</a>
-{% endif %}
-<a href="{% url combat_duel %}">Update</a>
+	{% if not in_combat %}
+		<form action="" method="post">
+			{% csrf_token %}
+			{{ form.with_things.label_tag }} {{ form.with_things }}&nbsp;&nbsp;
+			{{ form.time_out.label_tag }} {{ form.time_out }}&nbsp;&nbsp;
+			{{ form.injury.label_tag }} {{ form.injury }}&nbsp;&nbsp;
+			<input type="submit" class="sexybutton sexysimple" value="Apply" />
+		</form>
+	{% endif %}
+	
+	{% if is_fight %}
+		<a href="{% url combat_fight %}">Fight</a>
+	{% endif %}
+	{% if is_refuse %}
+		<a href="{% url combat_refuse %}">Refuse</a>
+	{% endif %}
+	{% if is_cancel %}
+		<a href="{% url combat_cancel %}">Cancel</a>
+	{% endif %}
+	<a href="{% url combat_duel %}">Update</a>
 </div>
 {% for combat in combats %}
 	<div>
-	{% if not in_combat %}<a href="{% url combat_accept combat.id 1 %}">Accept</a>{% endif %}
-	{{ combat.start_date_time|date:"H:i:s" }}
-	{% get_team combat.combathero_set 0 as one_team %}
-	{% get_team combat.combathero_set 1 as two_team %}
-	
-	{% for team_hero in one_team %}
-		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
-	{% endfor %}
-	{% if two_team %} vs {% endif %}
-	{% for team_hero in two_team %}
-		{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
-	{% endfor %}
-	(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
+		{% if not in_combat %}<a href="{% url combat_accept combat.id 1 %}">Accept</a>{% endif %}
+		{{ combat.start_date_time|date:"H:i:s" }}
+		{% get_team combat.combathero_set 0 as one_team %}
+		{% get_team combat.combathero_set 1 as two_team %}
+		
+		{% for team_hero in one_team %}
+			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		{% endfor %}
+		{% if two_team %} vs {% endif %}
+		{% for team_hero in two_team %}
+			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		{% endfor %}
+		(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 	</div>
 {% endfor %}
 {% endblock %}

@@ -135,6 +135,7 @@ CREATE TABLE Thing
     is_art INT(1) NOT NULL,
     is_bot INT(1) NOT NULL,
     stability INT(6) NOT NULL,
+    weight INT(6) NOT NULL,
     image VARCHAR(32) NOT NULL,
 
     level_need INT(3) NOT NULL,
@@ -180,7 +181,8 @@ CREATE TABLE Thing
 
     time_duration INT(6) DEFAULT 0,
 
-    strike_count INT(3) DEFAULT 0
+    strike_count INT(3) DEFAULT 0,
+    take_two_hands INT(1) NOT NULL
 );
 
 CREATE TABLE HeroThing
@@ -223,7 +225,8 @@ CREATE TABLE Combat
     two_team_lvl_max INT(3),
     location VARCHAR(32) NOT NULL,
     start_date_time DATETIME NOT NULL,
-    end_date_time DATETIME NOT NULL
+    end_date_time DATETIME NOT NULL,
+    win_team INT(1) NOT NULL
 );
 
 CREATE TABLE CombatHero
@@ -367,7 +370,9 @@ CREATE TABLE Building
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     parent_id INT,
     name VARCHAR(32) NOT NULL,
+    slug VARCHAR(32) NOT NULL,
     plugin VARCHAR(32),
+    image VARCHAR(32) NOT NULL,
     coordinate_x1 INT(6),
     coordinate_y1 INT(6),
     coordinate_x2 INT(6),

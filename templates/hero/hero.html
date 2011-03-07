@@ -1,10 +1,11 @@
 {% extends "base_game.html" %}
 {% block title %}{{ hero }}{% endblock %}
+
 {% block content %}
 {% load hero_tags %}
 <div class="span-15">
 	<div class="span-9">
-			{% include "hero/__body.html" %}
+		{% include "hero/__body.html" %}
 	</div>
 	<div class="span-5 last">
 		<p>
@@ -62,5 +63,4 @@
 		{% if hero.number_of_abilities %} <b>Number of increases: {{ hero.number_of_abilities }}</b><br />  {% endif %}
 	</p>
 </div>
-
 {% endblock %}

@@ -1,0 +1,9 @@
+{% load building_tags %}
+{% for child in children %}
+	<a href="{% get_building_url child %}">{{ child.name }}</a><br />
+	{% if child.default_child %}
+		{% for child_of_default_child in children_of_default_child %}
+			- <a href="{% get_building_url child_of_default_child %}">{{ child_of_default_child.name }}</a><br/>
+		{% endfor %}
+	{% endif %}
+{% endfor %}

@@ -41,18 +41,19 @@ class HeroAdmin(admin.ModelAdmin):
    
 #    
     fieldsets = [
-        ('General',               {'fields': ['login', 'password', 'email',
-                                              'date_of_birthday', 'sex']}),
-        ('Parameters',               {'fields': ['experience', 'money', 
-                    'money_art', 'location', 'level', 'image',
-                    'number_of_wins', 'number_of_losses', 'number_of_draws',
-                    'hp', 'strength', 'dexterity', 'intuition', 'health',
-                    'swords', 'axes', 'knives', 'clubs', 'shields', 
-                    'number_of_abilities', 'number_of_skills',
-                    'number_of_parameters'], 
-                                                    'classes': ['collapse']}),
+        ('General', {'fields': ['login', 'password', 'email', 
+                                'date_of_birthday', 'sex']}),
+        ('Parameters', {'fields': ['experience', 'money', 
+                                   'money_art', 'location', 'level', 'image',
+                                   'number_of_wins', 'number_of_losses', 
+                                   'number_of_draws', 'hp', 'strength', 
+                                   'dexterity', 'intuition', 'health', 
+                                   'swords', 'axes', 'knives', 'clubs', 
+                                   'shields', 'number_of_abilities', 
+                                   'number_of_skills', 'number_of_parameters'], 
+                        'classes': ['collapse']}),
         ('About hero', {'fields': ['country', 'city', 'name', 'about'], 
-                                                    'classes': ['collapse']}),
+                        'classes': ['collapse']}),
     ]
 
 admin.site.register(Hero, HeroAdmin)

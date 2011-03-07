@@ -1,0 +1,30 @@
+{% load thing_tags %}
+
+Level: {% get_thing_requirement thing.level_need hero.level %}<br />
+{% if thing.strength_need %}
+	Strength: {% get_thing_requirement thing.strength_need hero.feature.strength %}<br />
+{% endif %}
+{% if thing.dexterity_need %}
+	Dexterity: {% get_thing_requirement thing.dexterity_need hero.feature.dexterity %}<br />
+{% endif %}
+{% if thing.intuition_need %}
+	Intuition: {% get_thing_requirement thing.intuition_need hero.feature.intuition %}<br />
+{% endif %}
+{% if thing.health_need %}
+	Health: {% get_thing_requirement thing.health_need hero.feature.health %}<br />
+{% endif %}
+{% if thing.swords_need %}
+	Swords: {% get_thing_requirement thing.swords_need hero.feature.swords %}<br />
+{% endif %}
+{% if thing.axes_need %}
+	Axes: {% get_thing_requirement thing.axes_need hero.feature.axes %}<br />
+{% endif %}
+{% if thing.knives_need %}
+	Knives: {% get_thing_requirement thing.knives_need hero.feature.knives %}<br />
+{% endif %}
+{% if thing.clubs_need %}
+	Clubs: {% get_thing_requirement thing.clubs_need hero.feature.clubs %}<br />
+{% endif %}
+{% if thing.shields_need %}
+	Shields: {% get_thing_requirement thing.shields_need hero.feature.shields %}
+{% endif %}

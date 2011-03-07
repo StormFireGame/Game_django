@@ -11,10 +11,11 @@ FEATURES = ((0, 'Strength'), (1, 'Dexterity'), (2, 'Intuition'),
             (3, 'Health'), (4, 'Swords'), (5, 'Axes'),
             (6, 'Knives'), (7, 'Clubs'), (8, 'Shields'), 
             (9, 'Protection head'), (10, 'Protection breast'), 
-            (11, 'Protection zone'), (12, 'Protection legs'), (13, 'Damage min'), 
-            (14, 'Damage max'), (15, 'Accuracy'), (16, 'Dodge'), 
-            (17, 'Devastate'), (18, 'Durability'), (19, 'Block break'), 
-            (20, 'Armor break'), (21, 'Hp'), (22, 'Capacity'))
+            (11, 'Protection zone'), (12, 'Protection legs'), 
+            (13, 'Damage min'), (14, 'Damage max'), (15, 'Accuracy'), 
+            (16, 'Dodge'), (17, 'Devastate'), (18, 'Durability'), 
+            (19, 'Block break'), (20, 'Armor break'), (21, 'Hp'), 
+            (22, 'Capacity'))
 
 class HeroImage(models.Model):
     image = models.ImageField(upload_to='upload/heroimages')

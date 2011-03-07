@@ -11,7 +11,7 @@ import time
 def hero_init(origin_func):
     def inner_decorator(request, *args, **kwargs):
         if 'hero_id' not in request.session:
-            messages.add_message(request, messages.ERROR, \
+            messages.add_message(request, messages.ERROR,
                                  'You have to log in.')
             return HttpResponseRedirect('/')
         try:
@@ -50,28 +50,28 @@ def _hp(hero):
 ##
 def _feature_help(hero, feature):
     if feature == 'damage_min':
-        result = int(round(int(hero.feature.damage_min) + \
-                                    int(hero.feature.strength) * 2))
+        result = int(round(int(hero.feature.damage_min) +
+                           int(hero.feature.strength) * 2))
     elif feature == 'damage_max':
-        result = int(round(int(hero.feature.damage_max) + \
-                            int(hero.feature.strength) * 3))
+        result = int(round(int(hero.feature.damage_max) +
+                           int(hero.feature.strength) * 3))
     elif feature == 'accuracy':
-        result = int(round(int(hero.feature.accuracy) + \
-                            int(hero.feature.dexterity) * 2))
+        result = int(round(int(hero.feature.accuracy) +
+                           int(hero.feature.dexterity) * 2))
     elif feature == 'dodge':
-        result = int(round(int(hero.feature.dodge) + \
-                            int(hero.feature.dexterity) * 2.5))
+        result = int(round(int(hero.feature.dodge) +
+                           int(hero.feature.dexterity) * 2.5))
     elif feature == 'devastate':
-        result = int(round(int(hero.feature.devastate) + \
-                            int(hero.feature.intuition) * 2.5))
+        result = int(round(int(hero.feature.devastate) +
+                           int(hero.feature.intuition) * 2.5))
     elif feature == 'durability':
-        result = int(round(int(hero.feature.durability) + \
-                            int(hero.feature.intuition) * 2))
+        result = int(round(int(hero.feature.durability) +
+                           int(hero.feature.intuition) * 2))
     elif feature == 'hp':
         if hero.id:
             current_hp = hero.feature.hp.split('|')[0]
             max_hp = int(hero.feature.hp.split('|')[1]) + \
-                                                int(hero.feature.health) * 10
+                     int(hero.feature.health) * 10
             current_time = hero.feature.hp.split('|')[2]
         else:
             current_hp = max_hp = int(hero.feature.health) * 10
@@ -79,89 +79,89 @@ def _feature_help(hero, feature):
         
         result = '%s|%s|%s' % (current_hp, max_hp, current_time)
     elif feature == 'capacity':
-        result = int(round(int(hero.feature.capacity) + \
-                            int(hero.feature.strength) * 10))
+        result = int(round(int(hero.feature.capacity) +
+                           int(hero.feature.strength) * 10))
     
     return result
 
 def _featureskill_help(hero, skill, feature, plus):
     if feature == 'Strength':
-        hero.feature.strength = str(int(hero.feature.strength) + plus * \
+        hero.feature.strength = str(int(hero.feature.strength) + plus * 
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Dexterity':
-        hero.feature.dexterity = str(int(hero.feature.dexterity) + plus * \
+        hero.feature.dexterity = str(int(hero.feature.dexterity) + plus * 
                                 hero.heroheroskill_set.get(skill=skill).level)
     
     elif feature == 'Intuition':
-        hero.feature.intuition = str(int(hero.feature.intuition) + plus * \
+        hero.feature.intuition = str(int(hero.feature.intuition) + plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     
     elif feature == 'Health':
-        hero.feature.health = str(int(hero.feature.health) + plus * \
+        hero.feature.health = str(int(hero.feature.health) + plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     
     elif feature == 'Swords':
-        hero.feature.swords = str(int(hero.feature.swords) + plus * \
+        hero.feature.swords = str(int(hero.feature.swords) + plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Axes':
-        hero.feature.axes = str(int(hero.feature.axes) + plus * \
+        hero.feature.axes = str(int(hero.feature.axes) + plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Knives':
-        hero.feature.knives = str(int(hero.feature.knives) + plus * \
+        hero.feature.knives = str(int(hero.feature.knives) + plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Clubs':
-        hero.feature.clubs = str(int(hero.feature.clubs) + plus * \
+        hero.feature.clubs = str(int(hero.feature.clubs) + plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Shields':
-        hero.feature.shields = str(int(hero.feature.shields) + plus * \
+        hero.feature.shields = str(int(hero.feature.shields) + plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     
     elif feature == 'Protection head':
-        hero.feature.protection_head = str(plus * \
+        hero.feature.protection_head = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Protection breast':
-        hero.feature.protection_breast = str(plus * \
+        hero.feature.protection_breast = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Protection zone':
-        hero.feature.protection_zone = str(plus * \
+        hero.feature.protection_zone = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Protection leg':
-        hero.feature.protection_leg = str(plus * \
+        hero.feature.protection_leg = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     
     elif feature == 'Damage min':
-        hero.feature.damage_min = str(plus * \
+        hero.feature.damage_min = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Damage max':
-        hero.feature.damage_max = str(plus * \
+        hero.feature.damage_max = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)        
     elif feature == 'Accuracy':
-        hero.feature.accuracy = str(plus * \
+        hero.feature.accuracy = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Dodge':
-        hero.feature.dodge = str(plus * \
+        hero.feature.dodge = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Devastate':
-        hero.feature.devastate = str(plus * \
+        hero.feature.devastate = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Durability':
-        hero.feature.durability = str(plus * \
+        hero.feature.durability = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Block break':
-        hero.feature.block_break = str(plus * \
+        hero.feature.block_break = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
     elif feature == 'Armor break':
-        hero.feature.armor_break = str(plus * \
+        hero.feature.armor_break = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
                                 
     elif feature == 'Hp':
         current_hp = hero.feature.hp.split('|')[0]
         current_time = hero.feature.hp.split('|')[2]
-        hero.feature.hp = '%s|%s|%s' % (current_hp, plus * \
+        hero.feature.hp = '%s|%s|%s' % (current_hp, plus *
                             hero.heroheroskill_set.get(skill=skill).level, 
                             current_time)
     elif feature == 'Capacity':
-        hero.feature.capacity = str(plus * \
+        hero.feature.capacity = str(plus *
                                 hero.heroheroskill_set.get(skill=skill).level)
 
 def hero_feature(hero):
@@ -182,7 +182,7 @@ def hero_feature(hero):
         
         if hero.id:
             hero.feature.hp = '%s|%s|%s' % (hero.feature.hp.split('|')[0], 0, 
-                                        time.time())
+                                            time.time())
         
         hero.feature.strike_count = '1'
         hero.feature.block_count = '2'
@@ -208,7 +208,8 @@ def hero_feature(hero):
 def hero_level_up(hero):
     if hero.id:
         try:
-            tableexperience = TableExperience.objects.exclude(experience__gte=hero.experience)[0]
+            tableexperience = TableExperience.objects. \
+                                    exclude(experience__gte=hero.experience)[0]
         except IndexError:
             return
             
@@ -230,5 +231,5 @@ def set_hp(hero, hp=-1):
     if hp == -1:
         hp = hero.feature.hp.split('|')[0]
     hero.feature.hp = '%s|%s|%s' % (hp, hero.feature.hp.split('|')[1], \
-                                                                    time.time())
+                                    time.time())
     hero.feature.save()
