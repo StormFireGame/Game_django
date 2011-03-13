@@ -45,8 +45,8 @@
 {% if thing.protection_zone %}
 	Protection zone: {{ thing.protection_zone|minus_or_plus_give }}%<br />
 {% endif %}
-{% if thing.protection_leg %}
-	Protection leg: {{ thing.protection_leg|minus_or_plus_give }}%<br />
+{% if thing.protection_legs %}
+	Protection legs: {{ thing.protection_legs|minus_or_plus_give }}%<br />
 {% endif %}
 
 {% if thing.accuracy %}
@@ -69,7 +69,7 @@
 {% endif %}
 
 {% if thing.hp %}
-	Hp: {{ thing.hp|minus_or_plus_give }}%<br />
+	Hp: {{ thing.hp|minus_or_plus_give }}<br />
 {% endif %}
 
 {% if thing.time_duration %}

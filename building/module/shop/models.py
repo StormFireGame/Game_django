@@ -11,3 +11,7 @@ class BuildingShopThing(models.Model):
     
     class Meta:
         db_table = 'BuildingShopThing'
+        unique_together = (('building', 'thing'),)
+    
+    def __unicode__(self):
+        return '%s %s' % (self.building.name, self.thing.name)

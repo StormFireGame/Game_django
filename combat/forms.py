@@ -1,6 +1,6 @@
 from django import forms
 
-from combat.models import STRIKES
+from combat.models import Combat
 from hero.models import Hero
 
 from django.forms.extras.widgets import SelectDateWidget
@@ -130,7 +130,7 @@ class CombatForm(forms.Form):
         super(CombatForm, self).__init__(*args, **kwargs)
         for strike in range(self.strike_count):
             self.fields['strike'+str(strike)] = forms.IntegerField(widget=
-                                        forms.RadioSelect(choices=STRIKES),
+                                    forms.RadioSelect(choices=Combat.STRIKES),
                                                                 required=False)
         self.fields['hero_two_id'] = forms.IntegerField(widget=
                         forms.HiddenInput(attrs={'value' : self.hero_two_id}))

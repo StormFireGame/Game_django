@@ -11,3 +11,19 @@ h3 {font-size:1.5em;line-height:1;margin-bottom:0em;}
 .border {border:1px solid #eee;}
 
 .red {color:red;}
+
+.helmet {position:absolute; left:123px; top:20px;}
+.kolchuga {position:absolute; left:50px; top:200px;}
+.armor {position:absolute; left:20px; top:200px;}
+.belt {position:absolute; left:231px; top:248px;}
+.pants {position:absolute; left:20px; top:294px;}
+.treetop {position:absolute; left:228px; top:203px;}
+.glove {position:absolute; left:26px; top:35px;}
+.boot {position:absolute; left:228px; top:296px;}
+.amulet {position:absolute; left:228px; top:33px;}
+.ring0 {position:absolute; left:300px; top:60px;}
+.ring1 {position:absolute; left:300px; top:110px;}
+.ring2 {position:absolute; left:300px; top:160px;}
+.ring3 {position:absolute; left:300px; top:210px;}
+.arms0 {position:absolute; left:32px; top:91px;}
+.arms1 {position:absolute; left:228px; top:90px;}

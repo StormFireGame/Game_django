@@ -23,8 +23,17 @@ urlpatterns = patterns('',
          '(?P<what>strength|dexterity|intuition|health)$', 
          'hero.views.increase', name='hero_increase'),
     
+    #hero inventary
+    url(r'^game/inventory$', 'hero.views.inventory', name='hero_inventory'),
+    url(r'^game/inventory/throw/(?P<id>\d+)$', 'hero.views.throw', 
+        name='hero_inventory_throw'),
+    url(r'^game/inventory/dress/(?P<id>\d+)$', 'hero.views.dress', 
+        name='hero_inventory_dress'),
+    url(r'^game/inventory/undress/(?P<id>\d+)$', 'hero.views.undress', 
+        name='hero_inventory_undress'),
+    
     #hero settings
-    url(r'^game/settings$', 'hero.views.settings', name='settings'),
+    url(r'^game/settings$', 'hero.views.settings', name='hero_settings'),
     
     #island
     url(r'^game/island$', 'island.views.island', name='island'),
@@ -65,5 +74,5 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     
     (r'^media/(.*)$', 'django.views.static.serve', 
-                                        {'document_root': settings.MEDIA_ROOT})
+     {'document_root': settings.MEDIA_ROOT})
 )

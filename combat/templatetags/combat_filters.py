@@ -1,16 +1,16 @@
 from django import template
 
-from combat.models import TYPES, INJURIES
+from combat.models import Combat
 
 register = template.Library()
 
 @register.filter
 def get_string_injury(value):
-    return INJURIES[int(value)][1]
+    return Combat.INJURIES[value][1]
 
 @register.filter
 def get_string_type(value):
-    return TYPES[int(value)][1]
+    return Combat.TYPES[value][1]
 
 @register.filter
 def get_strike_list(value):

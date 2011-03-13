@@ -1,6 +1,6 @@
 import re
 
-from combat.models import STRIKES, BLOCKS
+from combat.models import Combat
 
 from django import template
 
@@ -233,8 +233,8 @@ class GetFriendlyLogNode(template.Node):
                         strike_w.append(strike_p[0])
                         
                     
-                    strike_w = [ STRIKES[int(i)][1] for i in strike_w ]
-                    blocks_w = [ BLOCKS[int(i)][1] for i in blocks ]
+                    strike_w = [ Combat.STRIKES[int(i)][1] for i in strike_w ]
+                    blocks_w = [ Combat.BLOCKS[int(i)][1] for i in blocks ]
                     log += ' (' + ', '.join(strike_w) + ') (' + \
                            ', '.join(blocks_w) + ') '
         return log

@@ -6,10 +6,10 @@ from django.contrib import messages
 
 from building.models import Building
 from building.module.shop.models import BuildingShopThing
-from thing.models import TYPES
 from hero.models import HeroThing
+from thing.models import Thing
 
-from hero.heromanipulation import hero_init
+from hero.heromanipulation import hero_init, update_capacity
 from building import buildingmanipulation
 
 PLUGIN = 'shop'
@@ -29,7 +29,7 @@ def index(request, slug, template_name='building/module/shop/index.html'):
 def view(request, slug, type, template_name='building/module/shop/view.html'):
     building = Building.objects.get(slug=slug)
     
-    type_num = [i[0] for i in TYPES if i[1].lower() == type][0]
+    type_num = [i[0] for i in Thing.TYPES if i[1].lower() == type][0]
     shopthings = BuildingShopThing.objects.filter(thing__type=type_num)
    
     variables = RequestContext(request, {'hero': request.hero,
@@ -60,6 +60,8 @@ def buy(request, slug, id):
         shopthing.save()
         hero.money -= shopthing.price
         hero.save()
+        
+        update_capacity(hero)
 #
         messages.add_message(request, messages.SUCCESS, 'You buy thing.')
 

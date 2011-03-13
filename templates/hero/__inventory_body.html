@@ -3,6 +3,8 @@
 	<img src="{{ MEDIA_URL }}{{ hero.image.image }}" alt="" style="position:absolute; left:108px; top:96px;" />
 	{% get_hero_dressed_things hero as herothings %}
 	{% for herothing in herothings %}
-		<img src="{{ MEDIA_URL }}{{ herothing.thing.image }}" alt="" class="{% get_class_position herothing herothings %}" />
+		<a href="{% url hero_inventory_undress herothing.id %}">
+			<img src="{{ MEDIA_URL }}{{ herothing.thing.image }}" alt="" class="{% get_class_position herothing herothings %}" />
+		</a>
 	{% endfor %}
 </div>

@@ -66,7 +66,7 @@ class BotFeature(models.Model):
     protection_head = models.CharField(max_length=32, null=True)
     protection_breast = models.CharField(max_length=32, null=True)
     protection_zone = models.CharField(max_length=32, null=True)
-    protection_leg = models.CharField(max_length=32, null=True)
+    protection_legs = models.CharField(max_length=32, null=True)
     
     damage_min = models.CharField(max_length=32, null=True)
     damage_max = models.CharField(max_length=32, null=True)

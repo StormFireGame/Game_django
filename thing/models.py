@@ -1,16 +1,38 @@
 from django.db import models
 from django.conf import settings
 
-#
-TYPES = ((0, 'Sword'), (1, 'Axe'), (2, 'Knive'), (3, 'Clubs'), (4, 'Shield'), 
-         (5, 'Helmet'), (6, 'Kolchuga'), (7, 'Armor'), (8, 'Belt'), 
-         (9, 'Pants'), (10, 'Treetop'), (11, 'Glove'), (12, 'Boot'), 
-         (13, 'Ring'), (14, 'Amulet'), (15, 'Potion'), (16, 'Elixir'),)
-
 class Thing(models.Model):
+    
+    TYPE_SWORD = 0
+    TYPE_AXE = 1
+    TYPE_KNIVE = 2
+    TYPE_CLUBS = 3
+    TYPE_SHIELD = 4
+    TYPE_HELMET = 5
+    TYPE_KOLCHUGA = 6
+    TYPE_ARMOR = 7
+    TYPE_BELT = 8
+    TYPE_PANTS = 9
+    TYPE_TREETOP = 10
+    TYPE_GLOVE = 11
+    TYPE_BOOT = 12
+    TYPE_RING = 13
+    TYPE_AMULET = 14
+    TYPE_POTION = 15
+    TYPE_ELIXIR = 16
+#
+    TYPES = ((TYPE_SWORD, 'Sword'), (TYPE_AXE, 'Axe'), (TYPE_KNIVE, 'Knive'), 
+             (TYPE_CLUBS, 'Clubs'), (TYPE_SHIELD, 'Shield'), 
+             (TYPE_HELMET, 'Helmet'), (TYPE_KOLCHUGA, 'Kolchuga'), 
+             (TYPE_ARMOR, 'Armor'), (TYPE_BELT, 'Belt'), (TYPE_PANTS, 'Pants'), 
+             (TYPE_TREETOP, 'Treetop'), (TYPE_GLOVE, 'Glove'), 
+             (TYPE_BOOT, 'Boot'), (TYPE_RING, 'Ring'), (TYPE_AMULET, 'Amulet'), 
+             (TYPE_POTION, 'Potion'), (TYPE_ELIXIR, 'Elixir'),)
+    
     name = models.CharField(max_length=32, unique=True)
-
     type = models.IntegerField(default=0, choices=TYPES)
+    price = models.FloatField()
+    
     is_art = models.BooleanField(default=False)
     is_bot = models.BooleanField(default=False)
     stability = models.IntegerField()
@@ -45,7 +67,7 @@ class Thing(models.Model):
     protection_head = models.IntegerField(default=0)
     protection_breast = models.IntegerField(default=0)
     protection_zone = models.IntegerField(default=0)
-    protection_leg = models.IntegerField(default=0)
+    protection_legs = models.IntegerField(default=0)
     
     accuracy = models.IntegerField(default=0)
     dodge = models.IntegerField(default=0)
@@ -59,6 +81,10 @@ class Thing(models.Model):
     time_duration = models.IntegerField(default=0)
     
     strike_count = models.IntegerField(default=0)
+    block_count = models.IntegerField(default=0)
+    
+    capacity = models.IntegerField(default=0)
+    
     take_two_hands = models.BooleanField(default=False)
     
     class Meta:

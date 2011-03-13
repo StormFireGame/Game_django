@@ -40,10 +40,10 @@
   			</div>		
 			<div class="span-8 prepend-top">
 				<a href="{% url hero %}">Hero</a>
-				<a href="/game/inventory/">Inventory</a>
+				<a href="{% url hero_inventory %}">Inventory</a>
 				<a href="{% url combat_duel %}">Combats</a>
 				<a href="/game/information/">Information</a>
-				<a href="{% url settings %}">Settings</a>
+				<a href="{% url hero_settings %}">Settings</a>
 				<a href="{% get_back_url hero.location request %}">Back</a>
 			</div>
 			

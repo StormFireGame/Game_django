@@ -7,7 +7,7 @@ CREATE TABLE Hero
     experience INT(12) NOT NULL,
     money FLOAT(10, 2) NOT NULL,
     money_art FLOAT(10, 2) NOT NULL,
-    location VARCHAR(32) NOT NULL,
+    location VARCHAR(1024) NOT NULL,
     level INT(3) NOT NULL,
     image_id INT NOT NULL,
 
@@ -62,7 +62,7 @@ CREATE TABLE HeroFeature
     protection_head VARCHAR(32),
     protection_breast VARCHAR(32),
     protection_zone VARCHAR(32),
-    protection_leg VARCHAR(32),
+    protection_legs VARCHAR(32),
 
     damage_min VARCHAR(32),
     damage_max VARCHAR(32),
@@ -131,6 +131,7 @@ CREATE TABLE Thing
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
+    money FLOAT(10, 2) NOT NULL,
     type INT(3) NOT NULL,
     is_art INT(1) NOT NULL,
     is_bot INT(1) NOT NULL,
@@ -168,7 +169,7 @@ CREATE TABLE Thing
     protection_head INT(6) DEFAULT 0,
     protection_breast INT(6) DEFAULT 0,
     protection_zone INT(6) DEFAULT 0,
-    protection_leg INT(6) DEFAULT 0,
+    protection_legs INT(6) DEFAULT 0,
 
     accuracy INT(6) DEFAULT 0,
     dodge INT(6) DEFAULT 0,
@@ -182,6 +183,10 @@ CREATE TABLE Thing
     time_duration INT(6) DEFAULT 0,
 
     strike_count INT(3) DEFAULT 0,
+    block_count INT(3) DEFAULT 0,
+
+    capacity INT(3) DEFAULT 0,
+
     take_two_hands INT(1) NOT NULL
 );
 
@@ -311,7 +316,7 @@ CREATE TABLE BotFeature
     protection_head VARCHAR(32),
     protection_breast VARCHAR(32),
     protection_zone VARCHAR(32),
-    protection_leg VARCHAR(32),
+    protection_legs VARCHAR(32),
 
     damage_min VARCHAR(32),
     damage_max VARCHAR(32),

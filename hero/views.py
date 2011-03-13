@@ -4,11 +4,13 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.db.models import Q
 
 from hero.forms import LoginForm, RegistrationForm, SettingsForm
-from hero.models import Hero, HeroSkill, HeroHeroSkill, HeroImage
+from hero.models import Hero, HeroSkill, HeroHeroSkill, HeroImage, Thing, \
+                        HeroThing
 
-from hero.heromanipulation import hero_init, hero_feature
+from hero.heromanipulation import hero_init, hero_feature, update_capacity
 
 import hashlib
 
@@ -52,7 +54,6 @@ def registration(request, template_name='main/registration.html'):
     
     return render_to_response(template_name, variables)
 
-#Inside game
 @hero_init
 def hero(request, template_name='hero/hero.html'):
     
@@ -92,8 +93,8 @@ def increase(request, type, what):
         except HeroHeroSkill.DoesNotExist:
             HeroHeroSkill.objects.create(hero=hero, skill=heroskill, level=1)
             
-    hero_feature(hero)
     hero.save()
+    hero_feature(hero)
     
     return HttpResponseRedirect(reverse('hero'))
 
@@ -111,7 +112,7 @@ def settings(request, template_name='hero/settings.html'):
                                                 form.cleaned_data['password2']:
                 hero.password = form.cleaned_data['password2']
             form.save()       
-            return HttpResponseRedirect(reverse('settings'))
+            return HttpResponseRedirect(reverse('hero_settings'))
     else:
         form = SettingsForm(request.session['hero_id'], instance=hero)
     
@@ -119,5 +120,101 @@ def settings(request, template_name='hero/settings.html'):
                                          'heroimages': heroimages,
                                          'form': form})
     
-    return render_to_response(template_name, variables)    
+    return render_to_response(template_name, variables) 
+
+#Inventory
+@hero_init
+def inventory(request, template_name='hero/inventory.html'):
+    
+    hero = request.hero
+    herothings = hero.herothing_set.filter(dressed=False)
+    
+    variables = RequestContext(request, {'hero': hero,
+                                         'herothings': herothings})
+    
+    return render_to_response(template_name, variables)
+
+@hero_init
+def throw(request, id):
+    
+    hero = request.hero
+    hero.herothing_set.get(id=id).delete()
+
+    update_capacity(hero)
+#
+    messages.add_message(request, messages.SUCCESS, 'Your thing thrown.')
+    return HttpResponseRedirect(reverse('hero_inventory'))
+
+##
+@hero_init
+def dress(request, id):
+    
+    hero = request.hero
+    
+    herothing = hero.herothing_set.get(id=id)    
+    herothing.dressed = True
+    herothing.save()
+    
+    type = herothing.thing.type
+    take_two_hands = herothing.thing.take_two_hands
+    
+    if type == Thing.TYPE_HELMET or type == Thing.TYPE_KOLCHUGA or \
+       type == Thing.TYPE_ARMOR or type == Thing.TYPE_BELT or \
+       type == Thing.TYPE_PANTS or type == Thing.TYPE_TREETOP or \
+       type == Thing.TYPE_GLOVE or type == Thing.TYPE_BOOT or \
+       type == Thing.TYPE_AMULET:
+        try:
+            herothing = hero.herothing_set.filter(dressed=True, 
+                                                  thing__type=type). \
+                                                        exclude(id=id).get()
+            herothing.dressed = False
+            herothing.save()
+        except HeroThing.DoesNotExist:
+            pass
+    elif type == Thing.TYPE_RING:
+        herothings = hero.herothing_set.filter(dressed=True, 
+                                               thing__type=type).exclude(id=id)
+        if len(herothings) == 4:  
+            herothings[0].dressed = False
+            herothings[0].save()
+    elif type == Thing.TYPE_SWORD or type == Thing.TYPE_AXE or \
+         type == Thing.TYPE_KNIVE or type == Thing.TYPE_CLUBS or \
+         type == Thing.TYPE_SHIELD:
+        
+        herothings = hero.herothing_set.filter(
+                                            Q(thing__type=Thing.TYPE_SWORD) | 
+                                               Q(thing__type=Thing.TYPE_AXE) |
+                                            Q(thing__type=Thing.TYPE_KNIVE) |
+                                            Q(thing__type=Thing.TYPE_CLUBS) |
+                                            Q(thing__type=Thing.TYPE_SHIELD),
+                                                dressed=True).exclude(id=id)
+        if len(herothings):
+            if len(herothings) == 2 or herothings[0].thing.take_two_hands or \
+               take_two_hands:
+                if take_two_hands:
+                    for herothing in herothings:
+                        herothing.dressed = False
+                        herothing.save()
+                else:
+                    herothings[0].dressed = False
+                    herothings[0].save()
+        
+    hero_feature(hero)  
+#
+    messages.add_message(request, messages.SUCCESS, 'Thing dressed.')
+    return HttpResponseRedirect(reverse('hero_inventory'))
+
+@hero_init
+def undress(request, id):
+
+    hero = request.hero
+    
+    herothing = hero.herothing_set.get(id=id)
+    herothing.dressed = False
+    herothing.save()
+
+    #hero_feature(hero)
+#
+    messages.add_message(request, messages.SUCCESS, 'Thing undressed.')
+    return HttpResponseRedirect(reverse('hero_inventory'))
 #End

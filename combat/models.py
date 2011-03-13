@@ -3,21 +3,35 @@ from django.db import models
 from hero.models import Hero
 from bot.models import Bot
 
-#
-TYPES = ((0, 'Duel'), (1, 'Group'), (2, 'Chaotic'), (3, 'Territorial'))
-INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
-
-#
-STRIKES = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
-BLOCKS = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
-
 class Combat(models.Model):
 #
-    type = models.SmallIntegerField(default=0, choices=TYPES)
+    STRIKES = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
+    BLOCKS = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
+
+    TEAM_FIRST = 0
+    TEAM_SECOND = 1
 #
-    IS_ACTIVES = ((0, 'Wait'), (1, 'Fight'), (2, 'Past'),)
+    TEAMS = ((TEAM_FIRST, 'First'), (TEAM_SECOND, 'Second'))
+
+    TYPE_DUEL = 0
+    TYPE_GROUP = 1
+    TYPE_CHAOTIC = 2
+    TYPE_TERRITORIAL = 3
+#
+    TYPES = ((TYPE_DUEL, 'Duel'), (TYPE_GROUP, 'Group'), 
+             (TYPE_CHAOTIC, 'Chaotic'), (TYPE_TERRITORIAL, 'Territorial'))
+    type = models.SmallIntegerField(default=0, choices=TYPES)
+
+    IS_ACTIVE_WAIT = 0
+    IS_ACTIVE_FIGHT = 1
+    IS_ACTIVE_PAST = 2
+#
+    IS_ACTIVES = ((IS_ACTIVE_WAIT, 'Wait'), (IS_ACTIVE_FIGHT, 'Fight'), 
+                  (IS_ACTIVE_PAST, 'Past'),)
     is_active = models.SmallIntegerField(default=0, choices=IS_ACTIVES)
     time_out = models.IntegerField(default=60)   
+#
+    INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
     injury = models.SmallIntegerField(default=0, choices=INJURIES)
     with_things = models.BooleanField(default=True, blank=True)
     time_wait = models.IntegerField(default=360, null=True, blank=True)
@@ -38,16 +52,15 @@ class Combat(models.Model):
         ordering = ['-start_date_time']
     
     def __unicode__(self):
-        return '%s %s' % (TYPES[self.type][1], 
+        return '%s %s' % (self.TYPES[self.type][1], 
                           self.IS_ACTIVES[self.is_active][1])
 
 class CombatHero(models.Model):
     combat = models.ForeignKey(Combat)
     hero = models.ForeignKey(Hero, null=True, blank=True)
     bot = models.ForeignKey(Bot, null=True, blank=True)
-#
-    TEAMS = ((0, 'First'), (1, 'Second'))
-    team = models.SmallIntegerField(default=0, choices=TEAMS)
+    
+    team = models.SmallIntegerField(default=0, choices=Combat.TEAMS)
     is_dead = models.BooleanField(default=False)
     is_join = models.BooleanField(default=False)
     is_out = models.BooleanField(default=False)
