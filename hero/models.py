@@ -97,7 +97,9 @@ class Hero(models.Model):
     FEATURE_ARMOR_BREAK = 20
     FEATURE_HP = 21
     FEATURE_CAPACITY = 22
-    #
+    FEATURE_STRIKE_COUNT = 23
+    FEATURE_BLOCK_COUNT = 24
+#
     FEATURES = ((FEATURE_STRENGTH, 'Strength'), 
                 (FEATURE_DEXTERITY, 'Dexterity'), 
                 (FEATURE_INTUITION, 'Intuition'), 
@@ -178,14 +180,16 @@ class Hero(models.Model):
             heromanipulation.hero_feature(self)
             heromanipulation.hero_level_up(self)
             
-            heroimage = HeroImage.objects.filter(sex=self.sex)[0]
-            self.image = heroimage
+            if not self.image:
+                heroimage = HeroImage.objects.filter(sex=self.sex)[0]
+                self.image = heroimage
             
             island = Island.objects.all()[0]
             self.location = '%s_20|20:0' % (island.id)
         else:
             if self.password != Hero.objects.get(id=self.id).password:
                 self.password = hashlib.sha1(self.password).hexdigest()
+        
         super(Hero, self).save()
 
 class SkillFeature(models.Model):
@@ -218,6 +222,7 @@ class HeroThing(models.Model):
     stability_all = models.IntegerField()
     stability_left = models.IntegerField()
     dressed = models.BooleanField(default=False)
+    away = models.BooleanField(default=False)
     
     def __unicode__(self):
         return '%s %s' % (self.hero, self.thing)
@@ -241,4 +246,3 @@ class HeroThingFeature(models.Model):
     
     class Meta:
         db_table = 'HeroThingFeature'
-        unique_together = (('herothing', 'feature'),)

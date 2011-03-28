@@ -8,10 +8,10 @@ admin.autodiscover()
 urlpatterns = patterns('',
     #general
     (r'^$', 'hero.views.main'),
-    url(r'^registration/$', 'hero.views.registration', name='registration'),
+    url(r'^registration$', 'hero.views.registration', name='registration'),
     
     #hero general
-    url(r'^game/$', 'hero.views.hero', name='hero'),
+    url(r'^game$', 'hero.views.hero', name='hero'),
     
     #hero increase
     url(r'^game/hero/increase/(?P<type>abilities)/'
@@ -31,6 +31,8 @@ urlpatterns = patterns('',
         name='hero_inventory_dress'),
     url(r'^game/inventory/undress/(?P<id>\d+)$', 'hero.views.undress', 
         name='hero_inventory_undress'),
+    url(r'^game/inventory/undressall$', 'hero.views.undressall', 
+        name='hero_inventory_undressall'),
     
     #hero settings
     url(r'^game/settings$', 'hero.views.settings', name='hero_settings'),
@@ -70,6 +72,10 @@ urlpatterns = patterns('',
     (r'^game/building/castle/', include('building.module.castle.urls')),
     (r'^game/building/street/', include('building.module.street.urls')),
     (r'^game/building/shop/', include('building.module.shop.urls')),
+    (r'^game/building/buyingup/', include('building.module.buyingup.urls')),
+    (r'^game/building/commission/', 
+     include('building.module.commission.urls')),
+    (r'^game/building/smithy/', include('building.module.smithy.urls')),
     
     (r'^admin/', include(admin.site.urls)),
     

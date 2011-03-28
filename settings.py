@@ -131,6 +131,9 @@ INSTALLED_APPS = (
     'game.building.module.castle',
     'game.building.module.street',
     'game.building.module.shop',
+    'game.building.module.buyingup',
+    'game.building.module.commission',
+    'game.building.module.smithy',
     ###
 )
 

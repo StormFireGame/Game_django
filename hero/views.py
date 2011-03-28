@@ -127,7 +127,7 @@ def settings(request, template_name='hero/settings.html'):
 def inventory(request, template_name='hero/inventory.html'):
     
     hero = request.hero
-    herothings = hero.herothing_set.filter(dressed=False)
+    herothings = hero.herothing_set.filter(dressed=False, away=False)
     
     variables = RequestContext(request, {'hero': hero,
                                          'herothings': herothings})
@@ -164,7 +164,7 @@ def dress(request, id):
        type == Thing.TYPE_GLOVE or type == Thing.TYPE_BOOT or \
        type == Thing.TYPE_AMULET:
         try:
-            herothing = hero.herothing_set.filter(dressed=True, 
+            herothing = hero.herothing_set.filter(dressed=True,
                                                   thing__type=type). \
                                                         exclude(id=id).get()
             herothing.dressed = False
@@ -172,7 +172,7 @@ def dress(request, id):
         except HeroThing.DoesNotExist:
             pass
     elif type == Thing.TYPE_RING:
-        herothings = hero.herothing_set.filter(dressed=True, 
+        herothings = hero.herothing_set.filter(dressed=True,
                                                thing__type=type).exclude(id=id)
         if len(herothings) == 4:  
             herothings[0].dressed = False
@@ -213,8 +213,19 @@ def undress(request, id):
     herothing.dressed = False
     herothing.save()
 
-    #hero_feature(hero)
+    hero_feature(hero)
 #
     messages.add_message(request, messages.SUCCESS, 'Thing undressed.')
+    return HttpResponseRedirect(reverse('hero_inventory'))
+
+@hero_init
+def undressall(request):
+
+    hero = request.hero
+    
+    hero.herothing_set.update(dressed=False)
+    
+#
+    messages.add_message(request, messages.SUCCESS, 'All things undressed.')
     return HttpResponseRedirect(reverse('hero_inventory'))
 #End

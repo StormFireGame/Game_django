@@ -1,0 +1,37 @@
+{% extends "base_game.html" %}
+{% block title %}{{ hero }}{% endblock %}
+
+{% block content %}
+<div class="span-3">
+	{% include "building/module/commission/__menu.html" %}
+</div>
+<div class="span-17 last">
+	{% for herothing in herothings %}
+		<div class="border clearfix">
+			<div>
+				<b>{{ herothing.thing.name }}</b>
+			</div>
+			<div>
+				Price: {{ herothing.thing.price }} | 
+				Weight: {{ herothing.thing.weight }} | 
+				Stability: {{ herothing.stability_all }}/{{ herothing.stability_left }}
+				<a href="{% url commission_put_select building.slug herothing.id %}">Select</a>
+			</div>
+			<div class="span-3">
+				<img src="{{ MEDIA_URL }}{{ herothing.thing.image }}" alt="" />
+			</div>
+			<div class="span-5">
+				<b>Requirements</b><br />
+				{% include "thing/__requirements.html" with thing=herothing.thing %}
+			</div>
+			<div class="span-5 last">
+				<b>Description</b><br />
+				{% include "thing/__description.html" with thing=herothing.thing %}
+				<br />
+				<b>Modification</b><br />
+				{% include "thing/__modification.html" with herothing=herothing %}
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

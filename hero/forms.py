@@ -7,15 +7,18 @@ import re
 import hashlib
 
 class LoginForm(forms.Form):
-    login = forms.CharField(max_length=32)
-    password = forms.CharField(max_length=32,
+#
+    login = forms.CharField(label='Login', max_length=32)
+    password = forms.CharField(label='Password', max_length=32,
                                widget=forms.PasswordInput())
     
 class RegistrationForm(forms.Form): 
     login = forms.CharField(max_length=32, min_length=3)
     email = forms.EmailField()
+#
     password1 = forms.CharField(label='Password', max_length=32, min_length=5,
                                 widget=forms.PasswordInput())
+#
     password2 = forms.CharField(label='Password (Again)', max_length=32,
                                 widget=forms.PasswordInput())
     date_of_birthday = forms.DateField(widget=SelectDateWidget(

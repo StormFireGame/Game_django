@@ -1,0 +1,8 @@
+{% load thing_tags %}
+{% load thing_filters %}
+
+{% get_herothing_features herothing as herothingfeatures %}
+
+{% for herothingfeature in herothingfeatures %}
+	{{ herothingfeature.feature|get_string_feature }}: {{ herothingfeature.plus|minus_or_plus_give }}<br />
+{% endfor %}

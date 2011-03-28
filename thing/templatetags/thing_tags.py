@@ -3,6 +3,8 @@ from django.db.models import Q
 
 from thing.models import Thing 
 
+from thing.thingmanipulation import is_available_to_dress
+
 register = template.Library()
 
 def do_thing_requirement(parser, token):
@@ -48,19 +50,7 @@ class GetIsCanDressNode(template.Node):
         hero = self.hero.resolve(context)
         thing = self.thing.resolve(context)
         
-        if hero.level >= thing.level_need and \
-           int(hero.feature.strength) >= thing.strength_need and \
-           int(hero.feature.dexterity) >= thing.dexterity_need and \
-           int(hero.feature.intuition) >= thing.intuition_need and \
-           int(hero.feature.health) >= thing.health_need and \
-           int(hero.feature.swords) >= thing.swords_need and \
-           int(hero.feature.axes) >= thing.axes_need and \
-           int(hero.feature.knives) >= thing.knives_need and \
-           int(hero.feature.clubs) >= thing.clubs_need and \
-           int(hero.feature.shields) >= thing.shields_need:
-            context[self.context_var] = True
-        else:
-            context[self.context_var] = False
+        context[self.context_var] = is_available_to_dress(hero, thing)
         
         return ''
         
@@ -165,3 +155,26 @@ class GetClassPosition(template.Node):
         return ''
     
 register.tag('get_class_position', do_class_position)
+
+def do_get_herothing_features(parser, token):
+    try:
+        tag_name, herothing, sa, context_var = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError('%s tag takes exactly three'
+                                    ' arguments' % (token.contents.split()[0]))
+    if sa != 'as':
+        raise template.TemplateSyntaxError('Third argument must be as')
+    return GetHerothingFeaturesNode(herothing, context_var)
+
+class GetHerothingFeaturesNode(template.Node):
+    def __init__(self, herothing, context_var):
+        self.herothing = template.Variable(herothing)
+        self.context_var = context_var
+
+    def render(self, context):
+        herothing = self.herothing.resolve(context)
+        
+        context[self.context_var] = herothing.herothingfeature_set.all()
+        return ''
+            
+register.tag('get_herothing_features', do_get_herothing_features)

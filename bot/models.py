@@ -17,41 +17,8 @@ class BotImage(models.Model):
         return '<img src="%s" width="%s" height="%s" />' % (url, '', '')
     thumbnail.short_description = 'Image'
     thumbnail.allow_tags = True
-           
-class Bot(models.Model):
-    name = models.CharField(max_length=32, unique=True)
-    level = models.IntegerField(default=0)
-    image = models.ForeignKey(BotImage, null=True, blank=True)  
-    
-    hp = models.IntegerField(default=20)
 
-    strength = models.IntegerField(default=3)
-    dexterity = models.IntegerField(default=3)
-    intuition = models.IntegerField(default=3)
-    health = models.IntegerField(default=3)
-    
-    swords = models.IntegerField(default=0)
-    axes = models.IntegerField(default=0)
-    knives = models.IntegerField(default=0)
-    clubs = models.IntegerField(default=0)
-    shields = models.IntegerField(default=0)
-
-    coordinate_x1 = models.IntegerField(default=0)
-    coordinate_y1 = models.IntegerField(default=0)
-    coordinate_x2 = models.IntegerField(default=0)
-    coordinate_y2 = models.IntegerField(default=0)
-    
-    things = models.ManyToManyField(Thing, null=True, blank=True)
-    
-    class Meta:
-        db_table = 'Bot'
-    
-    def __unicode__(self):
-        return '%s [%s]' % (self.name, self.level)
-    
 class BotFeature(models.Model):
-    bot = models.ForeignKey(Bot)
-       
     strength = models.CharField(max_length=32, null=True)
     dexterity = models.CharField(max_length=32, null=True)
     intuition = models.CharField(max_length=32, null=True)
@@ -79,6 +46,77 @@ class BotFeature(models.Model):
     armor_break = models.CharField(max_length=32, null=True)
     
     hp = models.CharField(max_length=32, null=True)
+    
+    strike_count = models.CharField(max_length=32, null=True)
+    block_count = models.CharField(max_length=32, null=True)
 
     class Meta:
         db_table = 'BotFeature'
+           
+class Bot(models.Model):
+    FEATURE_STRENGTH = 0
+    FEATURE_DEXTERITY = 1
+    FEATURE_INTUITION = 2
+    FEATURE_HEALTH = 3
+    FEATURE_SWORDS = 4
+    FEATURE_AXES = 5
+    FEATURE_KNIVES = 6
+    FEATURE_CLUBS = 7
+    FEATURE_SHIELDS = 8
+    FEATURE_PROTECTION_HEAD = 9
+    FEATURE_PROTECTION_BREAST = 10
+    FEATURE_PROTECTION_ZONE = 11
+    FEATURE_PROTECTION_LEGS = 12
+    FEATURE_DAMAGE_MIN = 13
+    FEATURE_DAMAGE_MAX = 14
+    FEATURE_ACCURACY = 15
+    FEATURE_DODGE = 16
+    FEATURE_DEVASTATE = 17
+    FEATURE_DURABILITY = 18
+    FEATURE_BLOCK_BREAK = 19
+    FEATURE_ARMOR_BREAK = 20
+    FEATURE_HP = 21
+    FEATURE_STRIKE_COUNT = 22
+    FEATURE_BLOCK_COUNT = 23
+    
+    name = models.CharField(max_length=32, unique=True)
+    level = models.IntegerField(default=0)
+    image = models.ForeignKey(BotImage, null=True, blank=True)
+    feature = models.ForeignKey(BotFeature)  
+    
+    hp = models.IntegerField(default=20)
+
+    strength = models.IntegerField(default=3)
+    dexterity = models.IntegerField(default=3)
+    intuition = models.IntegerField(default=3)
+    health = models.IntegerField(default=3)
+    
+    swords = models.IntegerField(default=0)
+    axes = models.IntegerField(default=0)
+    knives = models.IntegerField(default=0)
+    clubs = models.IntegerField(default=0)
+    shields = models.IntegerField(default=0)
+
+    coordinate_x1 = models.IntegerField(default=0)
+    coordinate_y1 = models.IntegerField(default=0)
+    coordinate_x2 = models.IntegerField(default=0)
+    coordinate_y2 = models.IntegerField(default=0)
+    
+    things = models.ManyToManyField(Thing, null=True, blank=True)
+    
+    class Meta:
+        db_table = 'Bot'
+    
+    def __unicode__(self):
+        return '%s [%s]' % (self.name, self.level)
+    
+    def save(self):
+        if not self.id:
+            botfeature = BotFeature()
+            botfeature.save()
+            self.feature = botfeature
+        
+        super(Bot, self).save()
+        
+        from bot import botmanipulation
+        botmanipulation.bot_feature(self)

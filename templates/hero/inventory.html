@@ -9,6 +9,7 @@
 		{% include "hero/__inventory_body.html" %}
 	</div>
 	<div class="span-15 last">
+		<a href="{% url hero_inventory_undressall %}">Undress all</a>
 		{% for herothing in herothings %}
 		<div class="border clearfix">
 			<div>
@@ -34,6 +35,9 @@
 			<div class="span-5 last">
 				<b>Description</b><br />
 				{% include "thing/__description.html" with thing=herothing.thing %}
+				<br />
+				<b>Modification</b><br />
+				{% include "thing/__modification.html" with thing=herothing %}
 			</div>
 		</div>
 	{% endfor %}

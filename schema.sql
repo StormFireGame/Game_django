@@ -76,6 +76,9 @@ CREATE TABLE HeroFeature
 
     hp VARCHAR(32),
 
+    strike_count VARCHAR(32),
+    block_count VARCHAR(32),
+
     capacity VARCHAR(32),
 
     CONSTRAINT FK_herofeature_hero FOREIGN KEY (hero_id)
@@ -329,6 +332,9 @@ CREATE TABLE BotFeature
     armor_break VARCHAR(32),
 
     hp VARCHAR(32),
+
+    strike_count VARCHAR(32),
+    block_count VARCHAR(32),
 
     CONSTRAINT FK_botfeature_bot FOREIGN KEY (bot_id)
         REFERENCES Bot (id) ON DELETE CASCADE ON UPDATE RESTRICT
