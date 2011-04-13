@@ -8,25 +8,25 @@ register = template.Library()
 
 def do_get_team(parser, token):
     try:
-        tag_name, combatheroes, team, sa, context_var = token.split_contents()
+        tag_name, combatwarriors, team, sa, context_var = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError('%s tag takes exactly fourth'
                                     ' arguments' % (token.contents.split()[0]))
     if sa != 'as':
         raise template.TemplateSyntaxError('Third argument must be as')
-    return GetTeamNode(combatheroes, team, context_var)
+    return GetTeamNode(combatwarriors, team, context_var)
 
 class GetTeamNode(template.Node):
-    def __init__(self, combatheroes, team, context_var):
-        self.combatheroes = template.Variable(combatheroes)
+    def __init__(self, combatwarriors, team, context_var):
+        self.combatwarriors = template.Variable(combatwarriors)
         self.team = template.Variable(team)
         self.context_var = context_var
 
     def render(self, context):
-        combatheroes = self.combatheroes.resolve(context)
+        combatwarriors = self.combatwarriors.resolve(context)
         team = int(self.team.resolve(context))
         
-        context[self.context_var] = combatheroes.filter(team=team)
+        context[self.context_var] = combatwarriors.filter(team=team)
         return ''
             
 register.tag('get_team', do_get_team)
@@ -62,7 +62,7 @@ class GetTeamAcceptNode(template.Node):
             team_lvl_min = combat.two_team_lvl_min
             team_lvl_max = combat.two_team_lvl_max
         
-        team_count_now = combat.combathero_set.filter(team=team).count()
+        team_count_now = combat.combatwarrior_set.filter(team=team).count()
         
         if hero.level >= team_lvl_min and hero.level <= team_lvl_max and \
             team_count_now < team_count:    
@@ -104,25 +104,25 @@ register.tag('get_hero_strike', get_hero_strike)
 
 def do_get_team_in_combat(parser, token):
     try:
-        tag_name, combatheroes, team, sa, context_var = token.split_contents()
+        tag_name, combatwarriors, team, sa, context_var = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError('%s tag takes exactly fourth'
                                     ' arguments' % (token.contents.split()[0]))
     if sa != 'as':
         raise template.TemplateSyntaxError('Third argument must be as')
-    return GetTeamInCombatNode(combatheroes, team, context_var)
+    return GetTeamInCombatNode(combatwarriors, team, context_var)
 
 class GetTeamInCombatNode(template.Node):
-    def __init__(self, combatheroes, team, context_var):
-        self.combatheroes = template.Variable(combatheroes)
+    def __init__(self, combatwarriors, team, context_var):
+        self.combatwarriors = template.Variable(combatwarriors)
         self.team = template.Variable(team)
         self.context_var = context_var
 
     def render(self, context):
-        combatheroes = self.combatheroes.resolve(context)
+        combatwarriors = self.combatwarriors.resolve(context)
         team = int(self.team.resolve(context))
         
-        context[self.context_var] = combatheroes.filter(team=team, 
+        context[self.context_var] = combatwarriors.filter(team=team, 
                                                         is_dead=False)
         return ''
             
@@ -149,27 +149,33 @@ class GetFriendlyLogNode(template.Node):
         if combatlog.is_start:
             # Fight between ButuzGOL [0] vs Fog [0] start
             log += 'Fight between ' + \
-    re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1) + \
-                                                                    ' vs ' + \
-    re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text).group(1) + \
-                                                                    ' start'
+                            re.search('\[warriors_one](.*)\[\/warriors_one]', 
+                                      combatlog.text).group(1) + ' vs ' + \
+                            re.search('\[warriors_two](.*)\[\/warriors_two]', 
+                                      combatlog.text).group(1) + ' start'
         elif combatlog.is_dead:
             # ButuzGOL[0] is dead
-            log += re.search('\[hero](.*)\[\/hero]', 
-                             combatlog.text).group(1) + 'is dead'
+            log += re.search('\[warrior](.*)\[\/warrior]', 
+                             combatlog.text).group(1) + ' is dead'
+        elif combatlog.is_join:
+            # ButuzGOL[0] is join
+            log += re.search('\[warrior](.*)\[\/warrior]', 
+                             combatlog.text).group(1) + ' is join'
         elif combatlog.is_finish:
             # Fight between ButuzGOL [0] vs Fog [0] ended in a draw
             # Victory for ButuzGOL [0]
-            if re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text):
+            if re.search('\[warriors_two](.*)\[\/warriors_two]', 
+                         combatlog.text):
                 log += 'Fight between ' + \
-    re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1) + \
-                                                                    ' vs ' + \
-    re.search('\[heroes_two](.*)\[\/heroes_two]', combatlog.text).group(1) + \
+                            re.search('\[warriors_one](.*)\[\/warriors_one]', 
+                                      combatlog.text).group(1) + ' vs ' + \
+                            re.search('\[warriors_two](.*)\[\/warriors_two]', 
+                                      combatlog.text).group(1) + \
                                                             ' ended in a draw'
             else:
                 log += 'Victory for ' + \
-        re.search('\[heroes_one](.*)\[\/heroes_one]', combatlog.text).group(1)                                                           
-            
+                            re.search('\[warriors_one](.*)\[\/warriors_one]', 
+                                      combatlog.text).group(1)                                                           
         else:
             # ButuzGOL[0] struck Fog[0] on -5 (head) (head, breast)
             ## ButuzGOL[0] break armor struck Fog[0] on -10
@@ -187,9 +193,11 @@ class GetFriendlyLogNode(template.Node):
                 bumps = hero_bump.split('&')
                 for bump in bumps:
                     hero_one = \
-                    re.search('\[hero_one](.*)\[\/hero_one]', bump).group(1)
+                    re.search('\[warrior_one](.*)\[\/warrior_one]', bump). \
+                                                                    group(1)
                     hero_two = \
-                    re.search('\[hero_two](.*)\[\/hero_two]', bump).group(1)
+                    re.search('\[warrior_two](.*)\[\/warrior_two]', bump). \
+                                                                    group(1)
                     strikes = re.search('\[strikes](.*)\[\/strikes]', bump). \
                                                             group(1).split('|')
                     blocks = re.search('\[blocks](.*)\[\/blocks]', bump). \

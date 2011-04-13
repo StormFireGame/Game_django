@@ -29,9 +29,14 @@
 <div class="span-4 last">
 	<b>What is on location</b>
 	<br />
-	{% if building %}
-		<a href="{% get_building_url building %}">{{ building.name }}</a>
-	{% endif %}
+	{% for building in buildings %}
+		<a href="{% get_building_url building %}">{{ building.name }}</a><br />
+	{% endfor %}
+	<b>Bots</b>
+	<br />
+	{% for bot in bots %}
+		{{ bot }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a> <a href="{% url island_bot_attack bot.id %}">Attack</a><br />
+	{% endfor %}
 </div>
 <div style="clear:both;"><br /></div>
 {% endblock %}

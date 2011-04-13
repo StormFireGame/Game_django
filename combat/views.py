@@ -7,6 +7,7 @@ from django.db.models import Sum
 
 from hero.models import Hero
 from combat.models import Combat
+from bot.models import Bot
 
 from combat.forms import DuelForm, GroupForm, ChaoticForm, PastForm, \
                          CombatForm
@@ -41,7 +42,7 @@ def combat_duel(request, template_name='combat/duel.html'):
                                                              hero.location),
                             one_team_count=1, two_team_count=1)
             combat.save()
-            combat.combathero_set.create(hero=hero)
+            combat.combatwarrior_set.create(hero=hero)
 #
             messages.add_message(request, messages.SUCCESS,
                                  'Your demand accept.')
@@ -97,7 +98,7 @@ def combat_group(request, template_name='combat/group.html'):
                         two_team_lvl_max=form.cleaned_data['two_team_lvl_max'])
             
             combat.save()
-            combat.combathero_set.create(hero=hero)
+            combat.combatwarrior_set.create(hero=hero)
 #
             messages.add_message(request, messages.SUCCESS, 
                                  'Your demand accept.')
@@ -148,7 +149,7 @@ def combat_chaotic(request, template_name='combat/chaotic.html'):
                             one_team_lvl_max=form.cleaned_data['lvl_max'])
             
             combat.save()
-            combat.combathero_set.create(hero=hero)
+            combat.combatwarrior_set.create(hero=hero)
 #
             messages.add_message(request, messages.SUCCESS, 
                                  'Your demand accept.')
@@ -180,7 +181,7 @@ def combat_territorial(request, template_name='combat/territorial.html'):
         is_cancel = combatmanipulation.is_cancel(hero)
     
     combats = Combat.objects.filter(type=Combat.TYPE_TERRITORIAL, 
-                                    is_active=Combat.IS_ACTIVE_WAIT, 
+                                    is_active=Combat.IS_ACTIVE_FIGHT, 
                                     location=combatmanipulation.get_location(
                                                                 hero.location))
     
@@ -226,7 +227,7 @@ def combat_past(request, template_name='combat/past.html'):
             search_hero = Hero.objects.get(login=login)
             
             combats = Combat.objects.filter(is_active=Combat.IS_ACTIVE_PAST, 
-                                            combathero__hero=search_hero, 
+                                            combatwarrior__hero=search_hero, 
                                             start_date_time__gte=date_begin,
                                             start_date_time__lte=date_end)
     else:
@@ -282,11 +283,11 @@ def accept(request, id, team):
             team_lvl_min = combat.two_team_lvl_min
             team_lvl_max = combat.two_team_lvl_max
         
-        team_count_now = combat.combathero_set.filter(team=team).count()
+        team_count_now = combat.combatwarrior_set.filter(team=team).count()
         
         if hero.level >= team_lvl_min and hero.level <= team_lvl_max and \
            team_count_now < team_count:
-            combat.combathero_set.create(hero=hero, team=team)
+            combat.combatwarrior_set.create(hero=hero, team=team)
 #
             messages.add_message(request, messages.SUCCESS, 'Demand accept.')
         else:
@@ -307,7 +308,7 @@ def refuse(request):
     combat = combatmanipulation.is_refuse(hero)
     
     if combat != False:
-        combat.combathero_set.get(team=Combat.TEAM_FIRST).delete()
+        combat.combatwarrior_set.get(team=Combat.TEAM_FIRST).delete()
 #
         messages.add_message(request, messages.SUCCESS, 'Demand refuse.')
     return HttpResponseRedirect(reverse('combat_duel'))
@@ -322,10 +323,32 @@ def fight(request):
     if combat != False:
         combat.is_active = Combat.IS_ACTIVE_FIGHT
         combat.save()
-        combatmanipulation.write_log_messages(combat, True)
+        combatmanipulation.write_log_message(combat, True)
         return HttpResponseRedirect(reverse('combat'))
     
     return HttpResponseRedirect(reverse('combat_duel'))
+
+@hero_init
+def enter(request, id, team):
+    hero = request.hero
+    in_combat = combatmanipulation.in_combat(hero)
+    
+    if not in_combat:
+        try:
+            combat = Combat.objects.filter(id=id, 
+                                           is_active=Combat.IS_ACTIVE_FIGHT). \
+                                                                        get()
+        except Combat.DoesNotExist:
+            #
+            messages.add_message(request, messages.ERROR, 'Fight is end.')
+            return HttpResponseRedirect(reverse('combat_territorial'))
+            
+        combat.combatwarrior_set.create(hero=hero, team=team, is_join=True)
+        combatmanipulation.write_log_message(combat, is_join=True, hero=hero)
+
+        return HttpResponseRedirect(reverse('combat'))
+           
+    return HttpResponseRedirect(reverse('combat_territorial'))
 #End 
 #End
 #End
@@ -335,12 +358,12 @@ def fight(request):
 def combat(request, template_name='combat/combat.html'):
     
     hero = request.hero
-    combat = combatmanipulation.in_combat(hero, Combat.IS_ACTIVE_FIGHT)
+    combat = combatmanipulation.in_active_combat(hero)
     
     if not combat:
         return HttpResponseRedirect(reverse('combat_duel'))
         
-    team = combat.combathero_set.get(hero=hero).team
+    team = combat.combatwarrior_set.get(hero=hero).team
     
     is_dead = combatmanipulation.is_dead(combat, hero)
     
@@ -349,22 +372,26 @@ def combat(request, template_name='combat/combat.html'):
     is_lose = combatmanipulation.is_lose(combat, team, is_draw)
     
     enemy = form = all_experience = None
-    is_timeout = is_next = False
+    is_timeout = is_next = is_enemy_hero = False    
     if is_dead == False and is_win == False and is_lose == False and \
        is_draw == False:
         cur_enemy_id_fn = None
         if request.method == 'POST':
             form = CombatForm(hero.feature.strike_count,
-                              hero.feature.block_count, None, request.POST)
+                              hero.feature.block_count, None, None, 
+                              request.POST)
 
             if form.is_valid():
-                
                 if form.cleaned_data['next']:
-                    cur_enemy_id_fn=form.cleaned_data['hero_two_id']
+                    cur_enemy_id_fn = form.cleaned_data['hero_two_id']
                 else:
-                    hero_two = Hero.objects. \
+                    hero_two = bot = None
+                    if form.cleaned_data['hero_two_id']:
+                        hero_two = Hero.objects. \
                                     get(id=form.cleaned_data['hero_two_id'])
-                    if not combatmanipulation.is_dead(combat, hero_two):
+                    else:
+                        bot = Bot.objects.get(id=form.cleaned_data['bot_id'])
+                    if not combatmanipulation.is_dead(combat, hero_two, bot):
                         strikes = \
                             [ str(form.cleaned_data['strike'+str(strike)]) \
                         for strike in range(int(hero.feature.strike_count)) ]
@@ -379,23 +406,35 @@ def combat(request, template_name='combat/combat.html'):
                         combatlog = combatmanipulation.get_combat_log(combat,
                                                                       hero,
                                                                       hero_two,
+                                                                      bot,
                                                                       team)
                         combatmanipulation.write_log_strikes(combat,
                                                              combatlog,
                                                              team, hero,
                                                              hero_two,
+                                                             bot,
                                                              strikes, blocks)
                         
                         return HttpResponseRedirect(reverse('combat'))
         
+        is_bot_make_timeout = combatmanipulation. \
+                                        update_bots_timeout_in_combat(combat)
+        if is_bot_make_timeout:
+            combat.is_active = Combat.IS_ACTIVE_AFTER_FIGHT
+            combat.save()
+            return HttpResponseRedirect(reverse('combat'))
+        
         enemies = combatmanipulation.get_enemies(combat, hero, team)
         enemy = combatmanipulation.get_enemy(enemies, cur_enemy_id_fn)
+        is_enemy_hero = type(enemy) == Hero
+        
         if len(enemies) > 1:
             is_next = True
         
         form = CombatForm(hero.feature.strike_count, hero.feature.block_count,
-                          enemy.id if enemy else None)
-        if enemy == None:
+                          enemy.id if enemy and is_enemy_hero else None, 
+                          enemy.id if enemy and not is_enemy_hero else None)
+        if enemy is None:
             is_timeout = combatmanipulation.is_timeout(combat, team)
     else:
         if is_draw or is_win or is_lose:
@@ -404,34 +443,43 @@ def combat(request, template_name='combat/combat.html'):
                 win_team = team
             elif is_lose:
                 win_team = int(not team)
-            combatmanipulation.write_log_messages(combat, is_finish=True,
+            combatmanipulation.write_log_message(combat, is_finish=True,
                                                   win_team=win_team)
             
             if is_win:
                 if team == Combat.TEAM_FIRST:
                     all_experience = combat.combatlog_set. \
                                                         filter(hero_one=hero) \
-            .aggregate(Sum('hero_one_experience'))['hero_one_experience__sum']
+    .aggregate(Sum('warrior_one_experience'))['warrior_one_experience__sum']
                 else:
                     all_experience = combat.combatlog_set. \
                                                         filter(hero_two=hero) \
-            .aggregate(Sum('hero_two_experience'))['hero_two_experience__sum']
+    .aggregate(Sum('warrior_two_experience'))['warrior_two_experience__sum']
                 
                 if all_experience == None:
                     all_experience = 0
-
+            
+            combatmanipulation.free_bots_from_combat(combat)
+            
+            if combat.is_active == Combat.IS_ACTIVE_FIGHT:
+                combat.is_active = Combat.IS_ACTIVE_AFTER_FIGHT
+                combat.save()
+            
     if team == Combat.TEAM_FIRST:
         all_damage = combat.combatlog_set.filter(hero_one=hero). \
-                    aggregate(Sum('hero_one_damage'))['hero_one_damage__sum']
+                aggregate(Sum('warrior_one_damage'))['warrior_one_damage__sum']
     else:
         all_damage = combat.combatlog_set.filter(hero_two=hero). \
-                    aggregate(Sum('hero_two_damage'))['hero_two_damage__sum']
+                aggregate(Sum('warrior_two_damage'))['warrior_two_damage__sum']
     
     if all_damage == None:
         all_damage = 0
     
     variables = RequestContext(request, {'hero': hero,
-                                         'hero_two': enemy,
+                                         'hero_two': enemy if is_enemy_hero \
+                                                                    else None,
+                                         'bot': enemy if not is_enemy_hero \
+                                                                    else None,
                                          'form': form,
                                          'combat': combat,
                                          'combatlogs': combat.combatlog_set. \
@@ -451,14 +499,14 @@ def combat(request, template_name='combat/combat.html'):
 def quit(request):
     
     hero = request.hero
-    combat = combatmanipulation.in_combat(hero, Combat.IS_ACTIVE_FIGHT)
+    combat = combatmanipulation.in_active_combat(hero)
     
-    combathero = combat.combathero_set.get(hero=hero)
-    combathero.is_quit = True
+    combatwarrior = combat.combatwarrior_set.get(hero=hero)
+    combatwarrior.is_quit = True
     set_hp(hero)
-    combathero.save()
+    combatwarrior.save()
     
-    team = combat.combathero_set.get(hero=hero).team
+    team = combat.combatwarrior_set.get(hero=hero).team
     
     is_draw = combatmanipulation.is_draw(combat)
     is_win = combatmanipulation.is_win(combat, team, is_draw)
@@ -468,10 +516,10 @@ def quit(request):
     elif is_win:
         if team == Combat.TEAM_FIRST:
             all_experience = combat.combatlog_set.filter(hero_one=hero). \
-            aggregate(Sum('hero_one_experience'))['hero_one_experience__sum']
+        aggregate(Sum('warrior_one_experience'))['warrior_one_experience__sum']
         else:
             all_experience = combat.combatlog_set.filter(hero_two=hero). \
-            aggregate(Sum('hero_two_experience'))['hero_two_experience__sum']
+        aggregate(Sum('warrior_two_experience'))['warrior_two_experience__sum']
         
         if all_experience == None:
             all_experience = 0
@@ -484,7 +532,8 @@ def quit(request):
         hero.number_of_losses += 1
     hero.save()
     
-    is_anybody_not_quit = combat.combathero_set.filter(is_quit=False).exists()
+    is_anybody_not_quit = combat.combatwarrior_set.filter(is_quit=False). \
+                                                                    exists()
     if not is_anybody_not_quit:
         if is_win:
             combat.win_team = team
@@ -502,22 +551,25 @@ def victory(request):
     hero = request.hero
     combat = combatmanipulation.in_combat(hero, Combat.IS_ACTIVE_FIGHT)
     
-    team = combat.combathero_set.get(hero=hero).team
+    team = combat.combatwarrior_set.get(hero=hero).team
     
     is_timeout = combatmanipulation.is_timeout(combat, team)
     
     if is_timeout == False:
         return HttpResponseRedirect(reverse('combat'))
     
-    dead_heroes = []
-    for combathero in combat.combathero_set.filter(is_dead=False). \
+    dead_warriors = []
+    for combatwarrior in combat.combatwarrior_set.filter(is_dead=False). \
                                                             exclude(team=team):
-        set_hp(combathero.hero, 0)
-        combathero.is_dead = True
-        combathero.save()
-        dead_heroes.append({'hero': combathero.hero, 'team': combathero.team})
+        set_hp(combatwarrior.hero, 0)
+        combatwarrior.is_dead = True
+        combatwarrior.save()
+        dead_warriors.append({'warrior': combatwarrior.hero, 
+                              'team': combatwarrior.team})
     
-    combatmanipulation.after_death(combat, dead_heroes)
+    combatmanipulation.after_death(combat, dead_warriors)
     
+    combat.is_active = Combat.IS_ACTIVE_AFTER_FIGHT
+    combat.save()
     return HttpResponseRedirect(reverse('combat'))
 #End

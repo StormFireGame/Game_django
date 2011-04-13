@@ -1,8 +1,8 @@
 from django.contrib import admin
-from combat.models import Combat, CombatHero, CombatLog
+from combat.models import Combat, CombatWarrior, CombatLog
 
-class CombatHeroInline(admin.TabularInline):
-    model = CombatHero
+class CombatWarriorInline(admin.TabularInline):
+    model = CombatWarrior
     extra = 1
 
 class CombatLogInline(admin.TabularInline):
@@ -10,7 +10,7 @@ class CombatLogInline(admin.TabularInline):
     extra = 1
 
 class CombatAdmin(admin.ModelAdmin):
-    inlines = [CombatHeroInline, CombatLogInline]
+    inlines = [CombatWarriorInline, CombatLogInline]
     list_display = ('type', 'is_active', 'with_things', 'start_date_time',)
     ordering = ('type', 'is_active',)
     list_filter = ('type', 'is_active', 'with_things',)

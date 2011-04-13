@@ -81,7 +81,7 @@ class Bot(models.Model):
     
     name = models.CharField(max_length=32, unique=True)
     level = models.IntegerField(default=0)
-    image = models.ForeignKey(BotImage, null=True, blank=True)
+    image = models.ForeignKey(BotImage)
     feature = models.ForeignKey(BotFeature)  
     
     hp = models.IntegerField(default=20)
@@ -101,8 +101,12 @@ class Bot(models.Model):
     coordinate_y1 = models.IntegerField(default=0)
     coordinate_x2 = models.IntegerField(default=0)
     coordinate_y2 = models.IntegerField(default=0)
+    current_coordinate_x = models.IntegerField(null=True, blank=True)
+    current_coordinate_y = models.IntegerField(null=True, blank=True)
     
-    things = models.ManyToManyField(Thing, null=True, blank=True)
+    in_combat = models.BooleanField(default=False)
+    
+    things = models.ManyToManyField(Thing, through='BotThing')
     
     class Meta:
         db_table = 'Bot'
@@ -120,3 +124,13 @@ class Bot(models.Model):
         
         from bot import botmanipulation
         botmanipulation.bot_feature(self)
+    
+class BotThing(models.Model):
+    bot = models.ForeignKey(Bot)
+    thing = models.ForeignKey(Thing)
+    
+    def __unicode__(self):
+        return '%s %s' % (self.bot, self.thing)
+    
+    class Meta:
+        db_table = 'BotThing'

@@ -122,18 +122,23 @@ class PastForm(forms.Form):
         return login
     
 class CombatForm(forms.Form):
-    def __init__(self, strike_count, block_count, hero_two_id, *args, 
+    def __init__(self, strike_count, block_count, hero_two_id, bot_id, *args, 
                  **kwargs):
         self.strike_count = int(strike_count)
         self.block_count = int(block_count)  
         self.hero_two_id = hero_two_id
+        self.bot_id = bot_id
         super(CombatForm, self).__init__(*args, **kwargs)
         for strike in range(self.strike_count):
             self.fields['strike'+str(strike)] = forms.IntegerField(widget=
                                     forms.RadioSelect(choices=Combat.STRIKES),
                                                                 required=False)
         self.fields['hero_two_id'] = forms.IntegerField(widget=
-                        forms.HiddenInput(attrs={'value' : self.hero_two_id}))
+                        forms.HiddenInput(attrs={'value' : self.hero_two_id}), 
+                                                        required=False)
+        self.fields['bot_id'] = forms.IntegerField(widget=
+                        forms.HiddenInput(attrs={'value' : self.bot_id}), 
+                                                   required=False)
         
         
     block_head = forms.BooleanField(label='Head', required=False)

@@ -1,0 +1,8 @@
+{% load thing_tags %}
+<div style="background:url({{ MEDIA_URL }}images/slot.png); width:331px; height:423px; position:relative;">
+	<img src="{{ MEDIA_URL }}{{ bot.image.image }}" alt="" style="position:absolute; left:108px; top:96px;" />
+	{% get_bot_things bot as botthings %}
+	{% for botthing in botthings %}
+		<img src="{{ MEDIA_URL }}{{ botthing.thing.image }}" alt="" class="{% get_class_position botthing botthings %}" />
+	{% endfor %}
+</div>

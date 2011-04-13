@@ -82,22 +82,22 @@ register.tag('get_hero_dressed_things', do_hero_dressed_things)
 
 def do_class_position(parser, token):
     try:
-        tag_name, herothing, herothings = token.split_contents()
+        tag_name, thing, things = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError('%s tag takes exactly two'
                                     ' arguments' % (token.contents.split()[0]))
-    return GetClassPosition(herothing, herothings)
+    return GetClassPosition(thing, things)
 
 class GetClassPosition(template.Node):
-    def __init__(self, herothing, herothings):
-        self.herothing = template.Variable(herothing)
-        self.herothings = template.Variable(herothings)
+    def __init__(self, thing, things):
+        self.thing = template.Variable(thing)
+        self.things = template.Variable(things)
 
     def render(self, context):
-        herothing = self.herothing.resolve(context)
-        herothings = self.herothings.resolve(context)
+        thing = self.thing.resolve(context)
+        things = self.things.resolve(context)
         
-        type = herothing.thing.type
+        type = thing.thing.type
         
         if type == Thing.TYPE_HELMET:
             return 'helmet'
@@ -118,29 +118,29 @@ class GetClassPosition(template.Node):
         elif type == Thing.TYPE_AMULET:
             return 'amulet'
         elif type == Thing.TYPE_RING:
-            herothings = herothings.filter(thing__type=type)
+            things = things.filter(thing__type=type)
             num_ring = 0
-            for ring in herothings:
-                if ring.id == herothing.id:
+            for ring in things:
+                if ring.id == thing.id:
                     break
                 num_ring += 1
             return 'ring' + str(num_ring)
         elif type == Thing.TYPE_SWORD or type == Thing.TYPE_AXE or \
              type == Thing.TYPE_KNIVE or type == Thing.TYPE_CLUBS or \
              type == Thing.TYPE_SHIELD:
-            herothings = herothings.filter(Q(thing__type=Thing.TYPE_SWORD) | 
-                                           Q(thing__type=Thing.TYPE_AXE) |
-                                           Q(thing__type=Thing.TYPE_KNIVE) |
-                                           Q(thing__type=Thing.TYPE_CLUBS) |
-                                           Q(thing__type=Thing.TYPE_SHIELD))
+            things = things.filter(Q(thing__type=Thing.TYPE_SWORD) | 
+                                   Q(thing__type=Thing.TYPE_AXE) |
+                                   Q(thing__type=Thing.TYPE_KNIVE) |
+                                   Q(thing__type=Thing.TYPE_CLUBS) |
+                                   Q(thing__type=Thing.TYPE_SHIELD))
             
             has_shield = False
             i = 0
-            for arms in herothings:
+            for arms in things:
                 if arms.thing.type == Thing.TYPE_SHIELD:
                     has_shield = True
                     break
-                if arms.id == herothing.id:
+                if arms.id == thing.id:
                     num_arms = i
                 i += 1
             
@@ -178,3 +178,27 @@ class GetHerothingFeaturesNode(template.Node):
         return ''
             
 register.tag('get_herothing_features', do_get_herothing_features)
+
+def do_bot_things(parser, token):
+    try:
+        tag_name, bot, sa, context_var = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError('%s tag takes exactly three'
+                                    ' arguments' % (token.contents.split()[0]))
+    if sa != 'as':
+        raise template.TemplateSyntaxError('Third argument must be as')
+    return GetBotThingsNode(bot, context_var)
+
+class GetBotThingsNode(template.Node):
+    def __init__(self, bot, context_var):
+        self.bot = template.Variable(bot)
+        self.context_var = context_var
+
+    def render(self, context):
+        bot = self.bot.resolve(context)
+        
+        context[self.context_var] = bot.botthing_set.all()
+        
+        return ''
+        
+register.tag('get_bot_things', do_bot_things)

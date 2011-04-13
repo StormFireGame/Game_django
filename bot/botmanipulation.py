@@ -13,6 +13,8 @@ def bot_feature(bot):
         bot.feature.clubs = str(bot.clubs)
         bot.feature.shields = str(bot.shields)
         
+        bot.feature.protection_head = bot.feature.protection_breast = \
+        bot.feature.protection_zone = bot.feature.protection_legs = \
         bot.feature.damage_min = bot.feature.damage_max = \
         bot.feature.accuracy = bot.feature.dodge = bot.feature.devastate = \
         bot.feature.durability = bot.feature.block_break = \
@@ -22,14 +24,16 @@ def bot_feature(bot):
         bot.feature.strike_count = '1'
         bot.feature.block_count = '2'
         
-        bot.feature.hp = '%s|%s' % (0, 0)
+        bot.feature.hp = '%s|%s' % (0, bot.hp)
     
         count_of_arms = 0
         for thing in bot.things.all():
             _featurething_help(bot, thing)
             
-            if thing.thing.type == 0 or thing.thing.type == 1 or \
-               thing.thing.type == 2 or thing.thing.type == 3: 
+            if thing.type == Thing.TYPE_SWORD or \
+               thing.type == Thing.TYPE_AXE or \
+               thing.type == Thing.TYPE_KNIVE or \
+               thing.type == Thing.TYPE_CLUBS:
                 count_of_arms += 1;
                 if count_of_arms == 2:
                     bot.feature.strike_count = \
@@ -132,4 +136,4 @@ def _featurething_help(bot, thing):
 def _plus_features(bot_feature, other_feature):
     if other_feature:
         return str(int(bot_feature) + int(round(other_feature)))
-    return bot_feature
+    return bot_feature    

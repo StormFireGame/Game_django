@@ -154,12 +154,14 @@ def _featureskill_help(hero, skill, feature, plus):
                                 
     elif feature == Hero.FEATURE_HP:
         hp = hero.feature.hp.split('|')
-        hp[1] = str(plus * hero.heroheroskill_set.get(skill=skill).level)
+        hp[1] = _plus_features(hp[1], 
+                        plus * hero.heroheroskill_set.get(skill=skill).level)
         hero.feature.hp = '|'.join(hp)
         
     elif feature == Hero.FEATURE_CAPACITY:
         capacity = hero.feature.capacity.split('|')
-        capacity[1] = str(plus * hero.heroheroskill_set.get(skill=skill).level)
+        capacity[1] = _plus_features(capacity[1], 
+                        plus * hero.heroheroskill_set.get(skill=skill).level)
         hero.feature.capacity = '|'.join(capacity)
 
 def _featurething_help(hero, thing):
@@ -296,6 +298,7 @@ def _featureherothing_help(hero, feature, plus):
         hero.feature.block_count = _plus_features(hero.feature.block_count, 
                                                   plus)
 
+##
 def hero_feature(hero):
     hero.feature.strength = str(hero.strength)
     hero.feature.dexterity = str(hero.dexterity)
@@ -308,6 +311,8 @@ def hero_feature(hero):
     hero.feature.clubs = str(hero.clubs)
     hero.feature.shields = str(hero.shields)
     
+    hero.feature.protection_head = hero.feature.protection_breast = \
+    hero.feature.protection_zone = hero.feature.protection_legs = \
     hero.feature.damage_min = hero.feature.damage_max = \
     hero.feature.accuracy = hero.feature.dodge = hero.feature.devastate = \
     hero.feature.durability = hero.feature.block_break = \
@@ -315,13 +320,13 @@ def hero_feature(hero):
     hero.feature.block_count = 0
     
     if hero.id:
-        hero.feature.hp = '%s|%s|%s' % (hero.feature.hp.split('|')[0], 0, 
+        hero.feature.hp = '%s|%s|%s' % (hero.feature.hp.split('|')[0], hero.hp, 
                                         time.time())
-        hero.feature.capacity = '%s|%s' % (
-                                    hero.feature.capacity.split('|')[0], 0)
+        hero.feature.capacity = '%s|%s' % (hero.feature.capacity.split('|')[0], 
+                                           hero.capacity)
     else:
-        hero.feature.hp = '%s|%s|%s' % (0, 0, time.time())
-        hero.feature.capacity = '0|0'
+        hero.feature.hp = '%s|%s|%s' % (0, hero.hp, time.time())
+        hero.feature.capacity = '%s|%s' % (0, hero.capacity)
         
     hero.feature.strike_count = '1'
     hero.feature.block_count = '2'
@@ -340,8 +345,10 @@ def hero_feature(hero):
                 _featureherothing_help(hero, herothingfeature.feature, 
                                    herothingfeature.plus)
             
-            if herothing.thing.type == 0 or herothing.thing.type == 1 or \
-               herothing.thing.type == 2 or herothing.thing.type == 3: 
+            if herothing.thing.type == Thing.TYPE_SWORD or \
+               herothing.thing.type == Thing.TYPE_AXE or \
+               herothing.thing.type == Thing.TYPE_KNIVE or \
+               herothing.thing.type == Thing.TYPE_CLUBS: 
                 count_of_arms += 1;
                 if count_of_arms == 2:
                     hero.feature.strike_count = \

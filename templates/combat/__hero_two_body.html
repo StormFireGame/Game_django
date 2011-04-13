@@ -1,29 +1,27 @@
 {% load hero_filters %}
 <h3>{{ hero_two }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a></h3>
-	<b>[<span id="current_hp">{{ hero_two.feature.hp|current_hp }}</span>/{{ hero_two.feature.hp|max_hp }}]</b> <img src="{{ MEDIA_URL }}images/hp.gif" id="hp" alt="" width="{{ hero_two.feature.hp|line_hp:'250' }}" height="6" title="" />
-<div style="background:url({{ MEDIA_URL }}images/slot.png); width:331px; height:423px;">
-	<img src="{{ MEDIA_URL }}{{ hero_two.image.image }}" alt="" style="position:relative; left:108px; top:96px;" /><br />	
-</div>
-	<b>Parametrs</b><br />
-	Strength: {{ hero_two.feature.strength }}<br />
-	Dexterity: {{ hero_two.feature.dexterity }}<br />
-	Intuition: {{ hero_two.feature.intuition }} <br />
-	Health: {{ hero_two.feature.health }}<br /><br />
-	
-	<b>Modifiers</b><br />
-	Accuracy: {{ hero_two.feature.accuracy }}%<br />
-	Dodge: {{ hero_two.feature.dodge }}%<br />
-	Devastate: {{ hero_two.feature.devastate }}%<br />
-	Durability: {{ hero_two.feature.durability }}%<br />
-	Block break: {{ hero_two.feature.block_break }}%<br />
-	Armor break: {{ hero_two.feature.armor_break }}%<br /><br />
-	
-	Min damage: {{ hero_two.feature.damage_min }}<br />
-	Max damage: {{ hero_two.feature.damage_max }}<br /><br />
-	
-	<b>Protection</b><br />
-	Protection head: {{ hero_two.feature.protection_head }}%<br />
-	Protection breast: {{ hero_two.feature.protection_breast }}%<br />
-	Protection zone: {{ hero_two.feature.protection_zone }}%<br />
-	Protection leg: {{ hero_two.feature.protection_leg }}%<br />
-	
+<b>[<span id="current_hp">{{ hero_two.feature.hp|current_hp }}</span>/{{ hero_two.feature.hp|max_hp }}]</b> <img src="{{ MEDIA_URL }}images/hp.gif" id="hp" alt="" width="{{ hero_two.feature.hp|line_hp:'250' }}" height="6" title="" />
+{% include "hero/__body.html" with hero=hero_two %}
+
+<b>Parametrs</b><br />
+Strength: {{ hero_two.feature.strength }}<br />
+Dexterity: {{ hero_two.feature.dexterity }}<br />
+Intuition: {{ hero_two.feature.intuition }} <br />
+Health: {{ hero_two.feature.health }}<br /><br />
+
+<b>Modifiers</b><br />
+Accuracy: {{ hero_two.feature.accuracy }}%<br />
+Dodge: {{ hero_two.feature.dodge }}%<br />
+Devastate: {{ hero_two.feature.devastate }}%<br />
+Durability: {{ hero_two.feature.durability }}%<br />
+Block break: {{ hero_two.feature.block_break }}%<br />
+Armor break: {{ hero_two.feature.armor_break }}%<br /><br />
+
+Min damage: {{ hero_two.feature.damage_min }}<br />
+Max damage: {{ hero_two.feature.damage_max }}<br /><br />
+
+<b>Protection</b><br />
+Protection head: {{ hero_two.feature.protection_head }}%<br />
+Protection breast: {{ hero_two.feature.protection_breast }}%<br />
+Protection zone: {{ hero_two.feature.protection_zone }}%<br />
+Protection leg: {{ hero_two.feature.protection_legs }}%<br />

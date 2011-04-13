@@ -3,6 +3,7 @@ from django.db import models
 from hero.models import Hero
 from bot.models import Bot
 
+##
 class Combat(models.Model):
 #
     STRIKES = ((0, 'Head'), (1, 'Breast'), (2, 'Zone'), (3, 'Legs'))
@@ -24,12 +25,14 @@ class Combat(models.Model):
 
     IS_ACTIVE_WAIT = 0
     IS_ACTIVE_FIGHT = 1
-    IS_ACTIVE_PAST = 2
+    IS_ACTIVE_AFTER_FIGHT = 2
+    IS_ACTIVE_PAST = 3
 #
     IS_ACTIVES = ((IS_ACTIVE_WAIT, 'Wait'), (IS_ACTIVE_FIGHT, 'Fight'), 
+                  (IS_ACTIVE_AFTER_FIGHT, 'After fight'), 
                   (IS_ACTIVE_PAST, 'Past'),)
     is_active = models.SmallIntegerField(default=0, choices=IS_ACTIVES)
-    time_out = models.IntegerField(default=60)   
+    time_out = models.IntegerField(default=60)
 #
     INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
     injury = models.SmallIntegerField(default=0, choices=INJURIES)
@@ -55,7 +58,7 @@ class Combat(models.Model):
         return '%s %s' % (self.TYPES[self.type][1], 
                           self.IS_ACTIVES[self.is_active][1])
 
-class CombatHero(models.Model):
+class CombatWarrior(models.Model):
     combat = models.ForeignKey(Combat)
     hero = models.ForeignKey(Hero, null=True, blank=True)
     bot = models.ForeignKey(Bot, null=True, blank=True)
@@ -67,7 +70,7 @@ class CombatHero(models.Model):
     is_quit = models.BooleanField(default=False)
 
     class Meta:
-        db_table = 'CombatHero'
+        db_table = 'CombatWarrior'
     
     def __unicode__(self):
         if self.hero:
@@ -87,18 +90,20 @@ class CombatLog(models.Model):
     bot_two = models.ForeignKey(Bot, null=True, related_name='bot_two', 
                                 blank=True)
     
-    hero_one_wstrike = models.CharField(max_length=32, null=True, blank=True)
-    hero_two_wstrike = models.CharField(max_length=32, null=True, blank=True)
-    hero_one_wblock = models.CharField(max_length=32, null=True, blank=True)
-    hero_two_wblock = models.CharField(max_length=32, null=True, blank=True)
+    warrior_one_wstrike = models.CharField(max_length=32, null=True, 
+                                           blank=True)
+    warrior_two_wstrike = models.CharField(max_length=32, null=True, 
+                                           blank=True)
+    warrior_one_wblock = models.CharField(max_length=32, null=True, blank=True)
+    warrior_two_wblock = models.CharField(max_length=32, null=True, blank=True)
     
-    hero_one_damage = models.IntegerField(null=True, blank=True)
-    hero_two_damage = models.IntegerField(null=True, blank=True)
-    hero_one_experience = models.IntegerField(null=True, blank=True)
-    hero_two_experience = models.IntegerField(null=True, blank=True)
+    warrior_one_damage = models.IntegerField(null=True, blank=True)
+    warrior_two_damage = models.IntegerField(null=True, blank=True)
+    warrior_one_experience = models.IntegerField(null=True, blank=True)
+    warrior_two_experience = models.IntegerField(null=True, blank=True)
     
-    hero_join = models.BooleanField(default=False)
-    hero_out = models.BooleanField(default=False)
+    is_join = models.BooleanField(default=False)
+    is_out = models.BooleanField(default=False)
     is_start = models.BooleanField(default=False)
     is_finish = models.BooleanField(default=False)
     is_dead = models.BooleanField(default=False)
@@ -106,7 +111,7 @@ class CombatLog(models.Model):
     text = models.TextField(null=True, blank=True)
     time = models.DateTimeField(auto_now=True)
     
-    is_past = models.BooleanField(default=False)
+    is_past = models.BooleanField(default=True)
     
     class Meta:
         db_table = 'CombatLog'

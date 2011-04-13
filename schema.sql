@@ -16,6 +16,7 @@ CREATE TABLE Hero
     number_of_draws INT(6) NOT NULL,
 
     hp INT(6) NOT NULL,
+    capacity INT(6) NOT NULL,
 
     strength INT(6) NOT NULL,
     dexterity INT(6) NOT NULL,
@@ -237,7 +238,7 @@ CREATE TABLE Combat
     win_team INT(1) NOT NULL
 );
 
-CREATE TABLE CombatHero
+CREATE TABLE CombatWarrior
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     combat_id INT NOT NULL,
@@ -247,7 +248,7 @@ CREATE TABLE CombatHero
     is_dead INT(1) DEFAULT 0,
     is_join INT(1) DEFAULT 0,
     is_out INT(1) DEFAULT 0,
-    CONSTRAINT FK_combathero_combat FOREIGN KEY (combat_id)
+    CONSTRAINT FK_combatwarrior_combat FOREIGN KEY (combat_id)
         REFERENCES Combat (id) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 

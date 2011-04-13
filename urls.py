@@ -41,6 +41,8 @@ urlpatterns = patterns('',
     url(r'^game/island$', 'island.views.island', name='island'),
     url(r'^game/island/move/(?P<coordinate_x>\d+)/'
         '(?P<coordinate_y>\d+)$', 'island.views.move', name='island_move'),
+    url(r'^game/botattack/(?P<bot_id>\d+)', 'island.views.bot_attack', 
+        name='island_bot_attack'),
     
     #combat
     #combat forms
@@ -61,6 +63,8 @@ urlpatterns = patterns('',
         'combat.views.accept', name='combat_accept'),
     url(r'^game/combat/refuse$', 'combat.views.refuse', name='combat_refuse'),
     url(r'^game/combat/fight$', 'combat.views.fight', name='combat_fight'),
+    url(r'^game/combat/(?P<id>\d+)/enter/(?P<team>0|1)$', 'combat.views.enter', 
+        name='combat_enter'),
     
     #combat inside
     url(r'^game/combat$', 'combat.views.combat', name='combat'),

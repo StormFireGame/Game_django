@@ -38,15 +38,15 @@
 		
 		{{ combat.start_date_time|date:"H:i:s" }}
 		[ {{combat.one_team_count }} ({{ combat.one_team_lvl_min }}-{{ combat.one_team_lvl_max }}) to {{combat.two_team_count }} ({{ combat.two_team_lvl_min }}-{{ combat.two_team_lvl_max }}) ]
-		{% get_team combat.combathero_set 0 as one_team %}
-		{% get_team combat.combathero_set 1 as two_team %}
-		{% for team_hero in one_team %}
-			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		{% get_team combat.combatwarrior_set 0 as one_team_warriors %}
+		{% get_team combat.combatwarrior_set 1 as two_team_warriors %}
+		{% for team_warrior in one_team_warriors %}
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}
 		vs
 		{% if not in_combat and two_team_accept %}<a href="{% url combat_accept combat.id 1 %}">Accept</a>{% endif %}		
-		{% for team_hero in two_team %}
-			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		{% for team_warrior in two_team_warriors %}
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}
 		(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 		Time wait: {{ combat.time_wait_left }} sec.

@@ -5,7 +5,7 @@
 {% load combat_filters %}
 {% load combat_tags %}
 <div class="span-8 pull-1">
-	{% include "combat/__hero_body.html" with hero=hero %}
+	{% include "combat/__hero_body.html" %}
 </div>
 
 <div class="span-9">
@@ -24,11 +24,14 @@
 	{% if is_draw %}
 		Draw. Number of damage {{ all_damage }}
 	{% endif %}
-	{% if hero_two %}
+	{% if hero_two or bot %}
 		<form action="" method="post">
 			{% csrf_token %}
-			{{ form.hero_two_id }}
-	
+			{% if hero_two %}
+				{{ form.hero_two_id }}
+			{% else %}
+				{{ form.bot_id }}
+			{% endif %}
 			<table style="width:340px;">
 				<tr>
 					<td style="width:170px; vertical-align:top;">
@@ -93,15 +96,15 @@
 	
 	{% if not is_win and not is_lose and not is_draw %}
 		<div>
-			{% get_team_in_combat combat.combathero_set 0 as one_team %}
-			{% get_team_in_combat combat.combathero_set 1 as two_team %}
+			{% get_team_in_combat combat.combatwarrior_set 0 as one_team_warriors %}
+			{% get_team_in_combat combat.combatwarrior_set 1 as two_team_warriors %}
 			
-			{% for team_hero in one_team %}
-				{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{% for team_warrior in one_team_warriors %}
+				{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 			{% endfor %}
-			{% if two_team %} vs {% endif %}
-			{% for team_hero in two_team %}
-				{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{% if two_team_warriors %} vs {% endif %}
+			{% for team_warrior in two_team_warriors %}
+				{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 			{% endfor %}
 		</div>
 	{% endif %}
@@ -117,9 +120,13 @@
 </div>
 <div class="span-8 last">
 	{% if hero_two %}
-		{% include "combat/__hero_body.html" with hero=hero_two %}
+		{% include "combat/__hero_two_body.html" %}
 	{% else %}
-		<img src="{{ MEDIA_URL }}images/combat.png" alt="" />	
+		{% if bot %}
+			{% include "combat/__bot_body.html" %}
+		{% else %}
+			<img src="{{ MEDIA_URL }}images/combat.png" alt="" />	
+		{% endif %}
 	{% endif %}
 </div>
 <br />

@@ -135,6 +135,7 @@ class Hero(models.Model):
     number_of_draws = models.IntegerField(default=0)
     
     hp = models.IntegerField(default=30)
+    capacity = models.IntegerField(default=30)
     
     strength = models.IntegerField(default=3)
     dexterity = models.IntegerField(default=3)

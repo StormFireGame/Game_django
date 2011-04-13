@@ -21,16 +21,16 @@
 	<div>
 		{{ combat.start_date_time|date:"Y-m-d H:i" }}
 		Type: {{ combat.type|get_string_type }} 
-		{% get_team combat.combathero_set 0 as one_team %}
-		{% get_team combat.combathero_set 1 as two_team %}
-		{% for team_hero in one_team %}
-			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		{% get_team combat.combatwarrior_set 0 as one_team_warriors %}
+		{% get_team combat.combatwarrior_set 1 as two_team_warriors %}
+		{% for team_warrior in one_team_warriors %}
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}
 		{{ combat.win_team|is_win:0 }}
 		vs
 		{{ combat.win_team|is_win:1 }}
-		{% for team_hero in two_team %}
-			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		{% for team_warrior in two_team_warriors %}
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}
 		(With things: {{ combat.with_things }} | Injury: {{ combat.injury|get_string_injury }})	
 	</div>

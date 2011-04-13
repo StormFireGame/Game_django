@@ -14,21 +14,22 @@
 
 {% for combat in combats %}
 	<div>
-		{% get_team_accept combat hero 0 as one_team_accept %}
-		{% get_team_accept combat hero 1 as two_team_accept %}
+		{% get_team_accept combat hero 0 as one_team_enter %}
+		{% get_team_accept combat hero 1 as two_team_enter %}
 		
-		{% if not in_combat and one_team_accept %}<a href="{% url combat_accept combat.id 0 %}">Accept</a>{% endif %}
+		{% get_team combat.combatwarrior_set 0 as one_team_warriors %}
+		{% get_team combat.combatwarrior_set 1 as two_team_warriors %}
 		
 		{{ combat.start_date_time|date:"H:i:s" }}
-		{% get_team combat.combathero_set 0 as one_team %}
-		{% get_team combat.combathero_set 1 as two_team %}
-		{% for team_hero in one_team %}
-			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		
+		{% if not in_combat and one_team_enter %}<a href="{% url combat_enter combat.id 0 %}">Enter</a>{% endif %}
+		{% for team_warrior in one_team_warriors %}
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}
 		vs
-		{% if not in_combat and two_team_accept %}<a href="{% url combat_accept combat.id 1 %}">Accept</a>{% endif %}		
-		{% for team_hero in two_team %}
-			{{ team_hero }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+		{% if not in_combat and two_team_enter %}<a href="{% url combat_enter combat.id 1 %}">Enter</a>{% endif %}		
+		{% for team_warrior in two_team_warriors %}
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}
 		(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 	</div>
