@@ -47,16 +47,6 @@
 	    {% endif %}
 	</p>
 	<p>
-		{{ form.date_of_birthday.label_tag }} <br />
-		{{ form.date_of_birthday }}
-		
-		{% if form.date_of_birthday.errors %}
-	    	{% for error in form.date_of_birthday.errors %}
-	        	<span class="error_field">{{ error|escape }}</span>
-	    	{% endfor %}
-	    {% endif %}
-	</p>
-	<p>
 		{{ form.sex.label_tag }}
 		{{ form.sex }}
 		

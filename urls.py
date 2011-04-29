@@ -6,14 +6,15 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    #general
-    (r'^$', 'hero.views.main'),
-    url(r'^registration$', 'hero.views.registration', name='registration'),
-    
-    #hero general
+    # Main
+    url(r'^$', 'main.views.main', name='main'),
+    url(r'^registration$', 'main.views.registration', name='registration'),
+
+    # Hero
+    # Hero general
     url(r'^game$', 'hero.views.hero', name='hero'),
     
-    #hero increase
+    # Hero increase
     url(r'^game/hero/increase/(?P<type>abilities)/'
          '(?P<what>swords|axes|knives|clubs|shields)$', 'hero.views.increase', 
          name='hero_increase'),
@@ -23,56 +24,57 @@ urlpatterns = patterns('',
          '(?P<what>strength|dexterity|intuition|health)$', 
          'hero.views.increase', name='hero_increase'),
     
-    #hero inventary
+    # Hero inventory
     url(r'^game/inventory$', 'hero.views.inventory', name='hero_inventory'),
-    url(r'^game/inventory/throw/(?P<id>\d+)$', 'hero.views.throw', 
+    url(r'^game/inventory/throw/(?P<herothing_id>\d+)$', 'hero.views.throw',
         name='hero_inventory_throw'),
-    url(r'^game/inventory/dress/(?P<id>\d+)$', 'hero.views.dress', 
+    url(r'^game/inventory/dress/(?P<herothing_id>\d+)$', 'hero.views.dress',
         name='hero_inventory_dress'),
-    url(r'^game/inventory/undress/(?P<id>\d+)$', 'hero.views.undress', 
-        name='hero_inventory_undress'),
+    url(r'^game/inventory/undress/(?P<herothing_id>\d+)$',
+        'hero.views.undress', name='hero_inventory_undress'),
     url(r'^game/inventory/undressall$', 'hero.views.undressall', 
         name='hero_inventory_undressall'),
     
-    #hero settings
-    url(r'^game/settings$', 'hero.views.settings', name='hero_settings'),
-    
-    #island
+    # Hero preferences
+    url(r'^game/preferences$', 'hero.views.preferences',
+        name='hero_preferences'),
+    # End hero
+
+    # Island
     url(r'^game/island$', 'island.views.island', name='island'),
     url(r'^game/island/move/(?P<coordinate_x>\d+)/'
         '(?P<coordinate_y>\d+)$', 'island.views.move', name='island_move'),
     url(r'^game/botattack/(?P<bot_id>\d+)', 'island.views.bot_attack', 
         name='island_bot_attack'),
     
-    #combat
-    #combat forms
-    url(r'^game/combat/duel$', 'combat.views.combat_duel', name='combat_duel'),
-    url(r'^game/combat/group$', 'combat.views.combat_group', 
-        name='combat_group'),
-    url(r'^game/combat/chaotic$', 'combat.views.combat_chaotic', 
+    # Combat
+    # Combat forms
+    url(r'^game/combat/duel$', 'combat.views.duel', name='combat_duel'),
+    url(r'^game/combat/group$', 'combat.views.group', name='combat_group'),
+    url(r'^game/combat/chaotic$', 'combat.views.chaotic',
         name='combat_chaotic'),
-    url(r'^game/combat/territorial$', 'combat.views.combat_territorial', 
+    url(r'^game/combat/territorial$', 'combat.views.territorial',
         name='combat_territorial'),
-    url(r'^game/combat/current$', 'combat.views.combat_current', 
+    url(r'^game/combat/current$', 'combat.views.current',
         name='combat_current'),
-    url(r'^game/combat/past$', 'combat.views.combat_past', name='combat_past'),
+    url(r'^game/combat/past$', 'combat.views.past', name='combat_past'),
     
-    #combat actions
+    # Combat actions
     url(r'^game/combat/cancel$', 'combat.views.cancel', name='combat_cancel'),
-    url(r'^game/combat/(?P<id>\d+)/accept/(?P<team>0|1)$', 
+    url(r'^game/combat/(?P<combat_id>\d+)/accept/(?P<team>0|1)$',
         'combat.views.accept', name='combat_accept'),
     url(r'^game/combat/refuse$', 'combat.views.refuse', name='combat_refuse'),
     url(r'^game/combat/fight$', 'combat.views.fight', name='combat_fight'),
-    url(r'^game/combat/(?P<id>\d+)/enter/(?P<team>0|1)$', 'combat.views.enter', 
+    url(r'^game/combat/(?P<combat_id>\d+)/enter/(?P<team>0|1)$', 'combat.views.enter',
         name='combat_enter'),
     
-    #combat inside
+    # Combat inside
     url(r'^game/combat$', 'combat.views.combat', name='combat'),
     url(r'^game/combat/quit$', 'combat.views.quit', name='combat_quit'),
     url(r'^game/combat/victory$', 'combat.views.victory', 
         name='combat_victory'),
     
-    #building modules
+    # Building modules
     (r'^game/building/castle/', include('building.module.castle.urls')),
     (r'^game/building/street/', include('building.module.street.urls')),
     (r'^game/building/shop/', include('building.module.shop.urls')),
@@ -84,5 +86,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     
     (r'^media/(.*)$', 'django.views.static.serve', 
-     {'document_root': settings.MEDIA_ROOT})
+     {'document_root': settings.MEDIA_ROOT}),
+    
+    (r'^sentry/', include('sentry.urls')),
 )

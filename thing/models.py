@@ -30,20 +30,22 @@ class Thing(models.Model):
              (TYPE_POTION, 'Potion'), (TYPE_ELIXIR, 'Elixir'),)
     
     name = models.CharField(max_length=32, unique=True)
-    type = models.IntegerField(default=0, choices=TYPES)
+    type = models.IntegerField(choices=TYPES)
     price = models.FloatField()
     
-    is_art = models.BooleanField(default=False)
-    is_bot = models.BooleanField(default=False)
+    is_art = models.BooleanField()
+    is_bot = models.BooleanField()
     stability = models.IntegerField()
     weight = models.IntegerField()
-    image = models.ImageField(upload_to='upload/things')
+    image = models.ImageField(upload_to='upload/thingimages')
     
     level_need = models.IntegerField()
+
     strength_need = models.IntegerField(default=0)
     dexterity_need = models.IntegerField(default=0)
     intuition_need = models.IntegerField(default=0)
     health_need  = models.IntegerField(default=0)
+    
     swords_need = models.IntegerField(default=0)
     axes_need = models.IntegerField(default=0)
     knives_need = models.IntegerField(default=0)

@@ -32,20 +32,20 @@ register.tag('get_hero_feature', do_hero_feature)
 
 def do_hero_skill(parser, token):
     try:
-        tag_name, heroskills, skill = token.split_contents()
+        tag_name, hero, heroskill = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError('%s tag takes exactly two'
                                     ' arguments' % (token.contents.split()[0]))
-    return HeroSkillNode(heroskills, skill)
+    return HeroSkillNode(hero, heroskill)
 
 class HeroSkillNode(template.Node):
-    def __init__(self, heroskills, skill):
-        self.hero = template.Variable(heroskills)
-        self.skill = template.Variable(skill)
+    def __init__(self, hero, heroskill):
+        self.hero = template.Variable(hero)
+        self.heroskill = template.Variable(heroskill)
 
     def render(self, context):
         hero = self.hero.resolve(context)
-        heroskill = self.skill.resolve(context)
+        heroskill = self.heroskill.resolve(context)
         
         try:
             return hero.heroheroskill_set.get(skill=heroskill).level

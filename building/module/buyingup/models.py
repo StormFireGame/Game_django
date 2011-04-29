@@ -2,10 +2,9 @@ from django.db import models
 
 from building.models import Building
 
-##
 class BuildingBuyingup(models.Model):
     building = models.ForeignKey(Building, unique=True)
-    percent = models.FloatField(default=10.00)
+    percent = models.FloatField()
     
     class Meta:
         db_table = 'BuildingBuyingup'

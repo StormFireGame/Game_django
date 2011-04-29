@@ -9,19 +9,18 @@ import datetime
 
 class DuelForm(forms.Form):
     with_things = forms.BooleanField(required=False)
-    TIME_OUTS = ((60, 60), (120, 120), (180,180))
-    time_out = forms.IntegerField(widget=forms.Select(choices=TIME_OUTS))
-    INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
-    injury = forms.IntegerField(widget=forms.Select(choices=INJURIES))
+    time_out = forms.IntegerField(widget=forms.Select(
+                                                    choices=Combat.TIME_OUTS))
+    injury = forms.IntegerField(widget=forms.Select(choices=Combat.INJURIES))
     
 class GroupForm(forms.Form):
     with_things = forms.BooleanField(required=False)
-    TIME_OUTS = ((60, 60), (120, 120), (180,180))
-    time_out = forms.IntegerField(widget=forms.Select(choices=TIME_OUTS))
-    INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
-    injury = forms.IntegerField(widget=forms.Select(choices=INJURIES))
-    TIME_WAITS = ((360, '5 min.'), (720, '10 min.'), (1440, '20 min.'))
-    time_wait = forms.IntegerField(widget=forms.Select(choices=TIME_WAITS))
+
+    time_out = forms.IntegerField(widget=forms.Select(
+                                                    choices=Combat.TIME_OUTS))
+    injury = forms.IntegerField(widget=forms.Select(choices=Combat.INJURIES))
+    time_wait = forms.IntegerField(widget=forms.Select(
+                                                    choices=Combat.TIME_WAITS))
 #
     one_team_count = forms.IntegerField(min_value=1, max_value=99, 
                                         label='First team', 
@@ -65,12 +64,11 @@ class GroupForm(forms.Form):
     
 class ChaoticForm(forms.Form):
     with_things = forms.BooleanField(required=False)
-    TIME_OUTS = ((60, 60), (120, 120), (180,180))
-    time_out = forms.IntegerField(widget=forms.Select(choices=TIME_OUTS))
-    INJURIES = ((0, 'Low'), (1, 'Middle'), (2, 'Top'))
-    injury = forms.IntegerField(widget=forms.Select(choices=INJURIES))
-    TIME_WAITS = ((360, '5 min.'), (720, '10 min.'), (1440, '20 min.'))
-    time_wait = forms.IntegerField(widget=forms.Select(choices=TIME_WAITS))
+    time_out = forms.IntegerField(widget=forms.Select(
+                                                    choices=Combat.TIME_OUTS))
+    injury = forms.IntegerField(widget=forms.Select(choices=Combat.INJURIES))
+    time_wait = forms.IntegerField(widget=forms.Select(
+                                                    choices=Combat.TIME_WAITS))
 #
     count = forms.IntegerField(min_value=1, max_value=99, label='Count', 
                                widget=forms.TextInput(
@@ -94,12 +92,11 @@ class ChaoticForm(forms.Form):
 class PastForm(forms.Form):
 #
     login = forms.CharField(max_length=32, label='Login')
-##
     date_begin = forms.DateField(initial=datetime.date.today,
-                            widget=SelectDateWidget(years=range(2000, 2012)), 
+                            widget=SelectDateWidget(years=range(2000, 2099)),
                                  label='Start date')
     date_end = forms.DateField(initial=datetime.date.today,
-                            widget=SelectDateWidget(years=range(2000, 2012)), 
+                            widget=SelectDateWidget(years=range(2000, 2099)),
                                label='End date')
     
     def clean_date_end(self):
@@ -125,21 +122,20 @@ class CombatForm(forms.Form):
     def __init__(self, strike_count, block_count, hero_two_id, bot_id, *args, 
                  **kwargs):
         self.strike_count = int(strike_count)
-        self.block_count = int(block_count)  
+        self.block_count = int(block_count)
         self.hero_two_id = hero_two_id
         self.bot_id = bot_id
         super(CombatForm, self).__init__(*args, **kwargs)
         for strike in range(self.strike_count):
-            self.fields['strike'+str(strike)] = forms.IntegerField(widget=
+            self.fields['strike' + str(strike)] = forms.IntegerField(widget=
                                     forms.RadioSelect(choices=Combat.STRIKES),
                                                                 required=False)
         self.fields['hero_two_id'] = forms.IntegerField(widget=
-                        forms.HiddenInput(attrs={'value' : self.hero_two_id}), 
+                        forms.HiddenInput(attrs={'value': self.hero_two_id}),
                                                         required=False)
         self.fields['bot_id'] = forms.IntegerField(widget=
-                        forms.HiddenInput(attrs={'value' : self.bot_id}), 
+                        forms.HiddenInput(attrs={'value': self.bot_id}),
                                                    required=False)
-        
         
     block_head = forms.BooleanField(label='Head', required=False)
     block_breast = forms.BooleanField(label='Breast', required=False)
@@ -155,7 +151,8 @@ class CombatForm(forms.Form):
         cleaned_data['next'] = False
         
         for strike in range(self.strike_count):
-            if 'strike'+str(strike) not in cleaned_data:
+            if 'strike'+str(strike) not in cleaned_data or \
+               cleaned_data['strike'+str(strike)] == None:
 #
                 self._errors['strike0'] = self.error_class(
                                                 ['This field is required.'])
@@ -178,6 +175,5 @@ class CombatForm(forms.Form):
         elif self.block_count > k:
 #
             self._errors['block_head'] = self.error_class(
-                                                ['This field is required.'])        
-        
+                                                ['This field is required.'])
         return cleaned_data

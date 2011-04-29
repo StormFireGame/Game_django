@@ -43,13 +43,13 @@
 				<a href="{% url hero_inventory %}">Inventory</a>
 				<a href="{% url combat_duel %}">Combats</a>
 				<a href="/game/information/">Information</a>
-				<a href="{% url hero_settings %}">Settings</a>
+				<a href="{% url hero_preferences %}">Preferences</a>
 				<a href="{% get_back_url hero.location request %}">Back</a>
 			</div>
 			
 			<div class="span-8 last prepend-top">
-				Money: {{ hero.money }}
-				Art money: {{ hero.money_art }}
+				Money: {{ hero.money|format_money }}
+				Art money: {{ hero.money_art|format_money }}
 				Capacity: {{ hero.feature.capacity }}
 			</div>
 	      	<hr>

@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 
 from thing.models import Thing
+from island.models import Island
 
 class BotImage(models.Model):
     image = models.ImageField(upload_to='upload/botimages')
@@ -42,6 +43,7 @@ class BotFeature(models.Model):
     dodge = models.CharField(max_length=32, null=True)
     devastate = models.CharField(max_length=32, null=True)
     durability = models.CharField(max_length=32, null=True)
+
     block_break = models.CharField(max_length=32, null=True)
     armor_break = models.CharField(max_length=32, null=True)
     
@@ -82,25 +84,27 @@ class Bot(models.Model):
     name = models.CharField(max_length=32, unique=True)
     level = models.IntegerField(default=0)
     image = models.ForeignKey(BotImage)
-    feature = models.ForeignKey(BotFeature)  
+    feature = models.ForeignKey(BotFeature)
+    island = models.ForeignKey(Island)
     
-    hp = models.IntegerField(default=20)
+    hp = models.IntegerField()
 
-    strength = models.IntegerField(default=3)
-    dexterity = models.IntegerField(default=3)
-    intuition = models.IntegerField(default=3)
-    health = models.IntegerField(default=3)
+    strength = models.IntegerField()
+    dexterity = models.IntegerField()
+    intuition = models.IntegerField()
+    health = models.IntegerField()
     
-    swords = models.IntegerField(default=0)
-    axes = models.IntegerField(default=0)
-    knives = models.IntegerField(default=0)
-    clubs = models.IntegerField(default=0)
-    shields = models.IntegerField(default=0)
+    swords = models.IntegerField()
+    axes = models.IntegerField()
+    knives = models.IntegerField()
+    clubs = models.IntegerField()
+    shields = models.IntegerField()
 
-    coordinate_x1 = models.IntegerField(default=0)
-    coordinate_y1 = models.IntegerField(default=0)
-    coordinate_x2 = models.IntegerField(default=0)
-    coordinate_y2 = models.IntegerField(default=0)
+    coordinate_x1 = models.IntegerField()
+    coordinate_y1 = models.IntegerField()
+    coordinate_x2 = models.IntegerField()
+    coordinate_y2 = models.IntegerField()
+    
     current_coordinate_x = models.IntegerField(null=True, blank=True)
     current_coordinate_y = models.IntegerField(null=True, blank=True)
     
@@ -122,8 +126,8 @@ class Bot(models.Model):
         
         super(Bot, self).save()
         
-        from bot import botmanipulation
-        botmanipulation.bot_feature(self)
+        from bot.manipulation import BotM
+        BotM(self).update_feature()
     
 class BotThing(models.Model):
     bot = models.ForeignKey(Bot)

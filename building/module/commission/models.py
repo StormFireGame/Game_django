@@ -3,22 +3,21 @@ from django.db import models
 from building.models import Building
 from hero.models import HeroThing
 
-##
 class BuildingCommission(models.Model):
     building = models.ForeignKey(Building, unique=True)
-    percent = models.FloatField(default=2.00)
+    percent = models.FloatField()
     
     class Meta:
         db_table = 'BuildingCommission'
     
     def __unicode__(self):
-        return '%s %s%%' % (self.building.name, self.percent)
+        return '%s %s%%' % (self.building, self.percent)
 
 
 class BuildingCommissionHeroThing(models.Model):
     building = models.ForeignKey(Building)
     herothing = models.ForeignKey(HeroThing)
-    price = models.FloatField(default=0.00)
+    price = models.FloatField()
 
     def thing(self):
         return self.herothing.thing
@@ -31,5 +30,4 @@ class BuildingCommissionHeroThing(models.Model):
         unique_together = (('building', 'herothing'),)
 
     def __unicode__(self):
-        return '%s %s %s' % (self.building.name, self.herothing.hero.login, 
-                             self.herothing.thing.name)
+        return '%s %s' % (self.building, self.herothing)

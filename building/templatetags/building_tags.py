@@ -18,7 +18,7 @@ class BuildingUrlNode(template.Node):
         
     def render(self, context):
         building = self.building.resolve(context)
-        return reverse(building.plugin, args=[building.slug])
+        return reverse(building.module, args=[building.slug])
         
 register.tag('get_building_url', do_building_url)
 

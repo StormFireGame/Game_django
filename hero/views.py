@@ -2,64 +2,22 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
+from django.conf import settings
 
-from hero.forms import LoginForm, RegistrationForm, SettingsForm
-from hero.models import Hero, HeroSkill, HeroHeroSkill, HeroImage, Thing, \
-                        HeroThing
+from hero.forms import SettingsForm
+from hero.models import HeroSkill, HeroHeroSkill, HeroImage, Thing, HeroThing
 
-from hero.heromanipulation import hero_init, hero_feature, update_capacity
+from hero.manipulation import hero_init, HeroM
+from thing.manipulation import ThingM
 
-import hashlib
-
-def main(request, template_name='main/main.html'):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            try: 
-                hero = Hero.objects.get(login=form.cleaned_data['login'],
-                                        password=hashlib.sha1(
-                                    form.cleaned_data['password']).hexdigest())
-                request.session['hero_id'] = hero.id
-                return HttpResponseRedirect(reverse('hero'))
-            except Hero.DoesNotExist:
-#
-                messages.add_message(request, messages.ERROR, 
-                                     'Hero doesn\'t exist.')
-    else:
-        form = LoginForm()
-        
-    variables = RequestContext(request, {'form': form})
-    
-    return render_to_response(template_name, variables)
-
-def registration(request, template_name='main/registration.html'):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            hero = Hero(login=form.cleaned_data['login'],
-                        password=form.cleaned_data['password1'],
-                        email=form.cleaned_data['email'],
-                    date_of_birthday = form.cleaned_data['date_of_birthday'],
-                        sex = form.cleaned_data['sex'])
-            hero.save()
-            request.session['hero_id'] = hero.id
-            return HttpResponseRedirect(reverse('hero'))
-    else:
-        form = RegistrationForm()
-        
-    variables = RequestContext(request, {'form': form})
-    
-    return render_to_response(template_name, variables)
-
+# Hero
 @hero_init
 def hero(request, template_name='hero/hero.html'):
-    
     heroskills = HeroSkill.objects.all()
     
-    variables = RequestContext(request, {'hero': request.hero, 
+    variables = RequestContext(request, {'hero': request.hero,
                                          'heroskills': heroskills})
 
     return render_to_response(template_name, variables)
@@ -84,7 +42,11 @@ def increase(request, type, what):
         elif what == 'health': hero.health += 1
     
     if type == 'skills' and hero.number_of_skills > 0:
-        heroskill = get_object_or_404(HeroSkill, id=int(what))
+        try:
+            heroskill = HeroSkill.objects.get(id=int(what))
+        except HeroSkill.DoesNotExist:
+            return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+
         hero.number_of_skills -= 1
         try:
             heroskill = hero.heroheroskill_set.get(skill=heroskill)
@@ -94,12 +56,14 @@ def increase(request, type, what):
             HeroHeroSkill.objects.create(hero=hero, skill=heroskill, level=1)
             
     hero.save()
-    hero_feature(hero)
+    HeroM.update_feature(hero)
     
     return HttpResponseRedirect(reverse('hero'))
+# End hero
 
+# Hero preferences
 @hero_init
-def settings(request, template_name='hero/settings.html'):
+def preferences(request, template_name='hero/preferences.html'):
     
     hero = request.hero
     heroimages = HeroImage.objects.filter(is_art=False, sex=hero.sex)
@@ -111,8 +75,8 @@ def settings(request, template_name='hero/settings.html'):
             if form.cleaned_data['password0'] and \
                                                 form.cleaned_data['password2']:
                 hero.password = form.cleaned_data['password2']
-            form.save()       
-            return HttpResponseRedirect(reverse('hero_settings'))
+            form.save()
+            return HttpResponseRedirect(reverse('hero_preferences'))
     else:
         form = SettingsForm(request.session['hero_id'], instance=hero)
     
@@ -121,8 +85,9 @@ def settings(request, template_name='hero/settings.html'):
                                          'form': form})
     
     return render_to_response(template_name, variables) 
+# End hero preferences
 
-#Inventory
+# Hero Inventory
 @hero_init
 def inventory(request, template_name='hero/inventory.html'):
     
@@ -135,23 +100,32 @@ def inventory(request, template_name='hero/inventory.html'):
     return render_to_response(template_name, variables)
 
 @hero_init
-def throw(request, id):
+def throw(request, herothing_id):
     
     hero = request.hero
-    hero.herothing_set.get(id=id).delete()
+    try:
+        hero.herothing_set.get(id=herothing_id).delete()
+    except HeroThing.DoesNotExist:
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
 
-    update_capacity(hero)
+    HeroM(hero).update_capacity()
 #
     messages.add_message(request, messages.SUCCESS, 'Your thing thrown.')
     return HttpResponseRedirect(reverse('hero_inventory'))
 
-##
 @hero_init
-def dress(request, id):
+def dress(request, herothing_id):
     
     hero = request.hero
-    
-    herothing = hero.herothing_set.get(id=id)    
+
+    try:
+        herothing = hero.herothing_set.get(id=herothing_id)
+    except HeroThing.DoesNotExist:
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+
+    if not ThingM(herothing.thing, hero).is_available_to_dress():
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+
     herothing.dressed = True
     herothing.save()
     
@@ -166,15 +140,16 @@ def dress(request, id):
         try:
             herothing = hero.herothing_set.filter(dressed=True,
                                                   thing__type=type). \
-                                                        exclude(id=id).get()
+                                                exclude(id=herothing_id).get()
             herothing.dressed = False
             herothing.save()
         except HeroThing.DoesNotExist:
             pass
     elif type == Thing.TYPE_RING:
         herothings = hero.herothing_set.filter(dressed=True,
-                                               thing__type=type).exclude(id=id)
-        if len(herothings) == 4:  
+                                               thing__type=type). \
+                                                    exclude(id=herothing_id)
+        if len(herothings) == settings.THINGS_COUNT_OF_RINGS:
             herothings[0].dressed = False
             herothings[0].save()
     elif type == Thing.TYPE_SWORD or type == Thing.TYPE_AXE or \
@@ -187,10 +162,11 @@ def dress(request, id):
                                             Q(thing__type=Thing.TYPE_KNIVE) |
                                             Q(thing__type=Thing.TYPE_CLUBS) |
                                             Q(thing__type=Thing.TYPE_SHIELD),
-                                                dressed=True).exclude(id=id)
+                                                dressed=True).\
+                                                    exclude(id=herothing_id)
         if len(herothings):
-            if len(herothings) == 2 or herothings[0].thing.take_two_hands or \
-               take_two_hands:
+            if len(herothings) == settings.THINGS_COUNT_OF_ARMS or \
+               herothings[0].thing.take_two_hands or take_two_hands:
                 if take_two_hands:
                     for herothing in herothings:
                         herothing.dressed = False
@@ -199,21 +175,25 @@ def dress(request, id):
                     herothings[0].dressed = False
                     herothings[0].save()
         
-    hero_feature(hero)  
+    HeroM(hero).update_feature()
 #
     messages.add_message(request, messages.SUCCESS, 'Thing dressed.')
     return HttpResponseRedirect(reverse('hero_inventory'))
 
 @hero_init
-def undress(request, id):
+def undress(request, herothing_id):
 
     hero = request.hero
-    
-    herothing = hero.herothing_set.get(id=id)
+
+    try:
+        herothing = hero.herothing_set.get(id=herothing_id)
+    except HeroThing.DoesNotExist:
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+
     herothing.dressed = False
     herothing.save()
 
-    hero_feature(hero)
+    HeroM(hero).update_feature()
 #
     messages.add_message(request, messages.SUCCESS, 'Thing undressed.')
     return HttpResponseRedirect(reverse('hero_inventory'))
@@ -228,4 +208,4 @@ def undressall(request):
 #
     messages.add_message(request, messages.SUCCESS, 'All things undressed.')
     return HttpResponseRedirect(reverse('hero_inventory'))
-#End
+# End hero inventory

@@ -46,10 +46,10 @@ class HeroFeature(models.Model):
     clubs = models.CharField(max_length=32, null=True)
     shields = models.CharField(max_length=32, null=True)
     
-    protection_head = models.CharField(max_length=32, null=True, default=0)
-    protection_breast = models.CharField(max_length=32, null=True, default=0)
-    protection_zone = models.CharField(max_length=32, null=True, default=0)
-    protection_legs = models.CharField(max_length=32, null=True, default=0)
+    protection_head = models.CharField(max_length=32, null=True)
+    protection_breast = models.CharField(max_length=32, null=True)
+    protection_zone = models.CharField(max_length=32, null=True)
+    protection_legs = models.CharField(max_length=32, null=True)
     
     damage_min = models.CharField(max_length=32, null=True)
     damage_max = models.CharField(max_length=32, null=True)
@@ -58,8 +58,8 @@ class HeroFeature(models.Model):
     dodge = models.CharField(max_length=32, null=True)
     devastate = models.CharField(max_length=32, null=True)
     durability = models.CharField(max_length=32, null=True)
-    block_break = models.CharField(max_length=32, null=True, default=0)
-    armor_break = models.CharField(max_length=32, null=True, default=0)
+    block_break = models.CharField(max_length=32, null=True)
+    armor_break = models.CharField(max_length=32, null=True)
     
     hp = models.CharField(max_length=128, null=True)
     
@@ -71,7 +71,6 @@ class HeroFeature(models.Model):
     class Meta:
         db_table = 'HeroFeature'
 
-##                   
 class Hero(models.Model):
     
     FEATURE_STRENGTH = 0
@@ -123,8 +122,8 @@ class Hero(models.Model):
     password = models.CharField(max_length=64)
     email = models.EmailField(max_length=64, unique=True)
     experience = models.IntegerField(default=0)
-    money = models.FloatField(default=0.00)
-    money_art = models.FloatField(default=0.00)
+    money = models.FloatField(default=settings.HERO_CREATE_MONEY)
+    money_art = models.FloatField(default=settings.HERO_CREATE_ART_MONEY)
     location = models.CharField(max_length=1024, blank=True)
     level = models.IntegerField(default=0)
     image = models.ForeignKey(HeroImage, null=True, blank=True)
@@ -134,20 +133,31 @@ class Hero(models.Model):
     number_of_losses = models.IntegerField(default=0)
     number_of_draws = models.IntegerField(default=0)
     
-    hp = models.IntegerField(default=30)
-    capacity = models.IntegerField(default=30)
+    hp = models.IntegerField(default=settings.HERO_CREATE_HP)
+    capacity = models.IntegerField(default=settings.HERO_CREATE_CAPACITY)
     
-    strength = models.IntegerField(default=3)
-    dexterity = models.IntegerField(default=3)
-    intuition = models.IntegerField(default=3)
-    health = models.IntegerField(default=3)
-    swords = models.IntegerField(default=0)
-    axes = models.IntegerField(default=0)
-    knives = models.IntegerField(default=0)
-    clubs = models.IntegerField(default=0)
-    shields = models.IntegerField(default=0)
-    
-    date_of_birthday = models.DateField()
+    strength = models.IntegerField(default=settings.HERO_CREATE_STRENGTH)
+    dexterity = models.IntegerField(default=settings.HERO_CREATE_DEXTERITY)
+    intuition = models.IntegerField(default=settings.HERO_CREATE_INTUITION)
+    health = models.IntegerField(default=settings.HERO_CREATE_HEALTH)
+
+    swords = models.IntegerField(default=settings.HERO_CREATE_SWORDS)
+    axes = models.IntegerField(default=settings.HERO_CREATE_AXES)
+    knives = models.IntegerField(default=settings.HERO_CREATE_KNIVES)
+    clubs = models.IntegerField(default=settings.HERO_CREATE_CLUBS)
+    shields = models.IntegerField(default=settings.HERO_CREATE_SHIELDS)
+
+    number_of_abilities = models.PositiveIntegerField(
+                            default=settings.HERO_CREATE_NUMBER_OF_ABILITIES)
+    number_of_skills = models.PositiveIntegerField(
+                                default=settings.HERO_CREATE_NUMBER_OF_SKILLS)
+    number_of_parameters = models.PositiveIntegerField(
+                            default=settings.HERO_CREATE_NUMBER_OF_PARAMETERS)
+
+    skills = models.ManyToManyField(HeroSkill, through='HeroHeroSkill')
+    things = models.ManyToManyField(Thing, through='HeroThing')
+
+    date_of_birthday = models.DateField(null=True, blank=True)
 #
     SEXS = ((0, 'Male'), (1, 'Female'))
     sex = models.SmallIntegerField(default=0, choices=SEXS)
@@ -156,13 +166,6 @@ class Hero(models.Model):
     name = models.CharField(max_length=64, blank=True)
     about = models.TextField(blank=True)
     
-    number_of_abilities = models.PositiveIntegerField(default=0)
-    number_of_skills = models.PositiveIntegerField(default=0)
-    number_of_parameters = models.PositiveIntegerField(default=0)
-    
-    skills = models.ManyToManyField(HeroSkill, through='HeroHeroSkill')
-    things = models.ManyToManyField(Thing, through='HeroThing')
-        
     class Meta:
         db_table = 'Hero'
         verbose_name_plural = 'Heroes'
@@ -177,16 +180,19 @@ class Hero(models.Model):
             herofeature = HeroFeature()
             herofeature.save()
             self.feature = herofeature
-            from hero import heromanipulation
-            heromanipulation.hero_feature(self)
-            heromanipulation.hero_level_up(self)
+            from hero.manipulation import HeroM
+
+            herom = HeroM(self)
+            herom.update_feature()
+            herom.level_up()
             
             if not self.image:
                 heroimage = HeroImage.objects.filter(sex=self.sex)[0]
                 self.image = heroimage
             
             island = Island.objects.all()[0]
-            self.location = '%s_20|20:0' % (island.id)
+            self.location = '%s:%s|0' % (island.slug,
+                                settings.HERO_CREATE_LOCATION_ON_THE_ISLAND)
         else:
             if self.password != Hero.objects.get(id=self.id).password:
                 self.password = hashlib.sha1(self.password).hexdigest()
@@ -201,7 +207,7 @@ class SkillFeature(models.Model):
     class Meta:
         db_table = 'SkillFeature'
         unique_together = (('heroskill', 'feature'),)
-        
+
     def __unicode__(self):
         return '%s %s' % (Hero.FEATURES[self.feature][1], self.plus)
 
@@ -226,18 +232,20 @@ class HeroThing(models.Model):
     away = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return '%s %s' % (self.hero, self.thing)
+        return '%s %s %d/%d' % (self.hero, self.thing, self.stability_all,
+                                self.stability_left)
     
     class Meta:
         db_table = 'HeroThing'
 
 class HeroThingFeature(models.Model):
     herothing = models.ForeignKey(HeroThing)
-    feature = models.IntegerField(default=0, choices=Hero.FEATURES)
+    feature = models.IntegerField(choices=Hero.FEATURES)
     plus = models.IntegerField()
     
     def __unicode__(self):
-        return self.herothing.hero
+        return '%s %s %s' % (self.herothing, Hero.FEATURES[self.feature][1],
+                             self.plus)
     
     def hero(self):
         return self.herothing.hero

@@ -3,54 +3,73 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.conf import settings
 
 from building.models import Building
 from building.module.shop.models import BuildingShopThing
 from hero.models import HeroThing
 from thing.models import Thing
 
-from hero.heromanipulation import hero_init, update_capacity
-from building import buildingmanipulation
+from hero.manipulation import hero_init, in_given_location, HeroM
+from building.manipulation import BuildingM
 
-PLUGIN = 'shop'
+MODULE = 'shop'
 
 @hero_init
 def index(request, slug, template_name='building/module/shop/index.html'):
     hero = request.hero
-    building = Building.objects.get(slug=slug)
+    try:
+        building = Building.objects.get(slug=slug)
+    except Building.DoesNotExist:
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+            
+    buildingm = BuildingM(building, hero)
+        
+    if not buildingm.is_near_building(slug):
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+
+    buildingm.add_to_location(slug)
+    
     variables = RequestContext(request, {'hero': hero,
                                          'building': building})
-    
-    buildingmanipulation.add_building_to_location(hero, building, slug)
     
     return render_to_response(template_name, variables)
 
 @hero_init
+@in_given_location
 def view(request, slug, type, template_name='building/module/shop/view.html'):
-    building = Building.objects.get(slug=slug)
-    
-    type_num = [i[0] for i in Thing.TYPES if i[1].lower() == type][0]
-    shopthings = BuildingShopThing.objects.filter(thing__type=type_num)
+    hero = request.hero
+    try:
+        building = Building.objects.get(slug=slug)
+    except Building.DoesNotExist:
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+
+    shopthings = building.buildingshopthing_set. \
+                        filter(thing__type=eval('Thing.TYPE_' + type.upper()))
    
-    variables = RequestContext(request, {'hero': request.hero,
+    variables = RequestContext(request, {'hero': hero,
                                          'building': building,
                                          'shopthings': shopthings})
     
     return render_to_response(template_name, variables)
 
 @hero_init
-def buy(request, slug, id):
-    
+@in_given_location
+def buy(request, slug, shopthing_id):
     hero = request.hero
-    shopthing = BuildingShopThing.objects.get(id=id)
-    
+    try:
+        building = Building.objects.get(slug=slug)
+        shopthing = building.buildingshopthing_set.get(id=shopthing_id)
+    except (Building.DoesNotExist, BuildingShopThing.DoesNotExist):
+        return HttpResponseRedirect(reverse(settings.URL_REVERSE_404))
+
     if shopthing.price > hero.money:
 #
         messages.add_message(request, messages.ERROR, 
                              'You have not enough money.')
     elif not shopthing.count:
 #
-        messages.add_message(request, messages.ERROR, 
+        messages.add_message(request, messages.ERROR,
                              'Thing are not available.')
     else:
         HeroThing.objects.create(hero=hero, thing=shopthing.thing, 
@@ -61,8 +80,7 @@ def buy(request, slug, id):
         hero.money -= shopthing.price
         hero.save()
         
-        update_capacity(hero)
+        HeroM(hero).update_capacity()
 #
         messages.add_message(request, messages.SUCCESS, 'You buy thing.')
-
-    return HttpResponseRedirect(reverse('shop', args=[slug]))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

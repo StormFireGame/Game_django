@@ -3,7 +3,7 @@ from django.db.models import Q
 
 from thing.models import Thing 
 
-from thing.thingmanipulation import is_available_to_dress
+from thing.manipulation import ThingM
 
 register = template.Library()
 
@@ -50,7 +50,7 @@ class GetIsCanDressNode(template.Node):
         hero = self.hero.resolve(context)
         thing = self.thing.resolve(context)
         
-        context[self.context_var] = is_available_to_dress(hero, thing)
+        context[self.context_var] = ThingM(thing, hero).is_available_to_dress()
         
         return ''
         

@@ -29,8 +29,7 @@ class GetPriceForRepair(template.Node):
         if not count:
             count = herothing.stability_left - herothing.stability_all
         
-        context[self.context_var] = float(count * 
-                                                   (herothing.thing.price * 
+        context[self.context_var] = float(count * (herothing.thing.price *
                                                 (percent_repair_money / 100)))
         return ''
             

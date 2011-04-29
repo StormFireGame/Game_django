@@ -53,7 +53,7 @@ class GetTeamAcceptNode(template.Node):
         hero = self.hero.resolve(context)
         team = int(self.team.resolve(context))
         
-        if team == 0:
+        if team == Combat.TEAM_FIRST:
             team_count = combat.one_team_count
             team_lvl_min = combat.one_team_lvl_min
             team_lvl_max = combat.one_team_lvl_max
@@ -93,7 +93,6 @@ class HeroStrikeNode(template.Node):
         where = self.where.resolve(context)
         
         try:
-            form.clean
             if form.data['strike'+strike] == where:
                 return 'checked="checked"'
         except:
@@ -123,7 +122,7 @@ class GetTeamInCombatNode(template.Node):
         team = int(self.team.resolve(context))
         
         context[self.context_var] = combatwarriors.filter(team=team, 
-                                                        is_dead=False)
+                                                          is_dead=False)
         return ''
             
 register.tag('get_team_in_combat', do_get_team_in_combat)
@@ -148,34 +147,33 @@ class GetFriendlyLogNode(template.Node):
 
         if combatlog.is_start:
             # Fight between ButuzGOL [0] vs Fog [0] start
-            log += 'Fight between ' + \
-                            re.search('\[warriors_one](.*)\[\/warriors_one]', 
-                                      combatlog.text).group(1) + ' vs ' + \
-                            re.search('\[warriors_two](.*)\[\/warriors_two]', 
-                                      combatlog.text).group(1) + ' start'
+            log += 'Fight between %s vs %s start' % \
+                            (re.search('\[warriors_one](.*)\[\/warriors_one]',
+                                       combatlog.text).group(1),
+                            re.search('\[warriors_two](.*)\[\/warriors_two]',
+                                      combatlog.text).group(1))
         elif combatlog.is_dead:
             # ButuzGOL[0] is dead
-            log += re.search('\[warrior](.*)\[\/warrior]', 
-                             combatlog.text).group(1) + ' is dead'
+            log += '%s is dead' % (re.search('\[warrior](.*)\[\/warrior]',
+                                             combatlog.text).group(1))
         elif combatlog.is_join:
             # ButuzGOL[0] is join
-            log += re.search('\[warrior](.*)\[\/warrior]', 
-                             combatlog.text).group(1) + ' is join'
+            log += '%s is join' % (re.search('\[warrior](.*)\[\/warrior]',
+                                             combatlog.text).group(1))
         elif combatlog.is_finish:
             # Fight between ButuzGOL [0] vs Fog [0] ended in a draw
             # Victory for ButuzGOL [0]
             if re.search('\[warriors_two](.*)\[\/warriors_two]', 
                          combatlog.text):
-                log += 'Fight between ' + \
-                            re.search('\[warriors_one](.*)\[\/warriors_one]', 
-                                      combatlog.text).group(1) + ' vs ' + \
-                            re.search('\[warriors_two](.*)\[\/warriors_two]', 
-                                      combatlog.text).group(1) + \
-                                                            ' ended in a draw'
+                log += 'Fight between %s vs %s ended in a draw' % \
+                            (re.search('\[warriors_one](.*)\[\/warriors_one]',
+                                       combatlog.text).group(1),
+                            re.search('\[warriors_two](.*)\[\/warriors_two]',
+                                      combatlog.text).group(1))
             else:
-                log += 'Victory for ' + \
-                            re.search('\[warriors_one](.*)\[\/warriors_one]', 
-                                      combatlog.text).group(1)                                                           
+                log += 'Victory for %s' % \
+                            (re.search('\[warriors_one](.*)\[\/warriors_one]',
+                                       combatlog.text).group(1))
         else:
             # ButuzGOL[0] struck Fog[0] on -5 (head) (head, breast)
             ## ButuzGOL[0] break armor struck Fog[0] on -10

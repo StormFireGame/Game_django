@@ -23,3 +23,7 @@ def line_hp(value, line_length):
     current_hp = float(value.split('|')[0])
     max_hp = float(value.split('|')[1])
     return int(round(float(line_length) * current_hp / max_hp))
+
+@register.filter
+def format_money(value):
+    return '%.2f' % value

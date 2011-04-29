@@ -15,7 +15,7 @@
 			<input type="submit" class="sexybutton sexysimple" value="Apply" />
 		</form>
 	{% endif %}
-	
+
 	{% if is_fight %}
 		<a href="{% url combat_fight %}">Fight</a>
 	{% endif %}
@@ -33,11 +33,11 @@
 		{{ combat.start_date_time|date:"H:i:s" }}
 		{% get_team combat.combatwarrior_set 0 as one_team_warriors %}
 		{% get_team combat.combatwarrior_set 1 as two_team_warriors %}
-		
+
 		{% for team_warrior in one_team_warriors %}
 			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}
-		{% if two_team %} vs {% endif %}
+		{% if two_team_warriors %} vs {% endif %}
 		{% for team_warrior in two_team_warriors %}
 			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
 		{% endfor %}

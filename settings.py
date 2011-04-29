@@ -1,4 +1,6 @@
 # Django settings for game project.
+from tuning import *
+
 import os
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
@@ -98,7 +100,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
 )
@@ -117,7 +119,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.messages',
     
-    ##
+    # Game
     'game.tableexperience',
     'game.hero',
     'game.thing',
@@ -125,16 +127,15 @@ INSTALLED_APPS = (
     'game.combat',
     'game.building',
     'game.island',
-    ##
     
-    ###
+    # Building modules
     'game.building.module.castle',
     'game.building.module.street',
     'game.building.module.shop',
     'game.building.module.buyingup',
     'game.building.module.commission',
     'game.building.module.smithy',
-    ###
+    # End game
 )
 
 # A sample logging configuration. The only tangible logging
@@ -165,6 +166,11 @@ if DEBUG:
     INSTALLED_APPS += ('debug_toolbar',)
     INSTALLED_APPS += ('django_extensions',)
     INSTALLED_APPS += ('django_evolution',)
+    INSTALLED_APPS += (
+        'indexer',
+        'paging',
+        'sentry',
+        'sentry.client',)
     DEBUG_TOOLBAR_PANELS = (
         'debug_toolbar.panels.version.VersionDebugPanel',
         'debug_toolbar.panels.timer.TimerDebugPanel',

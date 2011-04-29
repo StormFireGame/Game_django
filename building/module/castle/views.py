@@ -1,6 +1,6 @@
 from building import views as base_views
 
-PLUGIN = 'castle'
+MODULE = 'castle'
 
-def index(request, slug, template_name='building/module/castle/index.html'):
+def index(request, slug):
     return base_views.index(request, slug)

@@ -6,6 +6,6 @@ urlpatterns = patterns('building.module.shop.views',
                            '(?P<type>sword|axe|knive|clubs|shield|helmet|'
                            'kolchuga|armor|belt|pants|treetop|glove|boot|'
                            'ring|amulet)$', 'view', name='shop_view'),
-                       url(r'^(?P<slug>[-\w]+)/buy/(?P<id>\d+)$', 
+                       url(r'^(?P<slug>[-\w]+)/buy/(?P<shopthing_id>\d+)$',
                            'buy', name='shop_buy'), 
                       )

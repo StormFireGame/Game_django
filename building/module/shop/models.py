@@ -6,7 +6,7 @@ from thing.models import Thing
 class BuildingShopThing(models.Model):
     building = models.ForeignKey(Building)
     thing = models.ForeignKey(Thing)
-    price = models.FloatField(default=0.00)
+    price = models.FloatField()
     count = models.IntegerField()
     
     class Meta:
@@ -14,4 +14,4 @@ class BuildingShopThing(models.Model):
         unique_together = (('building', 'thing'),)
     
     def __unicode__(self):
-        return '%s %s' % (self.building.name, self.thing.name)
+        return '%s %s' % (self.building, self.thing)
