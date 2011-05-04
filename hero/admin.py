@@ -56,6 +56,11 @@ class HeroAdmin(admin.ModelAdmin):
                         'classes': ['collapse']}),
     ]
 
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        if obj.id:
+            obj.update_feature()
+
 admin.site.register(Hero, HeroAdmin)
 
 class HeroImageAdmin(admin.ModelAdmin):

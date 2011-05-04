@@ -30,8 +30,7 @@ def index(request, slug, template_name='building/module/buyingup/index.html'):
 
     buildingm.add_to_location(slug)
 
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building})
+    variables = RequestContext(request, {'building': building})
 
     return render_to_response(template_name, variables)
 
@@ -50,8 +49,7 @@ def view(request, slug, type,
     
     percent = BuildingBuyingup.objects.get(building=building).percent
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                          'herothings': herothings,
                                          'percent': percent})
     return render_to_response(template_name, variables)

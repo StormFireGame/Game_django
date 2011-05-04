@@ -2,93 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35fbdd82-4c8a-4b5c-abac-985f186f577d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/game.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/butuzgol.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/projectCodeStyle.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bot/manipulation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/building/manipulation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/combat/manipulation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hero/manipulation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/island/manipulation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main/forms.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/thing/manipulation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tuning.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/thing/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/bot/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/combat/combatmanipulation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/buyingup/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/bot/views.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/thing/views.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/island/islandmanipulation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/street/models.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/hero/heromanipulation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/island/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/thing/thingmanipulation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/castle/models.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/street/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/smithy/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/combat/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tableexperience/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/hero/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/castle/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/bot/botmanipulation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/buildingmanipulation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/commission/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/building/module/shop/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tableexperience/views.py" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/context_processors.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game.db" afterPath="$PROJECT_DIR$/game.db" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bot/admin.py" afterPath="$PROJECT_DIR$/bot/admin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bot/manipulation.py" afterPath="$PROJECT_DIR$/bot/manipulation.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bot/models.py" afterPath="$PROJECT_DIR$/bot/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/admin.py" afterPath="$PROJECT_DIR$/building/admin.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/models.py" afterPath="$PROJECT_DIR$/building/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/buyingup/models.py" afterPath="$PROJECT_DIR$/building/module/buyingup/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/buyingup/templatetags/buyingup_filters.py" afterPath="$PROJECT_DIR$/building/module/buyingup/templatetags/buyingup_filters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/buyingup/urls.py" afterPath="$PROJECT_DIR$/building/module/buyingup/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/buyingup/views.py" afterPath="$PROJECT_DIR$/building/module/buyingup/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/castle/views.py" afterPath="$PROJECT_DIR$/building/module/castle/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/commission/models.py" afterPath="$PROJECT_DIR$/building/module/commission/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/commission/urls.py" afterPath="$PROJECT_DIR$/building/module/commission/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/commission/views.py" afterPath="$PROJECT_DIR$/building/module/commission/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/shop/models.py" afterPath="$PROJECT_DIR$/building/module/shop/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/shop/urls.py" afterPath="$PROJECT_DIR$/building/module/shop/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/shop/views.py" afterPath="$PROJECT_DIR$/building/module/shop/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/smithy/models.py" afterPath="$PROJECT_DIR$/building/module/smithy/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/smithy/templatetags/smithy_tags.py" afterPath="$PROJECT_DIR$/building/module/smithy/templatetags/smithy_tags.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/smithy/urls.py" afterPath="$PROJECT_DIR$/building/module/smithy/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/smithy/views.py" afterPath="$PROJECT_DIR$/building/module/smithy/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/module/street/views.py" afterPath="$PROJECT_DIR$/building/module/street/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/templatetags/building_tags.py" afterPath="$PROJECT_DIR$/building/templatetags/building_tags.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/building/views.py" afterPath="$PROJECT_DIR$/building/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combat/forms.py" afterPath="$PROJECT_DIR$/combat/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combat/models.py" afterPath="$PROJECT_DIR$/combat/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combat/templatetags/combat_tags.py" afterPath="$PROJECT_DIR$/combat/templatetags/combat_tags.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combat/manipulation.py" afterPath="$PROJECT_DIR$/combat/manipulation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combat/templatetags/combat_filters.py" afterPath="$PROJECT_DIR$/combat/templatetags/combat_filters.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/combat/views.py" afterPath="$PROJECT_DIR$/combat/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hero/forms.py" afterPath="$PROJECT_DIR$/hero/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hero/admin.py" afterPath="$PROJECT_DIR$/hero/admin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hero/manipulation.py" afterPath="$PROJECT_DIR$/hero/manipulation.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hero/models.py" afterPath="$PROJECT_DIR$/hero/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hero/templatetags/hero_filters.py" afterPath="$PROJECT_DIR$/hero/templatetags/hero_filters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hero/templatetags/hero_tags.py" afterPath="$PROJECT_DIR$/hero/templatetags/hero_tags.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hero/views.py" afterPath="$PROJECT_DIR$/hero/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/island/models.py" afterPath="$PROJECT_DIR$/island/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/island/templatetags/island_filters.py" afterPath="$PROJECT_DIR$/island/templatetags/island_filters.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/island/views.py" afterPath="$PROJECT_DIR$/island/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main/views.py" afterPath="$PROJECT_DIR$/main/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.py" afterPath="$PROJECT_DIR$/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base_game.html" afterPath="$PROJECT_DIR$/templates/base_game.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base_main.html" afterPath="$PROJECT_DIR$/templates/base_main.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/building/module/buyingup/view.html" afterPath="$PROJECT_DIR$/templates/building/module/buyingup/view.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/building/module/commission/take.html" afterPath="$PROJECT_DIR$/templates/building/module/commission/take.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/building/module/commission/view.html" afterPath="$PROJECT_DIR$/templates/building/module/commission/view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/bot/__body.html" afterPath="$PROJECT_DIR$/templates/bot/__body.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/building/module/buyingup/index.html" afterPath="$PROJECT_DIR$/templates/building/module/buyingup/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/building/module/commission/index.html" afterPath="$PROJECT_DIR$/templates/building/module/commission/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/building/module/shop/index.html" afterPath="$PROJECT_DIR$/templates/building/module/shop/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/building/module/smithy/index.html" afterPath="$PROJECT_DIR$/templates/building/module/smithy/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/__bot_body.html" afterPath="$PROJECT_DIR$/templates/combat/__bot_body.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/__hero_body.html" afterPath="$PROJECT_DIR$/templates/combat/__hero_body.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/__hero_two_body.html" afterPath="$PROJECT_DIR$/templates/combat/__hero_two_body.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/chaotic.html" afterPath="$PROJECT_DIR$/templates/combat/chaotic.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/combat.html" afterPath="$PROJECT_DIR$/templates/combat/combat.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/current.html" afterPath="$PROJECT_DIR$/templates/combat/current.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/duel.html" afterPath="$PROJECT_DIR$/templates/combat/duel.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/main/main.html" afterPath="$PROJECT_DIR$/templates/main/main.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/main/registration.html" afterPath="$PROJECT_DIR$/templates/main/registration.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/group.html" afterPath="$PROJECT_DIR$/templates/combat/group.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/past.html" afterPath="$PROJECT_DIR$/templates/combat/past.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/combat/territorial.html" afterPath="$PROJECT_DIR$/templates/combat/territorial.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/hero/__body.html" afterPath="$PROJECT_DIR$/templates/hero/__body.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/hero/__inventory_body.html" afterPath="$PROJECT_DIR$/templates/hero/__inventory_body.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/hero/hero.html" afterPath="$PROJECT_DIR$/templates/hero/hero.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/island/island.html" afterPath="$PROJECT_DIR$/templates/island/island.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/thing/models.py" afterPath="$PROJECT_DIR$/thing/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/thing/templatetags/thing_tags.py" afterPath="$PROJECT_DIR$/thing/templatetags/thing_tags.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/urls.py" afterPath="$PROJECT_DIR$/urls.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/templates/hero/settings.html" afterPath="$PROJECT_DIR$/templates/hero/preferences.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/building/module/smithy/smithymanipulation.py" afterPath="$PROJECT_DIR$/building/module/smithy/manipulation.py" />
     </list>
     <ignored path="game.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -124,21 +81,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/building/module/buyingup/views.py" />
-        <option value="$PROJECT_DIR$/settings.py" />
-        <option value="$PROJECT_DIR$/combat/models.py" />
-        <option value="$PROJECT_DIR$/templates/combat/duel.html" />
-        <option value="$PROJECT_DIR$/urls.py" />
-        <option value="$PROJECT_DIR$/tuning.py" />
+        <option value="$PROJECT_DIR$/hero/admin.py" />
         <option value="$PROJECT_DIR$/hero/manipulation.py" />
-        <option value="$PROJECT_DIR$/templates/combat/combat.html" />
-        <option value="$PROJECT_DIR$/combat/forms.py" />
-        <option value="$PROJECT_DIR$/combat/templatetags/combat_tags.py" />
-        <option value="$PROJECT_DIR$/building/views.py" />
-        <option value="$PROJECT_DIR$/combat/views.py" />
-        <option value="$PROJECT_DIR$/combat/combatmanipulation.py" />
-        <option value="$PROJECT_DIR$/combat/manipulation.py" />
         <option value="$PROJECT_DIR$/bot/manipulation.py" />
+        <option value="$PROJECT_DIR$/hero/models.py" />
+        <option value="$PROJECT_DIR$/media_url.py" />
+        <option value="$PROJECT_DIR$/context_processors/media_url.py" />
+        <option value="$PROJECT_DIR$/settings.py" />
+        <option value="$PROJECT_DIR$/context_processors.py" />
+        <option value="$PROJECT_DIR$/building/views.py" />
+        <option value="$PROJECT_DIR$/building/module/buyingup/views.py" />
+        <option value="$PROJECT_DIR$/building/module/commission/views.py" />
+        <option value="$PROJECT_DIR$/building/module/shop/views.py" />
+        <option value="$PROJECT_DIR$/building/module/smithy/views.py" />
+        <option value="$PROJECT_DIR$/combat/views.py" />
+        <option value="$PROJECT_DIR$/hero/views.py" />
         <option value="$PROJECT_DIR$/island/views.py" />
       </list>
     </option>
@@ -150,10 +107,13 @@
           <State>
             <id>Inspections</id>
           </State>
+          <State>
+            <id>Python</id>
+          </State>
         </expanded-state>
         <selected-state>
           <State>
-            <id>Buildout</id>
+            <id>Python</id>
           </State>
         </selected-state>
       </profile-state>
@@ -185,25 +145,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Favorites" />
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="game">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="game">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -222,59 +163,55 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Problems" />
+        <subPane subId="Project Files">
           <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="game" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="game" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            <PATH_ELEMENT USER_OBJECT="game">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="island" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            <PATH_ELEMENT USER_OBJECT="game">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="game" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="game" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            <PATH_ELEMENT USER_OBJECT="game">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hero" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            <PATH_ELEMENT USER_OBJECT="game">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="game" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="game" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            <PATH_ELEMENT USER_OBJECT="island">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="Errors" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="editor.preferences.folding" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager" selected="Django server.game">
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -348,6 +285,29 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="py.test" factoryName="py.test">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="game" />
+      <option name="testToRun" value="" />
+      <option name="keywords" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug">
+      <module name="" />
+      <option name="PORT" value="0" />
+      <option name="HOST" value="null" />
+      <option name="USE_MAPPING" value="false" />
+      <option name="REMOTE_ROOT" value="" />
+      <option name="LOCAL_ROOT" value="" />
+      <option name="REDIRECT_OUTPUT" value="true" />
+      <option name="SUSPEND_AFTER_CONNECT" value="true" />
+      <method />
+    </configuration>
     <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -366,29 +326,6 @@
       <option name="runNoReload" value="false" />
       <option name="useCustomRunCommand" value="false" />
       <option name="customRunCommand" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug">
-      <module name="" />
-      <option name="PORT" value="0" />
-      <option name="HOST" value="null" />
-      <option name="USE_MAPPING" value="false" />
-      <option name="REMOTE_ROOT" value="" />
-      <option name="LOCAL_ROOT" value="" />
-      <option name="REDIRECT_OUTPUT" value="true" />
-      <option name="SUSPEND_AFTER_CONNECT" value="true" />
-      <method />
-    </configuration>
-    <configuration default="true" type="py.test" factoryName="py.test">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <module name="game" />
-      <option name="testToRun" value="" />
-      <option name="keywords" value="" />
       <method />
     </configuration>
     <configuration default="true" type="PythonDocTestRunConfigurationType" factoryName="Python's doctests">
@@ -481,21 +418,21 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="22" width="1368" height="746" extended-state="6" />
+    <frame x="0" y="22" width="1366" height="746" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13884674" sideWeight="0.6704" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13145897" sideWeight="0.6704" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20637329" sideWeight="0.6704" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1861702" sideWeight="0.6704" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3152" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.4944" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -534,109 +471,84 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/combat/templatetags/combat_filters.py">
+    <entry file="file://$PROJECT_DIR$/building/module/shop/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="1" selection-start="376" selection-end="376" vertical-scroll-proportion="0.43551087">
-          <folding />
-        </state>
+        <state line="5" column="58" selection-start="291" selection-end="291" vertical-scroll-proportion="0.10887772" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hero/templatetags/hero_filters.py">
+    <entry file="file://$PROJECT_DIR$/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="18" column="45" selection-start="518" selection-end="518" vertical-scroll-proportion="0.3919598" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/combat/group.html">
+    <entry file="file://$PROJECT_DIR$/hero/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="46" selection-start="1894" selection-end="1894" vertical-scroll-proportion="0.6761566">
-          <folding />
-        </state>
+        <state line="167" column="0" selection-start="6782" selection-end="6782" vertical-scroll-proportion="1.7621441" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hero/forms.py">
+    <entry file="file://$PROJECT_DIR$/templates/base_game.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.26130652">
-          <folding />
-        </state>
+        <state line="83" column="34" selection-start="3450" selection-end="3450" vertical-scroll-proportion="0.5836299" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/combat/forms.py">
+    <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="51" selection-start="7260" selection-end="7260" vertical-scroll-proportion="0.62981576">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/combat/combat.html">
+    <entry file="file://$PROJECT_DIR$/context_processors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="24" selection-start="2459" selection-end="2459" vertical-scroll-proportion="0.23130435">
-          <folding />
-        </state>
+        <state line="4" column="17" selection-start="110" selection-end="110" vertical-scroll-proportion="0.087102175" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/combat/models.py">
+    <entry file="file://$PROJECT_DIR$/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.1105528">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/combat/templatetags/combat_tags.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="6" selection-start="5121" selection-end="5139" vertical-scroll-proportion="0.2160804">
-          <folding />
-        </state>
+        <state line="108" column="33" selection-start="3849" selection-end="3849" vertical-scroll-proportion="0.45561138" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/building/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="30" selection-start="283" selection-end="283" vertical-scroll-proportion="0.17420435">
-          <folding />
-        </state>
+        <state line="44" column="41" selection-start="1360" selection-end="1360" vertical-scroll-proportion="0.71691793" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/island/manipulation.py">
+    <entry file="file://$PROJECT_DIR$/building/module/buyingup/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="49" selection-start="1993" selection-end="1993" vertical-scroll-proportion="0.86934674">
-          <folding />
-        </state>
+        <state line="51" column="41" selection-start="1729" selection-end="1729" vertical-scroll-proportion="0.23785594" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/combat/views.py">
+    <entry file="file://$PROJECT_DIR$/building/module/castle/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="39" selection-start="568" selection-end="568" vertical-scroll-proportion="0.3484087">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot/manipulation.py">
+    <entry file="file://$PROJECT_DIR$/building/module/smithy/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="165" column="31" selection-start="8007" selection-end="8007" vertical-scroll-proportion="0.41373533">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/combat/manipulation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="561" column="30" selection-start="25729" selection-end="25751" vertical-scroll-proportion="0.6080402">
-          <folding />
-        </state>
+        <state line="131" column="41" selection-start="4625" selection-end="4625" vertical-scroll-proportion="0.10720268" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/island/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="32" selection-start="2988" selection-end="2988" vertical-scroll-proportion="0.5427136">
-          <folding />
-        </state>
+        <state line="102" column="1" selection-start="3849" selection-end="3849" vertical-scroll-proportion="0.43383583" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hero/manipulation.py">
+    <entry file="file://$PROJECT_DIR$/hero/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="471" column="63" selection-start="22887" selection-end="22887" vertical-scroll-proportion="0.39865997">
-          <folding />
-        </state>
+        <state line="94" column="41" selection-start="3315" selection-end="3315" vertical-scroll-proportion="-0.021775544" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/combat/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="506" column="41" selection-start="18962" selection-end="18962" vertical-scroll-proportion="-1.4606365" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/building/module/shop/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="41" selection-start="1637" selection-end="1637" vertical-scroll-proportion="0.21775544" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/building/module/commission/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="165" column="41" selection-start="5853" selection-end="5853" vertical-scroll-proportion="0.34673366" />
       </provider>
     </entry>
   </component>

@@ -37,7 +37,7 @@ class Thing(models.Model):
     is_bot = models.BooleanField()
     stability = models.IntegerField()
     weight = models.IntegerField()
-    image = models.ImageField(upload_to='upload/thingimages')
+    image = models.ImageField(upload_to='upload/thing_image')
     
     level_need = models.IntegerField()
 

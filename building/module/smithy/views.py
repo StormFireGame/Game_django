@@ -31,8 +31,7 @@ def index(request, slug, template_name='building/module/smithy/index.html'):
 
     buildingm.add_to_location(slug)
 
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building})
+    variables = RequestContext(request, {'building': building})
     
     return render_to_response(template_name, variables)
 
@@ -50,8 +49,7 @@ def repair(request, slug, template_name='building/module/smithy/repair.html'):
     percent_repair_money = building.buildingsmithy_set.get(). \
                                                         percent_repair_money
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                          'herothings': herothings,
                                 'percent_repair_money': percent_repair_money})
     return render_to_response(template_name, variables)
@@ -131,8 +129,7 @@ def modify(request, slug, template_name='building/module/smithy/modify.html'):
     smithy = building.buildingsmithy_set.get()
     smithyfeatures = smithy.buildingsmithyfeature_set.all()
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                          'herothings': herothings,
                                          'smithyfeatures': smithyfeatures})
     

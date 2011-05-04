@@ -10,7 +10,7 @@ class Building(models.Model):
     name = models.CharField(max_length=32)
     slug = models.SlugField(max_length=32, unique=True)
     module = models.CharField(max_length=32, null=True, blank=True)
-    image = models.ImageField(upload_to='upload/buildingimages', null=True, 
+    image = models.ImageField(upload_to='upload/building_image', null=True,
                               blank=True)
     
     coordinate_x1 = models.IntegerField(null=True, blank=True)

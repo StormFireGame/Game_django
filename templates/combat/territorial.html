@@ -24,12 +24,12 @@
 		
 		{% if not in_combat and one_team_enter %}<a href="{% url combat_enter combat.id 0 %}">Enter</a>{% endif %}
 		{% for team_warrior in one_team_warriors %}
-			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}image/info.gif" alt="" /></a>
 		{% endfor %}
 		vs
 		{% if not in_combat and two_team_enter %}<a href="{% url combat_enter combat.id 1 %}">Enter</a>{% endif %}		
 		{% for team_warrior in two_team_warriors %}
-			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}image/info.gif" alt="" /></a>
 		{% endfor %}
 		(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 	</div>

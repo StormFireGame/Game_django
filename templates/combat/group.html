@@ -41,12 +41,12 @@
 		{% get_team combat.combatwarrior_set 0 as one_team_warriors %}
 		{% get_team combat.combatwarrior_set 1 as two_team_warriors %}
 		{% for team_warrior in one_team_warriors %}
-			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}image/info.gif" alt="" /></a>
 		{% endfor %}
 		vs
 		{% if not in_combat and two_team_accept %}<a href="{% url combat_accept combat.id 1 %}">Accept</a>{% endif %}		
 		{% for team_warrior in two_team_warriors %}
-			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+			{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}image/info.gif" alt="" /></a>
 		{% endfor %}
 		(With things: {{ combat.with_things }} | Time out: {{combat.time_out }} sec. | Injury: {{ combat.injury|get_string_injury }})
 		Time wait: {{ combat.time_wait_left }} sec.

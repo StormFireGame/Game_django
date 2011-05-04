@@ -30,8 +30,7 @@ def index(request, slug, template_name='building/module/shop/index.html'):
 
     buildingm.add_to_location(slug)
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building})
+    variables = RequestContext(request, {'building': building})
     
     return render_to_response(template_name, variables)
 
@@ -47,8 +46,7 @@ def view(request, slug, type, template_name='building/module/shop/view.html'):
     shopthings = building.buildingshopthing_set. \
                         filter(thing__type=eval('Thing.TYPE_' + type.upper()))
    
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                          'shopthings': shopthings})
     
     return render_to_response(template_name, variables)

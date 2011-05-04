@@ -13,7 +13,7 @@
 </div>
 <div class="span-13">
 	<div style="background:url({{ MEDIA_URL }}{{ island.image }}); width:510px; height:270px; background-position: {{ hero_position_x|map_position }}px {{ hero_position_y|map_position }}px;">	
-		<img src="{{ MEDIA_URL }}images/island_move.png" alt="" style="position:relative; top:90px; left:165px;" usemap="#islandmap" />
+		<img src="{{ MEDIA_URL }}image/island_move.png" alt="" style="position:relative; top:90px; left:165px;" usemap="#islandmap" />
 		<map name="islandmap">
 			<area title="North [{{ hero_position_x }}:{{hero_position_y|hero_position_down}}]" shape="poly" coords="90,0,60,15,90,30,120,15" href="{% url island_move hero_position_x hero_position_y|hero_position_down %}" alt="" />
 			<area title="North-West [{{ hero_position_x|hero_position_down }}:{{ hero_position_y|hero_position_down }}]" shape="poly" coords="60,15,90,30,60,45,30,30" href="{% url island_move hero_position_x|hero_position_down hero_position_y|hero_position_down %}" alt="" />
@@ -35,7 +35,7 @@
 	<b>Bots</b>
 	<br />
 	{% for bot in bots %}
-		{{ bot }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a> <a href="{% url island_bot_attack bot.id %}">Attack</a><br />
+		{{ bot }} <a href=""><img src="{{ MEDIA_URL }}image/info.gif" alt="" /></a> <a href="{% url island_bot_attack bot.id %}">Attack</a><br />
 	{% endfor %}
 </div>
 <div style="clear:both;"><br /></div>

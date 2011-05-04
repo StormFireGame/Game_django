@@ -42,8 +42,7 @@ def index(request, slug, template_name='building/index.html'):
     buildingm.remove_from_location(slug)
     buildingm.add_to_location(slug)
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                          'children': children,
                             'default_child_building': default_child_building,
                         'children_of_default_child': children_of_default_child,

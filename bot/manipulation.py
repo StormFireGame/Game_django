@@ -8,7 +8,7 @@ class BotM:
 
     def update_feature(self):
         bot_feature = self.bot.feature
-
+        
         # Drop params
         bot_feature.strength = str(self.bot.strength)
         bot_feature.dexterity = str(self.bot.dexterity)

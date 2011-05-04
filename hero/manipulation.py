@@ -61,10 +61,9 @@ class HeroM:
         self.hero = hero
 
     def update_feature(self):
-
-        # Drop params
         hero_feature = self.hero.feature
         
+        # Drop params
         hero_feature.strength = str(self.hero.strength)
         hero_feature.dexterity = str(self.hero.dexterity)
         hero_feature.intuition = str(self.hero.intuition)
@@ -467,7 +466,7 @@ class HeroM:
                     self.hero.location.split('&')[0].split(':')[1].split('|') ]
 
     def update_position_on_island(self, coordinate_x, coordinate_y):
-        self.hero.location = '%s:%s|%s|%s' % (self.hero.location.split('_')[0],
+        self.hero.location = '%s:%s|%s|%s' % (self.hero.location.split(':')[0],
                                               coordinate_x, coordinate_y,
                                               int(time.time()))
         self.hero.save()

@@ -19,4 +19,4 @@ def get_strike_list(value):
 @register.filter
 def is_win(value, arg):
 #
-    return 'Win' if value == arg else ''
+    return 'Win' if value == int(arg) else ''

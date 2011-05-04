@@ -100,11 +100,11 @@
 			{% get_team_in_combat combat.combatwarrior_set 1 as two_team_warriors %}
 			
 			{% for team_warrior in one_team_warriors %}
-				{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+				{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}image/info.gif" alt="" /></a>
 			{% endfor %}
 			{% if two_team_warriors %} vs {% endif %}
 			{% for team_warrior in two_team_warriors %}
-				{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}images/info.gif" alt="" /></a>
+				{{ team_warrior }} <a href=""><img src="{{ MEDIA_URL }}image/info.gif" alt="" /></a>
 			{% endfor %}
 		</div>
 	{% endif %}
@@ -125,7 +125,7 @@
 		{% if bot %}
 			{% include "combat/__bot_body.html" %}
 		{% else %}
-			<img src="{{ MEDIA_URL }}images/combat.png" alt="" />	
+			<img src="{{ MEDIA_URL }}image/combat.png" alt="" />
 		{% endif %}
 	{% endif %}
 </div>

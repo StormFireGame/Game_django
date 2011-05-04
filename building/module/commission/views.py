@@ -33,8 +33,7 @@ def index(request, slug,
 
     buildingm.add_to_location(slug)
 
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building})
+    variables = RequestContext(request, {'building': building})
     
     return render_to_response(template_name, variables)
 
@@ -52,8 +51,7 @@ def view(request, slug, type,
         filter(herothing__thing__type=eval('Thing.TYPE_' + type.upper())). \
                                                 exclude(herothing__hero=hero)
 
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                 'commissionherothings': commissionherothings})
     
     return render_to_response(template_name, variables)
@@ -110,8 +108,7 @@ def put(request, slug, template_name='building/module/commission/put.html'):
         
     herothings = hero.herothing_set.filter(dressed=False, away=False)
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                          'herothings': herothings})
     
     return render_to_response(template_name, variables)
@@ -146,8 +143,7 @@ def put_select(request, slug, herothing_id,
     else:
         form = PutForm()
         
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                          'herothing': herothing,
                                          'form': form})
     
@@ -167,8 +163,7 @@ def take(request, slug, template_name='building/module/commission/take.html'):
     commissionherothings = building.buildingcommissionherothing_set. \
                                                 filter(herothing__hero=hero)
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'building': building,
+    variables = RequestContext(request, {'building': building,
                                 'commissionherothings': commissionherothings})
     
     return render_to_response(template_name, variables)

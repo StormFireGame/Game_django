@@ -42,8 +42,7 @@ def island(request, template_name='island/island.html'):
                               current_coordinate_y=y,
                               in_combat=False)
     
-    variables = RequestContext(request, {'hero': hero, 
-                                         'island': island,
+    variables = RequestContext(request, {'island': island,
                                          'buildings': buildings,
                                          'bots': bots,
                                          'hero_position_x': hero_position[0],

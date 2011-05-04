@@ -32,4 +32,8 @@ class BotAdmin(admin.ModelAdmin):
         #('Things', {'fields': ['things'], 'classes': ['collapse']}),
     ]
 
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        obj.update_feature()
+
 admin.site.register(Bot, BotAdmin)

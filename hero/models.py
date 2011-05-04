@@ -7,7 +7,7 @@ from island.models import Island
 import hashlib
 
 class HeroImage(models.Model):
-    image = models.ImageField(upload_to='upload/heroimages')
+    image = models.ImageField(upload_to='upload/hero_image')
     is_art = models.BooleanField(default=False)
 #    
     SEXS = ((0, 'Male'), (1, 'Female'))
@@ -165,7 +165,7 @@ class Hero(models.Model):
     city = models.CharField(max_length=32, blank=True)
     name = models.CharField(max_length=64, blank=True)
     about = models.TextField(blank=True)
-    
+
     class Meta:
         db_table = 'Hero'
         verbose_name_plural = 'Heroes'
@@ -180,12 +180,7 @@ class Hero(models.Model):
             herofeature = HeroFeature()
             herofeature.save()
             self.feature = herofeature
-            from hero.manipulation import HeroM
 
-            herom = HeroM(self)
-            herom.update_feature()
-            herom.level_up()
-            
             if not self.image:
                 heroimage = HeroImage.objects.filter(sex=self.sex)[0]
                 self.image = heroimage
@@ -193,11 +188,19 @@ class Hero(models.Model):
             island = Island.objects.all()[0]
             self.location = '%s:%s|0' % (island.slug,
                                 settings.HERO_CREATE_LOCATION_ON_THE_ISLAND)
+
+            self.update_feature()
         else:
             if self.password != Hero.objects.get(id=self.id).password:
                 self.password = hashlib.sha1(self.password).hexdigest()
         
         super(Hero, self).save()
+
+    def update_feature(self):
+        from hero.manipulation import HeroM
+        herom = HeroM(self)
+        herom.update_feature()
+        herom.level_up()
 
 class SkillFeature(models.Model):
     heroskill = models.ForeignKey(HeroSkill)

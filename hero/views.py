@@ -17,8 +17,7 @@ from thing.manipulation import ThingM
 def hero(request, template_name='hero/hero.html'):
     heroskills = HeroSkill.objects.all()
     
-    variables = RequestContext(request, {'hero': request.hero,
-                                         'heroskills': heroskills})
+    variables = RequestContext(request, {'heroskills': heroskills})
 
     return render_to_response(template_name, variables)
 
@@ -56,7 +55,7 @@ def increase(request, type, what):
             HeroHeroSkill.objects.create(hero=hero, skill=heroskill, level=1)
             
     hero.save()
-    HeroM.update_feature(hero)
+    HeroM(hero).update_feature()
     
     return HttpResponseRedirect(reverse('hero'))
 # End hero
@@ -80,8 +79,7 @@ def preferences(request, template_name='hero/preferences.html'):
     else:
         form = SettingsForm(request.session['hero_id'], instance=hero)
     
-    variables = RequestContext(request, {'hero': hero, 
-                                         'heroimages': heroimages,
+    variables = RequestContext(request, {'heroimages': heroimages,
                                          'form': form})
     
     return render_to_response(template_name, variables) 
@@ -94,8 +92,7 @@ def inventory(request, template_name='hero/inventory.html'):
     hero = request.hero
     herothings = hero.herothing_set.filter(dressed=False, away=False)
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'herothings': herothings})
+    variables = RequestContext(request, {'herothings': herothings})
     
     return render_to_response(template_name, variables)
 

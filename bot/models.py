@@ -5,7 +5,7 @@ from thing.models import Thing
 from island.models import Island
 
 class BotImage(models.Model):
-    image = models.ImageField(upload_to='upload/botimages')
+    image = models.ImageField(upload_to='upload/bot_image')
     
     class Meta:
         db_table = 'BotImage'
@@ -125,7 +125,8 @@ class Bot(models.Model):
             self.feature = botfeature
         
         super(Bot, self).save()
-        
+
+    def update_feature(self):
         from bot.manipulation import BotM
         BotM(self).update_feature()
     

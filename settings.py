@@ -105,6 +105,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'game.context_processors.hero',
+)
+
 ROOT_URLCONF = 'game.urls'
 
 TEMPLATE_DIRS = (

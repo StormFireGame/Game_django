@@ -210,10 +210,9 @@ class CombatM:
         return (all_worriors_not_answer and not was_actions)
 
     def is_warrior_in_combat(self, hero, bot):
-        return self.combat.objects.filter(Q(combatwarrior__hero=hero) |
-                                          Q(combatwarrior__bot=bot),
-                                          combatwarrior__is_dead=False,
-                                          combatwarrior__is_out=False).exists()
+        return self.combat.combatwarrior_set.filter(Q(hero=hero) | Q(bot=bot),
+                                                    is_dead=False,
+                                                    is_out=False).exists()
 
     def is_anybody_not_quit(self):
         return self.combat.combatwarrior_set.filter(is_quit=False).exists()
@@ -530,6 +529,7 @@ class CombatM:
                             filter(is_dead=False).exclude(bot=None)[0:1].get()
             team = combatwarrior.team
             if self.is_timeout(team, True):
+
                 dead_warriors = []
                 for combatwarrior in self.combat.combatwarrior_set. \
                                     filter(is_dead=False).exclude(team=team):

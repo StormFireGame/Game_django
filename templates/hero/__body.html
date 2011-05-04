@@ -1,5 +1,5 @@
 {% load thing_tags %}
-<div style="background:url({{ MEDIA_URL }}images/slot.png); width:331px; height:423px; position:relative;">
+<div style="background:url({{ MEDIA_URL }}image/slot.png); width:331px; height:423px; position:relative;">
 	<img src="{{ MEDIA_URL }}{{ hero.image.image }}" alt="" style="position:absolute; left:108px; top:96px;" />
 	{% get_hero_dressed_things hero as herothings %}
 	{% for herothing in herothings %}

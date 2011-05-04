@@ -56,8 +56,7 @@ def duel(request, template_name='combat/duel.html'):
                                     is_active=Combat.IS_ACTIVE_WAIT,
                                     location=herom.get_location())
 
-    variables = RequestContext(request, {'hero': hero,
-                                         'form': form,
+    variables = RequestContext(request, {'form': form,
                                          'combats': combats,
                                          'in_combat': combat,
                                          'is_cancel': is_cancel,
@@ -112,8 +111,7 @@ def group(request, template_name='combat/group.html'):
                                     is_active=Combat.IS_ACTIVE_WAIT, 
                                     location=herom.get_location())
     
-    variables = RequestContext(request, {'hero': hero, 
-                                         'form': form,
+    variables = RequestContext(request, {'form': form,
                                          'combats': combats,
                                          'in_combat': combat,
                                          'is_cancel': is_cancel})
@@ -163,8 +161,7 @@ def chaotic(request, template_name='combat/chaotic.html'):
                                     is_active=Combat.IS_ACTIVE_WAIT, 
                                     location=herom.get_location())
     
-    variables = RequestContext(request, {'hero': hero, 
-                                         'form': form,
+    variables = RequestContext(request, {'form': form,
                                          'combats': combats,
                                          'in_combat': combat,
                                          'is_cancel': is_cancel})
@@ -187,8 +184,7 @@ def territorial(request, template_name='combat/territorial.html'):
                                     is_active=Combat.IS_ACTIVE_FIGHT, 
                                     location=herom.get_location())
     
-    variables = RequestContext(request, {'hero': hero, 
-                                         'combats': combats,
+    variables = RequestContext(request, {'combats': combats,
                                          'in_combat': combat,
                                          'is_cancel': is_cancel})
     
@@ -208,8 +204,7 @@ def current(request, template_name='combat/current.html'):
     combats = Combat.objects.filter(is_active=Combat.IS_ACTIVE_FIGHT,
                                     location=herom.get_location())
 
-    variables = RequestContext(request, {'hero': hero,
-                                         'combats': combats,
+    variables = RequestContext(request, {'combats': combats,
                                          'is_cancel': is_cancel})
     
     return render_to_response(template_name, variables)
@@ -237,14 +232,13 @@ def past(request, template_name='combat/past.html'):
             search_hero = Hero.objects.get(login=login)
             
             combats = Combat.objects.filter(is_active=Combat.IS_ACTIVE_PAST, 
-                                            combatwarrior__hero=search_hero, 
+                                            combatwarrior__hero=search_hero,
                                             start_date_time__gte=date_begin,
                                             start_date_time__lte=date_end)
     else:
         form = PastForm()
     
-    variables = RequestContext(request, {'hero': hero,
-                                         'form': form, 
+    variables = RequestContext(request, {'form': form,
                                          'combats': combats,
                                          'is_cancel': is_cancel})
     
@@ -510,8 +504,7 @@ def combat(request, template_name='combat/combat.html'):
     if all_damage == None:
         all_damage = 0
 
-    variables = RequestContext(request, {'hero': hero,
-                                         'hero_two': enemy if is_enemy_hero \
+    variables = RequestContext(request, {'hero_two': enemy if is_enemy_hero \
                                                                     else None,
                                          'bot': enemy if not is_enemy_hero \
                                                                     else None,
@@ -574,12 +567,13 @@ def quit(request):
         hero.number_of_losses += 1
     hero.save()
     
-    is_anybody_not_quit = combatm.is_anybody_not_quit()
-    if not is_anybody_not_quit:
+    if not combatm.is_anybody_not_quit():
         if is_win:
             combat.win_team = team
-        elif not is_draw:
-            combat.win_team = Combat.TEAM_FIRST if team else team
+        elif is_draw:
+            combat.win_team = None
+        else:
+            combat.win_team = Combat.TEAM_FIRST if team else Combat.TEAM_SECOND
         combat.end_date_time = datetime.datetime.now()
         combat.is_active = Combat.IS_ACTIVE_PAST
         combat.save()
