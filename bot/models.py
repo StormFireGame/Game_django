@@ -5,7 +5,7 @@ from thing.models import Thing
 from island.models import Island
 
 class BotImage(models.Model):
-    image = models.ImageField(upload_to='upload/bot_image')
+    image = models.FileField(upload_to='upload/bot_image')
     
     class Meta:
         db_table = 'BotImage'

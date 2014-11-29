@@ -7,7 +7,7 @@ from island.models import Island
 import hashlib
 
 class HeroImage(models.Model):
-    image = models.ImageField(upload_to='upload/hero_image')
+    image = models.FileField(upload_to='upload/hero_image')
     is_art = models.BooleanField(default=False)
 #    
     SEXS = ((0, 'Male'), (1, 'Female'))

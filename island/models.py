@@ -5,7 +5,7 @@ from django.conf import settings
 class Island(models.Model):
     name = models.CharField(max_length=32, unique=True)
     slug = models.SlugField(max_length=32, unique=True)
-    image = models.ImageField(upload_to='upload/island_image')
+    image = models.FileField(upload_to='upload/island_image')
     
     class Meta:
         db_table = 'Island'
